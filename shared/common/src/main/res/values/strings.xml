@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="btn_back">Back</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_retry">Retry</string>
+
+    <string name="error_default_title">Oops</string>
+    <string name="error_default_message">Something went wrong</string>
+</resources>

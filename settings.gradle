@@ -1,0 +1,16 @@
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        jcenter() // Warning: this repository is going to shut down soon
+    }
+}
+
+rootProject.name = "ListApp-v2"
+include ':app'
+include ':shared:network'
+include ':shared:navigation'
+include ':shared:common'
+include ':feature:login'
+include ':feature:lists'
