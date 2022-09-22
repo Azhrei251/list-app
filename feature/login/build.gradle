@@ -1,8 +1,9 @@
 plugins {
     id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
-apply plugin: 'kotlin-android'
 
 android {
     compileSdk 32
@@ -28,10 +29,21 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_compiler_version
+    }
 }
 
 dependencies {
-    implementation(":shared:common")
-    implementation(":shared:network")
-    implementation(":shared:navigation")
+    implementation project(":shared:common")
+    implementation project(":shared:network")
+    implementation project(":shared:navigation")
+
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$app_compat_version"
 }

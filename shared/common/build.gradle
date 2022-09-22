@@ -2,8 +2,8 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
-apply plugin: 'kotlin-android'
 
 android {
     compileSdk 32
@@ -29,11 +29,18 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_compiler_version
+    }
 }
 
 dependencies {
-    api "androidx.core:core-ktx:$kotlin_core_version"
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.core:core-ktx:$kotlin_core_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$app_compat_version"
 
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     api "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
@@ -45,11 +52,12 @@ dependencies {
     api "androidx.compose.material:material-icons-extended:$compose_version"
     api 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
     api 'androidx.activity:activity-compose:1.5.1'
-    api  "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
     api "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
-    implementation project(":shared:navigation")
+    implementation "dev.enro:enro:$enro_version"
+    kapt "dev.enro:enro-processor:$enro_version"
 
     testApi 'junit:junit:4.13.2'
     androidTestApi 'androidx.test.ext:junit:1.1.3'
