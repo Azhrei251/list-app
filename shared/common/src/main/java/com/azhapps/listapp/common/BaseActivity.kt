@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.fragment.app.FragmentActivity
 import com.azhapps.listapp.common.ui.ErrorPage
 import com.azhapps.listapp.common.ui.LoadingPage
 import com.azhapps.listapp.common.ui.TopBar
@@ -17,11 +19,11 @@ import dev.enro.core.NavigationKey
 import dev.enro.core.TypedNavigationHandle
 import dev.enro.core.close
 
-abstract class BaseActivity<T: NavigationKey>: ComponentActivity() {
+abstract class BaseActivity<T: NavigationKey>: FragmentActivity() {
 
     open var uiState = UiState.Content
     abstract val navigationHandle: TypedNavigationHandle<T>
-    abstract val title: String
+    open val shouldShowBackArrow = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +32,11 @@ abstract class BaseActivity<T: NavigationKey>: ComponentActivity() {
             ListAppTheme {
                 Scaffold(topBar = {
                     TopBar(
-                        title = title,
+                        title = getToolbarTitle(),
                         backAction = {
                             navigationHandle.close()
-                        }
+                        },
+                        showBackArrow = shouldShowBackArrow
                     )
                 }, content = {
                     Column(modifier = Modifier.padding(it)) {
@@ -52,6 +55,8 @@ abstract class BaseActivity<T: NavigationKey>: ComponentActivity() {
             is UiState.Error -> Error(errorMessage = uiState.cause.message ?: stringResource(R.string.error_default_message))
         }
     }
+
+    abstract fun getToolbarTitle(): String
 
     @Composable
     abstract fun Content()

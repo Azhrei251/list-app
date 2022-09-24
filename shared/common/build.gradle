@@ -55,6 +55,7 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
     api "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    api "com.google.code.gson:gson:$gson_version"
 
     implementation "dev.enro:enro:$enro_version"
     kapt "dev.enro:enro-processor:$enro_version"

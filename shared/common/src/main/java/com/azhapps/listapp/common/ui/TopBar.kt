@@ -15,6 +15,7 @@ import com.azhapps.listapp.common.ui.theme.Typography
 @Composable
 fun TopBar(
     title: String,
+    showBackArrow: Boolean,
     backAction: () -> Unit,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
@@ -22,15 +23,17 @@ fun TopBar(
         title = {
             Text(
                 text = title,
-                style = Typography.h3
+                style = Typography.h6
             )
         },
         navigationIcon = {
-            IconButton(onClick = backAction) {
-                Image(
-                    painter = painterResource(R.drawable.ic_arrow_back),
-                    contentDescription = stringResource(R.string.btn_back)
-                )
+            if (showBackArrow) {
+                IconButton(onClick = backAction) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_arrow_back),
+                        contentDescription = stringResource(R.string.btn_back)
+                    )
+                }
             }
         },
         actions = actions

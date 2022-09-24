@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/shared/common" />
             <option value="$PROJECT_DIR$/shared/navigation" />
             <option value="$PROJECT_DIR$/shared/network" />
+            <option value="$PROJECT_DIR$/shared/utils" />
           </set>
         </option>
       </GradleProjectSettings>

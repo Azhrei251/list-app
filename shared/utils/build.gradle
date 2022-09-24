@@ -15,16 +15,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-        buildConfigField  "String", "TEST_BASE_URL", '"http://192.168.0.3:8000"'
-        buildConfigField  "String", "TEST_CLIENT_ID", properties.getProperty('test.client.id')
-        buildConfigField  "String", "TEST_CLIENT_SECRET", properties.getProperty('test.client.secret')
-        buildConfigField  "String", "PROD_BASE_URL", '"https://shopping.azhapps.com"'
-        buildConfigField  "String", "PROD_CLIENT_ID", properties.getProperty('prod.client.id')
-        buildConfigField  "String", "PROD_CLIENT_SECRET", properties.getProperty('prod.client.secret')
-        buildConfigField  "String", "VERSION_NAME", '"' + version_name + '"'
+        buildConfigField  "String", "ACCOUNT_TYPE", '"com.azhapps"'
     }
 
     buildTypes {
@@ -43,16 +34,12 @@ android {
 }
 
 dependencies {
-    api "com.squareup.retrofit2:retrofit:$retrofit_version"
-    api "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    api "com.squareup.okhttp3:logging-interceptor:4.9.0"
-
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     implementation "androidx.core:core-ktx:$kotlin_core_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$app_compat_version"
-    implementation project(':shared:utils')
 
+    implementation project(":shared:common")
 }
