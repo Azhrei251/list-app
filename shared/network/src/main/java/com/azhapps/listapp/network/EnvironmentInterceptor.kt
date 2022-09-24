@@ -12,13 +12,12 @@ import okhttp3.Response
 
 class EnvironmentInterceptor: Interceptor {
 
-
-
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val newRequest = originalRequest
             .newBuilder()
-            .url(Environment.currentlySelected.baseUrl + originalRequest.url.pathSegments.joinToString(separator = "/"))
+            .url(Environment.currentlySelected.baseUrl
+                    + originalRequest.url.pathSegments.joinToString(separator = "/", prefix = "/"))
             .build()
 
         return chain.proceed(newRequest)

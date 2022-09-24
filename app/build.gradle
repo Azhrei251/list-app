@@ -51,6 +51,7 @@ dependencies {
     implementation project(":shared:common")
     implementation project(":shared:navigation")
     implementation project(":shared:network")
+    implementation project(':shared:utils')
     implementation project(":feature:lists")
     implementation project(":feature:login")
 

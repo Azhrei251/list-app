@@ -35,7 +35,7 @@ android {
 
 dependencies {
     kapt "dev.enro:enro-processor:$enro_version"
-    api "dev.enro:enro:$enro_version"
+    implementation "dev.enro:enro:$enro_version"
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"

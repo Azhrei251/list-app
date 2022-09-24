@@ -13,6 +13,7 @@ class AuthInterceptor(val tokenManager: TokenManager) : Interceptor {
     override fun intercept(chain: Interceptor.Chain) = chain.proceed(
         chain.request()
             .newBuilder()
+            .addHeader("Accept", "application/json")
             .addHeader("Authorization", getAuthHeader())
             .addHeader("User-Agent", getUserAgentString())
             .build()
@@ -34,7 +35,7 @@ class AuthInterceptor(val tokenManager: TokenManager) : Interceptor {
 
     private fun getBasicAuthValue(
         environment: Environment
-    ): String = Base64.encodeToString("${environment.clientId}:${environment.clientSecret}".toByteArray(), Base64.DEFAULT)
+    ): String = Base64.encodeToString("${environment.clientId}:${environment.clientSecret}".toByteArray(), Base64.NO_WRAP)
 
     private fun isTokenExpired(
         tokenExpiryTime: Long,
@@ -42,6 +43,8 @@ class AuthInterceptor(val tokenManager: TokenManager) : Interceptor {
         offset: Long = EXPIRY_TIME_OFFSET
     ): Boolean = tokenExpiryTime < (currentTime - offset)
 
-    private fun getUserAgentString() =
-        "List App ${BuildConfig.DEBUG}/${BuildConfig.VERSION_NAME}/Android ${Build.VERSION.RELEASE}"
+    private fun getUserAgentString(): String {
+        val flavor = if (BuildConfig.DEBUG) "Debug" else "Release"
+        return "List App $flavor ${BuildConfig.VERSION_NAME}/Android ${Build.VERSION.RELEASE}"
+    }
 }

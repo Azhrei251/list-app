@@ -15,7 +15,7 @@ object Api {
 
     private val TAG = Api::class.java.simpleName
 
-    fun <T> callApi(
+    inline fun <T> callApi(
         apiCall: () -> Response<T>
     ): ApiResult<T> = try {
         val apiResult = apiCall()
@@ -32,7 +32,7 @@ object Api {
         ApiResult(false, null, buildErrorResult("Network issue", 400, throwable))
     }
 
-    private fun buildErrorResult(message: String, status: Int, throwable: Throwable? = null): BackendError {
+    fun buildErrorResult(message: String, status: Int, throwable: Throwable? = null): BackendError {
         val error = BackendError(message, status, throwable)
         Log.e(TAG, message, error)
         return error

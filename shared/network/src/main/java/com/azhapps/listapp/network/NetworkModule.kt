@@ -29,6 +29,7 @@ object NetworkModule {
     fun provideHttpClient(
         tokenManager: TokenManager
     ) = OkHttpClient.Builder()
+        .addInterceptor(EnvironmentInterceptor())
         .addInterceptor(AuthInterceptor(tokenManager))
         .addInterceptor(HttpLoggingInterceptor().apply {
             setLevel(if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE)
