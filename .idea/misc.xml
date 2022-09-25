@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Karl/Documents/Repositories/ListApp-v2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.202" />
         <entry key="..\:/Users/Karl/Documents/Repositories/ListApp-v2/shared/common/src/main/res/drawable/ic_arrow_back.xml" value="0.2015" />
+        <entry key="..\:/Users/Karl/Documents/Repositories/ListApp-v2/shared/common/src/main/res/drawable/ic_error.xml" value="0.202" />
+        <entry key="..\:/Users/Karl/Documents/Repositories/ListApp-v2/shared/network/src/main/res/drawable/ic_launcher.xml" value="0.284" />
       </map>
     </option>
   </component>

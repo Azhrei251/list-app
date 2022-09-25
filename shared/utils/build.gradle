@@ -16,6 +16,8 @@ android {
         consumerProguardFiles "consumer-rules.pro"
 
         buildConfigField  "String", "ACCOUNT_TYPE", '"com.azhapps"'
+        resValue "string", "account_type", 'com.azhapps'
+        resValue "string", "account_label", 'Azhapps'
     }
 
     buildTypes {

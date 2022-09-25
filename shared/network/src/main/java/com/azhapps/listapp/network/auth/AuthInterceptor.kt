@@ -8,7 +8,7 @@ import okhttp3.Interceptor
 
 private const val EXPIRY_TIME_OFFSET = 1000L
 
-class AuthInterceptor(val tokenManager: TokenManager) : Interceptor {
+class AuthInterceptor(private val tokenManager: TokenManager) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain) = chain.proceed(
         chain.request()

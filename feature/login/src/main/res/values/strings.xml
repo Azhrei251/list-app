@@ -3,5 +3,8 @@
     <string name="login_title">Log in</string>
     <string name="login_label_username">Username</string>
     <string name="login_label_password">Password</string>
-    <string name="login_button">Proceed</string>
+    <string name="login_button_primary">Log in</string>
+    <string name="login_button_secondary">Register</string>
+    <string name="login_call_to_action">Please log in to use the app</string>
+    <string name="login_call_to_action_no_acc">Don\'t have an acccount?</string>
 </resources>

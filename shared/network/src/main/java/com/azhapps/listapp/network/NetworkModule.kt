@@ -27,7 +27,7 @@ object NetworkModule {
 
     @Provides
     fun provideHttpClient(
-        tokenManager: TokenManager
+        tokenManager: TokenManager,
     ) = OkHttpClient.Builder()
         .addInterceptor(EnvironmentInterceptor())
         .addInterceptor(AuthInterceptor(tokenManager))
@@ -36,8 +36,4 @@ object NetworkModule {
         })
         .build()
 
-    @Provides
-    fun provideTokenManager(
-        accountManager: AccountManager
-    ) = TokenManager(accountManager)
 }

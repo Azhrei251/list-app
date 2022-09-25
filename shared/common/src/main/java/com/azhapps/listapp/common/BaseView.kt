@@ -14,7 +14,7 @@ interface BaseView {
         when (uiState) {
             UiState.Content -> Content()
             UiState.Loading -> Loading()
-            is UiState.Error -> Error(errorMessage = uiState.cause.message ?: stringResource(R.string.error_default_message))
+            is UiState.Error -> Error(errorMessage = uiState.cause?.message ?: stringResource(R.string.error_default_message))
         }
     }
 

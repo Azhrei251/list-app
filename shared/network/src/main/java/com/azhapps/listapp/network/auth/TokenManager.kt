@@ -12,7 +12,7 @@ private const val AUTH_TOKEN_TYPE = "oauth"
 private const val REFRESH_TOKEN_TYPE = "oauth_refresh"
 private const val EXPIRY_KEY = "token_expiry"
 
-class TokenManager(val accountManager: AccountManager) {
+class TokenManager @Inject constructor(private val accountManager: AccountManager) {
 
     fun hasAccount(
         accountName: String? = SelectedAccount.currentAccountName,
@@ -22,11 +22,11 @@ class TokenManager(val accountManager: AccountManager) {
 
     fun getAuthToken(
         accountName: String? = SelectedAccount.currentAccountName,
-    ): String? = getToken(AUTH_TOKEN_TYPE)
+    ): String? = getToken(AUTH_TOKEN_TYPE, accountName)
 
     fun getRefreshToken(
         accountName: String? = SelectedAccount.currentAccountName,
-    ): String? = getToken(REFRESH_TOKEN_TYPE)
+    ): String? = getToken(REFRESH_TOKEN_TYPE, accountName)
 
     private fun getToken(
         tokenType: String,

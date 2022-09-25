@@ -5,7 +5,11 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -30,8 +34,9 @@ fun TopBar(
             if (showBackArrow) {
                 IconButton(onClick = backAction) {
                     Image(
-                        painter = painterResource(R.drawable.ic_arrow_back),
-                        contentDescription = stringResource(R.string.btn_back)
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.btn_back),
+                        colorFilter = ColorFilter.tint(Color.White)
                     )
                 }
             }
