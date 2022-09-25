@@ -16,4 +16,12 @@ interface LoginRemoteDataSource {
         @Field("password") password: String,
         @Field("grant_type") grantType: String = GrantType.PASSWORD.value
     ): Response<AuthToken>
+
+    @FormUrlEncoded
+    @POST("users/create")
+    suspend fun registerAccount(
+        @Field("username") username: String,
+        @Field("password") password: String,
+        @Field("email") email: String
+    ): Response<Unit>
 }

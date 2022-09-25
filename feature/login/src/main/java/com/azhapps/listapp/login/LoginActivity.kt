@@ -5,6 +5,7 @@ import com.azhapps.listapp.common.BaseActivity
 import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.login.model.LoginScreenState
 import com.azhapps.listapp.login.ui.LoginScreen
+import com.azhapps.listapp.login.ui.RegistrationScreen
 import com.azhapps.listapp.navigation.Login
 import dagger.hilt.android.AndroidEntryPoint
 import dev.enro.annotations.NavigationDestination
@@ -29,7 +30,7 @@ class LoginActivity : BaseActivity() {
 
         when (state.loginScreenState) {
             LoginScreenState.LOGIN -> LoginScreen(actor = viewModel::dispatch)
-            LoginScreenState.REGISTRATION -> TODO()
+            LoginScreenState.REGISTRATION -> RegistrationScreen(actor = viewModel::dispatch)
         }
     }
 }

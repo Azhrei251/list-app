@@ -9,4 +9,10 @@ sealed class LoginAction {
     ): LoginAction()
 
     object NavigateToRegistration: LoginAction()
+
+    data class RegisterAccount(
+        val username: String,
+        val password: String,
+        val email: String,
+    ): LoginAction()
 }

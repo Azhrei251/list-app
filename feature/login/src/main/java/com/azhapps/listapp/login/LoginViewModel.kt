@@ -20,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val getAuthTokenUseCase: GetAuthTokenUseCase,
+    private val registerAccountUseCase: RegisterAccountUseCase,
     private val tokenManager: TokenManager,
     private val sharedPreferences: SharedPreferences
 ) : BaseViewModel<LoginState, LoginAction>() {
@@ -32,12 +33,10 @@ class LoginViewModel @Inject constructor(
 
     override fun dispatch(action: LoginAction) {
         when (action) {
-            is LoginAction.GetAuthToken -> {
-                getAuthToken(
-                    action.username,
-                    action.password,
-                )
-            }
+            is LoginAction.GetAuthToken -> getAuthToken(
+                action.username,
+                action.password,
+            )
 
             LoginAction.NavigateToRegistration -> updateState {
                 copy(
@@ -52,6 +51,12 @@ class LoginViewModel @Inject constructor(
                     loginScreenState = LoginScreenState.LOGIN
                 )
             }
+
+            is LoginAction.RegisterAccount -> registerAccount(
+                action.username,
+                action.password,
+                action.email
+            )
         }
     }
 
@@ -76,6 +81,31 @@ class LoginViewModel @Inject constructor(
                     )
                 }
                 navigationHandle.closeWithResult(true)
+
+            } else {
+                updateState {
+                    copy(
+                        uiState = UiState.Error(result.error)
+                    )
+                }
+            }
+        }
+    }
+
+    private fun registerAccount(
+        username: String,
+        password: String,
+        email: String,
+    ) {
+        updateState {
+            copy(
+                uiState = UiState.Loading
+            )
+        }
+        viewModelScope.launch {
+            val result = registerAccountUseCase(username, password, email)
+            if (result.success) {
+                getAuthToken(username, password)
 
             } else {
                 updateState {
