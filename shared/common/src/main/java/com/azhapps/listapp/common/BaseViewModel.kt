@@ -8,14 +8,14 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class BaseViewModel<S, A>: ViewModel() {
-    private val _flow by lazy {
+    private val flow by lazy {
         MutableStateFlow(initialState())
     }
 
     private var state
-        get() = _flow.value
+        get() = flow.value
         set(value) {
-            _flow.value = value
+            flow.value = value
         }
 
     abstract fun dispatch(action: A)
@@ -29,5 +29,5 @@ abstract class BaseViewModel<S, A>: ViewModel() {
     @Composable
     fun collectAsState(
         context: CoroutineContext = EmptyCoroutineContext
-    ) = _flow.collectAsState(context = context)
+    ) = flow.collectAsState(context = context)
 }

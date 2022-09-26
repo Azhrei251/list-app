@@ -20,6 +20,9 @@ class TokenManager @Inject constructor(private val accountManager: AccountManage
         it.type == BuildConfig.ACCOUNT_TYPE && it.name == accountName
     }
 
+    //TODO Later lets allow user to pick
+    fun getDefaultAccountName(): String? = accountManager.accounts.firstOrNull()?.name
+
     fun getAuthToken(
         accountName: String? = SelectedAccount.currentAccountName,
     ): String? = getToken(AUTH_TOKEN_TYPE, accountName)

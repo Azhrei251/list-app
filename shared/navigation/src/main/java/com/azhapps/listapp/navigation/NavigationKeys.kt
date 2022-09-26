@@ -7,10 +7,17 @@ import kotlinx.parcelize.Parcelize
 object Main: NavigationKey
 
 @Parcelize
-object Login: NavigationKey.WithResult<Boolean>
+data class Auth(
+    val authOption: AuthOption,
+): NavigationKey.WithResult<Boolean> {
+
+    enum class AuthOption {
+        LOGIN, REGISTRATION
+    }
+}
 
 @Parcelize
-object ListSelection: NavigationKey
+object ListSelection: NavigationKey.WithResult<Unit> //This shouldn't need a result but Enro is being weird
 
 @Parcelize
 object ListDetailView: NavigationKey

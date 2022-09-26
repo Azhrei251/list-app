@@ -1,12 +1,14 @@
 package com.azhapps.listapp.login
 
+import android.os.Bundle
 import androidx.compose.runtime.Composable
 import com.azhapps.listapp.common.BaseActivity
 import com.azhapps.listapp.common.UiState
+import com.azhapps.listapp.login.model.LoginAction
 import com.azhapps.listapp.login.model.LoginScreenState
 import com.azhapps.listapp.login.ui.LoginScreen
 import com.azhapps.listapp.login.ui.RegistrationScreen
-import com.azhapps.listapp.navigation.Login
+import com.azhapps.listapp.navigation.Auth
 import dagger.hilt.android.AndroidEntryPoint
 import dev.enro.annotations.NavigationDestination
 import dev.enro.core.close
@@ -14,14 +16,23 @@ import dev.enro.core.navigationHandle
 import dev.enro.viewmodel.enroViewModels
 
 @AndroidEntryPoint
-@NavigationDestination(Login::class)
+@NavigationDestination(Auth::class)
 class LoginActivity : BaseActivity() {
     private val viewModel by enroViewModels<LoginViewModel>()
-    private val navigationHandle by navigationHandle<Login>()
+    private val navigationHandle by navigationHandle<Auth>()
 
     override var uiState: UiState = UiState.Content
     override fun getToolbarTitle() = getString(R.string.login_title)
     override fun backAction(): () -> Unit = navigationHandle::close
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        when (navigationHandle.key.authOption) {
+            Auth.AuthOption.LOGIN -> viewModel.dispatch(LoginAction.NavigateToLogin)
+            Auth.AuthOption.REGISTRATION -> viewModel.dispatch(LoginAction.NavigateToRegistration)
+        }
+    }
 
     @Composable
     override fun Content() {

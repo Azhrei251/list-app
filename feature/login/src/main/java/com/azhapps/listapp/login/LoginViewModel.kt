@@ -8,10 +8,9 @@ import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.login.model.LoginAction
 import com.azhapps.listapp.login.model.LoginScreenState
 import com.azhapps.listapp.login.model.LoginState
-import com.azhapps.listapp.navigation.Login
+import com.azhapps.listapp.navigation.Auth
 import com.azhapps.listapp.network.auth.TokenManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.enro.core.navigationHandle
 import dev.enro.core.result.closeWithResult
 import dev.enro.viewmodel.navigationHandle
 import kotlinx.coroutines.launch
@@ -24,7 +23,8 @@ class LoginViewModel @Inject constructor(
     private val tokenManager: TokenManager,
     private val sharedPreferences: SharedPreferences
 ) : BaseViewModel<LoginState, LoginAction>() {
-    private val navigationHandle by navigationHandle<Login>()
+
+    private val navigationHandle by navigationHandle<Auth>()
 
     override fun initialState() = LoginState(
         uiState = UiState.Content,

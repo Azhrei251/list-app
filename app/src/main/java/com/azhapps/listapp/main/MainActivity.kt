@@ -1,55 +1,40 @@
 package com.azhapps.listapp.main
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.azhapps.listapp.R
 import com.azhapps.listapp.common.BaseActivity
 import com.azhapps.listapp.common.UiState
-import com.azhapps.listapp.common.ui.theme.ListAppTheme
-import com.azhapps.listapp.navigation.Login
+import com.azhapps.listapp.main.ui.MainScreen
 import com.azhapps.listapp.navigation.Main
 import dagger.hilt.android.AndroidEntryPoint
 import dev.enro.annotations.NavigationDestination
 import dev.enro.core.close
-import dev.enro.core.forward
 import dev.enro.core.navigationHandle
+import dev.enro.viewmodel.enroViewModels
 
 @AndroidEntryPoint
 @NavigationDestination(Main::class)
 class MainActivity : BaseActivity() {
+
+    private val navigationHandle by navigationHandle<Main>()
+    private val viewModel by enroViewModels<MainViewModel>()
 
     override var uiState: UiState = UiState.Content //TODO
     override val shouldShowBackArrow = false
     override fun backAction(): () -> Unit = navigationHandle::close
     override fun getToolbarTitle() = getString(R.string.app_name)//TODO
 
-    private val navigationHandle by navigationHandle<Main>()
-
     @Composable
     override fun Content() {
-        Surface(modifier = Modifier.fillMaxSize().clickable {
-            navigationHandle.forward(Login)
-        }, color = MaterialTheme.colors.background) {
-            Greeting("Android")
-        }
+        MainScreen(
+            actor = viewModel::dispatch
+        )
     }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    ListAppTheme {
-        Greeting("Android")
-    }
+    MainScreen({})
 }

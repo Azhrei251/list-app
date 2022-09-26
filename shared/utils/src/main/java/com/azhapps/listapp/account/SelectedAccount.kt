@@ -8,9 +8,9 @@ object SelectedAccount {
 
     var currentAccountName: String? = null
 
-    //TODO Call on app launch
     fun init(sharedPreferences: SharedPreferences) {
         currentAccountName = sharedPreferences.getString(CURRENT_ACCOUNT_KEY, null)
+
     }
 
     fun update(
