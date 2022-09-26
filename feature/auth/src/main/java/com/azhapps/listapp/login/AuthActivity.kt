@@ -17,12 +17,12 @@ import dev.enro.viewmodel.enroViewModels
 
 @AndroidEntryPoint
 @NavigationDestination(Auth::class)
-class LoginActivity : BaseActivity() {
-    private val viewModel by enroViewModels<LoginViewModel>()
+class AuthActivity : BaseActivity() {
+    private val viewModel by enroViewModels<AuthViewModel>()
     private val navigationHandle by navigationHandle<Auth>()
 
     override var uiState: UiState = UiState.Content
-    override fun getToolbarTitle() = getString(R.string.login_title)
+    override fun getToolbarTitle() = getString(R.string.auth_title)
     override fun backAction(): () -> Unit = navigationHandle::close
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -28,7 +28,7 @@ fun UsernameField(username: String, onUsernameChange: (String) -> Unit) {
         value = username,
         onValueChange = onUsernameChange,
         label = {
-            Text(text = stringResource(id = R.string.login_label_username))
+            Text(text = stringResource(id = R.string.auth_label_username))
         },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true
@@ -43,7 +43,7 @@ fun PasswordField(password: String, onPasswordChange: (String) -> Unit) {
         value = password,
         onValueChange = onPasswordChange,
         label = {
-            Text(text = stringResource(id = R.string.login_label_password))
+            Text(text = stringResource(id = R.string.auth_label_password))
         },
         modifier = Modifier.fillMaxWidth(),
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -66,7 +66,7 @@ fun EmailField(email: String, onEmailChange: (String) -> Unit) {
         value = email,
         onValueChange = onEmailChange,
         label = {
-            Text(text = stringResource(id = R.string.login_label_email))
+            Text(text = stringResource(id = R.string.auth_label_email))
         },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true

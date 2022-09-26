@@ -2,7 +2,6 @@ package com.azhapps.listapp.login.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
@@ -41,7 +40,7 @@ fun RegistrationScreen(
         ) {
             Text(
                 style = Typography.body1,
-                text = stringResource(id = R.string.login_registration_call_to_action)
+                text = stringResource(id = R.string.auth_registration_call_to_action)
             )
 
             UsernameField(
@@ -63,7 +62,7 @@ fun RegistrationScreen(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { actor(LoginAction.RegisterAccount(username, password, email)) }
             ) {
-                Text(stringResource(id = R.string.login_button_secondary))
+                Text(stringResource(id = R.string.auth_button_secondary))
             }
         }
     }
