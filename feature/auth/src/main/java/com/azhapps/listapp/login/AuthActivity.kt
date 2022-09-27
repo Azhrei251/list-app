@@ -36,7 +36,7 @@ class AuthActivity : BaseActivity() {
 
     @Composable
     override fun Content() {
-        val state = viewModel.collectAsState().value
+        val state = viewModel.collectAsState()
         uiState = state.uiState
 
         when (state.loginScreenState) {

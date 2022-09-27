@@ -62,6 +62,12 @@ class TokenManager @Inject constructor(private val accountManager: AccountManage
         accountManager.setUserData(account, EXPIRY_KEY, expiryTime.toString())
     }
 
+    fun clear(
+        accountName: String? = SelectedAccount.currentAccountName
+    ) {
+        accountManager.removeAccount(getAccount(accountName), null, null, null)
+    }
+
     private fun getAccount(
         accountName: String? = SelectedAccount.currentAccountName,
     ): Account? = accountManager.accounts.firstOrNull {

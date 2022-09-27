@@ -29,5 +29,5 @@ abstract class BaseViewModel<S, A>: ViewModel() {
     @Composable
     fun collectAsState(
         context: CoroutineContext = EmptyCoroutineContext
-    ) = flow.collectAsState(context = context)
+    ) = flow.collectAsState(context = context).value
 }

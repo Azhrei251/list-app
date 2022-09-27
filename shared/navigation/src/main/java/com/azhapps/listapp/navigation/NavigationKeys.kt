@@ -17,7 +17,7 @@ data class Auth(
 }
 
 @Parcelize
-object ListSelection: NavigationKey.WithResult<Unit> //This shouldn't need a result but Enro is being weird
+object Lists: NavigationKey.WithResult<Unit> //This shouldn't need a result but Enro is being weird
 
 @Parcelize
 object ListDetailView: NavigationKey

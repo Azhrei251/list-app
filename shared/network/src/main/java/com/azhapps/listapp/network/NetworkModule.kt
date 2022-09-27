@@ -1,8 +1,6 @@
 package com.azhapps.listapp.network
 
-import android.accounts.AccountManager
 import com.azhapps.listapp.network.auth.AuthInterceptor
-import com.azhapps.listapp.network.auth.TokenManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,10 +25,10 @@ object NetworkModule {
 
     @Provides
     fun provideHttpClient(
-        tokenManager: TokenManager,
+        bearerAuthInterceptor: AuthInterceptor,
     ) = OkHttpClient.Builder()
         .addInterceptor(EnvironmentInterceptor())
-        .addInterceptor(AuthInterceptor(tokenManager))
+        .addInterceptor(bearerAuthInterceptor)
         .addInterceptor(HttpLoggingInterceptor().apply {
             setLevel(if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE)
         })

@@ -7,13 +7,10 @@ import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.main.model.MainAction
 import com.azhapps.listapp.main.model.MainState
 import com.azhapps.listapp.navigation.Auth
-import com.azhapps.listapp.navigation.ListSelection
-import com.azhapps.listapp.navigation.Main
+import com.azhapps.listapp.navigation.Lists
 import com.azhapps.listapp.network.auth.TokenManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.enro.core.forward
 import dev.enro.core.result.registerForNavigationResult
-import dev.enro.viewmodel.navigationHandle
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,9 +19,10 @@ class MainViewModel @Inject constructor(
     tokenManager: TokenManager,
 ) : BaseViewModel<MainState, MainAction>() {
 
-    private val navigationHandle by registerForNavigationResult<Unit> {
-        //TODO Figure out why Enro is dying trying to make a normal nav handle
-    }
+    //TODO Figure out why Enro is dying trying to make a normal nav handle
+    /*private val navigationHandle by registerForNavigationResult<Unit> {
+
+    }*/
     private val loginResult by registerForNavigationResult<Boolean> {
         if (it) {
             dispatch(MainAction.NavigateToLists)
@@ -51,7 +49,12 @@ class MainViewModel @Inject constructor(
 
     override fun dispatch(action: MainAction) {
         when (action) {
-            MainAction.NavigateToLists -> navigationHandle.open(ListSelection)
+            //TODO Should be able to navigate normally here
+            MainAction.NavigateToLists -> updateState {
+                copy(
+                    done = true
+                )
+            }
 
             MainAction.NavigateToLogin -> loginResult.open(Auth(Auth.AuthOption.LOGIN))
 
