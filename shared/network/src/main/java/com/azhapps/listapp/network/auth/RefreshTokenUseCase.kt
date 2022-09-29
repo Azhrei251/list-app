@@ -4,7 +4,7 @@ import com.azhapps.listapp.network.Api.callApi
 import com.azhapps.listapp.network.data.AuthRemoteDataSource
 import javax.inject.Inject
 
-class RefreshTokenUseCase @Inject constructor(
+class RefreshTokenUseCase constructor(
     private val authRemoteDataSource: AuthRemoteDataSource
 ) {
     suspend operator fun invoke(refreshToken: String) = callApi {

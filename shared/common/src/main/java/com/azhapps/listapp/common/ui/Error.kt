@@ -25,6 +25,7 @@ import com.azhapps.listapp.common.R
 import com.azhapps.listapp.common.ui.theme.BackgroundColor
 import com.azhapps.listapp.common.ui.theme.Typography
 
+//TODO Add logout functionality for refresh fail
 @Composable
 fun ErrorPage(
     errorMessage: String,

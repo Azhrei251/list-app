@@ -21,7 +21,7 @@ abstract class BaseAuthInterceptor : Interceptor {
 
     protected fun getBasicAuthValue(
         environment: Environment
-    ): String = "Bearer " + Base64.encodeToString("${environment.clientId}:${environment.clientSecret}".toByteArray(), Base64.NO_WRAP)
+    ): String = "Basic " + Base64.encodeToString("${environment.clientId}:${environment.clientSecret}".toByteArray(), Base64.NO_WRAP)
 
     private fun getUserAgentString(): String {
         val flavor = if (BuildConfig.DEBUG) "Debug" else "Release"

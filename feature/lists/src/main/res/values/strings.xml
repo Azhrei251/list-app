@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="lists_selection_title">Select a list</string>
+    <string name="lists_selection_add_new">Add new</string>
 </resources>

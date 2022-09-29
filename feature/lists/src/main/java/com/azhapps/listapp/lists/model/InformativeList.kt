@@ -1,13 +1,15 @@
 package com.azhapps.listapp.lists.model
 
+import com.azhapps.listapp.account.SelectedAccount
+
 data class InformativeList(
     val id: Int,
     var name: String,
     val date: String,
     var items: MutableList<ListItem>,
-    val category: Category,
+    val category: Category?,
     val owner: String,
-    val group: Group
+    val group: Group?
 ) {
 
     override fun equals(other: Any?) = (other as? InformativeList)?.let { otherList ->
@@ -30,4 +32,6 @@ data class InformativeList(
         return result
     }
 }
+
+fun InformativeList.isOwnedBySelf() = this.owner == SelectedAccount.currentAccountName
 

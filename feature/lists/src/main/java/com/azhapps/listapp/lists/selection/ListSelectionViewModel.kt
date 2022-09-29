@@ -16,6 +16,9 @@ class ListSelectionViewModel @Inject constructor(
     override fun dispatch(action: ListSelectionAction) {
        when(action) {
            ListSelectionAction.GetAllLists -> getAllLists()
+           else -> {
+               //TODO
+           }
        }
     }
 

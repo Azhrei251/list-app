@@ -6,11 +6,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.azhapps.listapp.common.BaseActivity
 import com.azhapps.listapp.common.UiState
+import com.azhapps.listapp.lists.navigation.ListsInternalNavigationKeys
 import com.azhapps.listapp.lists.selection.ui.ListSelectionScreen
 import com.azhapps.listapp.navigation.Lists
 import dagger.hilt.android.AndroidEntryPoint
 import dev.enro.annotations.NavigationDestination
+import dev.enro.core.NavigationInstruction
 import dev.enro.core.close
+import dev.enro.core.compose.EnroContainer
+import dev.enro.core.compose.rememberEnroContainerController
 import dev.enro.core.navigationHandle
 import dev.enro.viewmodel.enroViewModels
 
@@ -27,8 +31,14 @@ class ListsActivity : BaseActivity() {
 
     @Composable
     override fun Content() {
+        val containerController = rememberEnroContainerController(
+            initialState = listOf(NavigationInstruction.Forward(ListsInternalNavigationKeys.ListSelection)),
+            accept = { it is ListsInternalNavigationKeys }
+        )
         Column(Modifier.fillMaxSize()) {
-            ListSelectionScreen()
+            EnroContainer(
+                controller = containerController
+            )
         }
     }
 }
