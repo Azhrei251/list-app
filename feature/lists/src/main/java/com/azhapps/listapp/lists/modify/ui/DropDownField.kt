@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterialApi::class)
 
-package com.azhapps.listapp.lists.edit.ui
+package com.azhapps.listapp.lists.modify.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -1,4 +1,4 @@
-package com.azhapps.listapp.lists
+package com.azhapps.listapp.lists.modify.uc
 
 import com.azhapps.listapp.lists.data.ListsRemoteDataSource
 import com.azhapps.listapp.lists.model.InformativeList

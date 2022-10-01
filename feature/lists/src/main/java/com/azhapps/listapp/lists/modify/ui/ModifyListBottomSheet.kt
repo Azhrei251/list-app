@@ -1,4 +1,4 @@
-package com.azhapps.listapp.lists.edit.ui
+package com.azhapps.listapp.lists.modify.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,11 +15,11 @@ import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
 import com.azhapps.listapp.lists.R
-import com.azhapps.listapp.lists.edit.EditListViewModel
-import com.azhapps.listapp.lists.edit.model.EditListAction
+import com.azhapps.listapp.lists.modify.ModifyListViewModel
+import com.azhapps.listapp.lists.modify.model.ModifyListAction
 import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.model.Group
-import com.azhapps.listapp.lists.navigation.EditList
+import com.azhapps.listapp.lists.navigation.ModifyList
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
 import dev.enro.core.compose.dialog.BottomSheetDestination
@@ -28,12 +28,12 @@ import dev.enro.core.compose.dialog.configureBottomSheet
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 @ExperimentalComposableDestination
-@NavigationDestination(EditList::class)
-fun BottomSheetDestination.EditListBottomSheet() {
+@NavigationDestination(ModifyList::class)
+fun BottomSheetDestination.ModifyListBottomSheet() {
     configureBottomSheet(block = {
     })
 
-    val viewModel = viewModel<EditListViewModel>()
+    val viewModel = viewModel<ModifyListViewModel>()
 
     val state = viewModel.collectAsState()
 
@@ -52,7 +52,7 @@ fun BottomSheetDestination.EditListBottomSheet() {
 
 @Composable
 fun EditListBottomSheetContent(
-    actor: (EditListAction) -> Unit,
+    actor: (ModifyListAction) -> Unit,
     isCategoriesLoading: Boolean,
     isGroupsLoading: Boolean,
     availableCategories: List<Category>,
@@ -76,7 +76,7 @@ fun EditListBottomSheetContent(
         NameField(
             name = currentListName,
             onNameChange = {
-                actor(EditListAction.UpdateListName(it))
+                actor(ModifyListAction.UpdateListName(it))
             },
             enabled = editable
         )
@@ -85,7 +85,7 @@ fun EditListBottomSheetContent(
             currentText = currentCategoryName,
             availableOptions = availableCategories.map { it.name },
             onTextChanged = {
-                actor(EditListAction.UpdateCategory(it))
+                actor(ModifyListAction.UpdateCategory(it))
             },
             isLoading = isCategoriesLoading,
             label = stringResource(id = R.string.lists_label_category),
@@ -97,7 +97,7 @@ fun EditListBottomSheetContent(
                 currentText = currentGroupName,
                 availableOptions = availableGroups.map { it.name },
                 onTextChanged = {
-                    actor(EditListAction.UpdateGroup(it))
+                    actor(ModifyListAction.UpdateGroup(it))
                 },
                 isLoading = isGroupsLoading,
                 label = stringResource(id = R.string.lists_label_group),
@@ -107,7 +107,7 @@ fun EditListBottomSheetContent(
         }
 
         Button(
-            onClick = { actor(EditListAction.Finalize) },
+            onClick = { actor(ModifyListAction.Finalize) },
             enabled = editable,
         ) {
             Text(text = stringResource(id = R.string.lists_button_save))

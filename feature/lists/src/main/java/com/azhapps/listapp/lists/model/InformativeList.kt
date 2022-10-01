@@ -3,18 +3,17 @@ package com.azhapps.listapp.lists.model
 import android.os.Parcelable
 import com.azhapps.listapp.account.SelectedAccount
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 
 @Parcelize
 data class InformativeList(
-    val id: Int,
+    val id: Int = -1,
     var name: String,
-    val date: String,
-    var items: MutableList<ListItem>,
+    val date: String = "",
+    var items: List<ListItem> = emptyList(),
     val category: Category?,
-    val owner: String,
+    val owner: String = "",
     val group: Group?
-): Parcelable {
+) : Parcelable {
 
     override fun equals(other: Any?) = (other as? InformativeList)?.let { otherList ->
         otherList.id == id && otherList.name == name && otherList.date == date && otherList.items.size == items.size && otherList.items.all { toFind ->

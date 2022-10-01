@@ -3,9 +3,10 @@ package com.azhapps.listapp.lists.selection
 import androidx.lifecycle.viewModelScope
 import com.azhapps.listapp.common.BaseViewModel
 import com.azhapps.listapp.common.UiState
-import com.azhapps.listapp.lists.UpdateInformativeListUseCase
+import com.azhapps.listapp.lists.modify.uc.CreateInformativeListUseCase
+import com.azhapps.listapp.lists.modify.uc.UpdateInformativeListUseCase
 import com.azhapps.listapp.lists.model.InformativeList
-import com.azhapps.listapp.lists.navigation.EditList
+import com.azhapps.listapp.lists.navigation.ModifyList
 import com.azhapps.listapp.lists.navigation.ListSelection
 import com.azhapps.listapp.lists.selection.model.ListSelectionAction
 import com.azhapps.listapp.lists.selection.model.ListSelectionItemState
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class ListSelectionViewModel @Inject constructor(
     val getPersonalListsUseCase: GetPersonalListsUseCase,
     val updateInformativeListUseCase: UpdateInformativeListUseCase,
+    val createInformativeListUseCase: CreateInformativeListUseCase,
 ) : BaseViewModel<ListSelectionState, ListSelectionAction>() {
     private val navigationHandle by navigationHandle<ListSelection>()
 
@@ -27,49 +29,11 @@ class ListSelectionViewModel @Inject constructor(
         dispatch(ListSelectionAction.GetAllLists)
     }
 
-    private val editListResult by registerForNavigationResult<InformativeList> { updatedList ->
-        viewModelScope.launch {
-            state.informativeListMap.forEach {
-                var newList: MutableList<ListSelectionItemState>? = null
-                it.value.forEachIndexed { i, item ->
-                    if (item.informativeList.id == updatedList.id) {
-                        newList = it.value.toMutableList()
-                        newList!![i] = item.copy(
-                            uiState = UiState.Loading
-                        )
-                    }
-                }
-                if (newList != null) {
-                    updateState {
-                        copy(
-                            informativeListMap = informativeListMap.toMutableMap().apply {
-                                set(it.key, newList!!)
-                            }
-                        )
-                    }
-                }
-            }
-
-            val apiResult = updateInformativeListUseCase(updatedList)
-            if (apiResult.success) {
-                updateState {
-                    copy(
-                        informativeListMap = informativeListMap.flatMap {
-                            it.value.map { itemState ->
-                                itemState.informativeList
-                            }
-                        }.toMutableList().apply {
-                            val i = indexOf(firstOrNull {
-                                it.id == updatedList.id
-                            })
-                            set(i, apiResult.data!!)
-                        }.mapByCategory()
-                    )
-                }
-            } else {
-                //TODO errors
-            }
-        }
+    private val editListResult by registerForNavigationResult<InformativeList> {
+        editList(it)
+    }
+    private val createListResult by registerForNavigationResult<InformativeList> {
+        createList(it)
     }
 
     override fun dispatch(action: ListSelectionAction) {
@@ -77,7 +41,14 @@ class ListSelectionViewModel @Inject constructor(
             is ListSelectionAction.GetAllLists -> getAllLists()
 
             is ListSelectionAction.EditList -> {
-                editListResult.open(EditList(action.informativeList))
+                editListResult.open(ModifyList(action.informativeList))
+            }
+            is ListSelectionAction.CreateList -> {
+                createListResult.open(ModifyList(InformativeList(
+                    name = "",
+                    category = action.category,
+                    group = null,
+                )))
             }
 
             else -> {
@@ -103,4 +74,77 @@ class ListSelectionViewModel @Inject constructor(
             }
         }
     }
+
+    private fun editList(updatedList: InformativeList) {
+        viewModelScope.launch {
+            updateItemUiState(updatedList.id, UiState.Loading)
+
+            val apiResult = updateInformativeListUseCase(updatedList)
+            if (apiResult.success) {
+                updateState {
+                    copy(
+                        informativeListMap = informativeListMap.toMutableList().apply {
+                            val i = indexOf(firstOrNull {
+                                it.id == updatedList.id
+                            })
+                            set(i, apiResult.data!!)
+                        }.mapByCategory()
+                    )
+                }
+            } else {
+                updateItemUiState(updatedList.id, UiState.Error())
+            }
+        }
+    }
+
+    private fun createList(updatedList: InformativeList) {
+        viewModelScope.launch {
+            updateItemUiState(updatedList.id, UiState.Loading)
+
+            val apiResult = createInformativeListUseCase(updatedList)
+            if (apiResult.success) {
+                updateState {
+                    copy(
+                        informativeListMap = informativeListMap.toMutableList().apply {
+                            add(apiResult.data!!)
+                        }.mapByCategory()
+                    )
+                }
+            } else {
+                updateItemUiState(updatedList.id, UiState.Error())
+            }
+        }
+    }
+
+    private fun updateItemUiState(
+        listId: Int,
+        newUiState: UiState,
+    ) {
+        state.informativeListMap.forEach {
+            var newList: MutableList<ListSelectionItemState>? = null
+            it.value.forEachIndexed { i, item ->
+                if (item.informativeList.id == listId) {
+                    newList = it.value.toMutableList()
+                    newList!![i] = item.copy(
+                        uiState = newUiState
+                    )
+                }
+            }
+            if (newList != null) {
+                updateState {
+                    copy(
+                        informativeListMap = informativeListMap.toMutableMap().apply {
+                            set(it.key, newList!!)
+                        }
+                    )
+                }
+            }
+        }
+    }
 }
+
+private fun Map<String, List<ListSelectionItemState>>.toMutableList(): MutableList<InformativeList> = flatMap {
+    it.value.map { itemState ->
+        itemState.informativeList
+    }
+}.toMutableList()

@@ -8,6 +8,6 @@ import kotlinx.parcelize.Parcelize
 object ListSelection : NavigationKey
 
 @Parcelize
-data class EditList(
+data class ModifyList(
     val informativeList: InformativeList
 ) : NavigationKey.WithResult<InformativeList>

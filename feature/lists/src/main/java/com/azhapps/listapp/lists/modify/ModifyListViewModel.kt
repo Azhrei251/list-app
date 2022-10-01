@@ -1,14 +1,17 @@
-package com.azhapps.listapp.lists.edit
+package com.azhapps.listapp.lists.modify
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.azhapps.listapp.common.BaseViewModel
 import com.azhapps.listapp.common.UiState
-import com.azhapps.listapp.lists.edit.model.EditListAction
-import com.azhapps.listapp.lists.edit.model.EditListState
 import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.model.isOwnedBySelf
-import com.azhapps.listapp.lists.navigation.EditList
+import com.azhapps.listapp.lists.modify.model.ModifyListAction
+import com.azhapps.listapp.lists.modify.model.ModifyListState
+import com.azhapps.listapp.lists.modify.uc.CreateListCategoryUseCase
+import com.azhapps.listapp.lists.modify.uc.GetGroupsUseCase
+import com.azhapps.listapp.lists.modify.uc.GetListCategoriesUseCase
+import com.azhapps.listapp.lists.navigation.ModifyList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.enro.core.result.closeWithResult
 import dev.enro.viewmodel.navigationHandle
@@ -16,19 +19,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class EditListViewModel @Inject constructor(
+class ModifyListViewModel @Inject constructor(
     private val getListCategoriesUseCase: GetListCategoriesUseCase,
     private val getGroupsUseCase: GetGroupsUseCase,
     private val createListCategoryUseCase: CreateListCategoryUseCase,
-) : BaseViewModel<EditListState, EditListAction>() {
+) : BaseViewModel<ModifyListState, ModifyListAction>() {
 
-    private val navigationHandle by navigationHandle<EditList>()
-    private val logTag = EditListViewModel::class.java.simpleName
+    private val navigationHandle by navigationHandle<ModifyList>()
+    private val logTag = ModifyListViewModel::class.java.simpleName
 
     override fun initialState() = navigationHandle.key.informativeList.let {
         fetchData()
 
-        EditListState(
+        ModifyListState(
             currentListName = it.name,
             currentCategoryName = it.category?.name ?: "",
             currentGroupName = it.group?.name ?: "",
@@ -36,40 +39,40 @@ class EditListViewModel @Inject constructor(
         )
     }
 
-    override fun dispatch(action: EditListAction) {
+    override fun dispatch(action: ModifyListAction) {
         when (action) {
-            is EditListAction.UpdateCategory -> updateState {
+            is ModifyListAction.UpdateCategory -> updateState {
                 copy(
                     currentCategoryName = action.newCategoryName
                 )
             }
 
-            is EditListAction.CreateCategory -> createListCategory(action.name)
+            is ModifyListAction.CreateCategory -> createListCategory(action.name)
 
-            is EditListAction.UpdateListName -> updateState {
+            is ModifyListAction.UpdateListName -> updateState {
                 copy(
                     currentListName = action.newListName
                 )
             }
 
-            is EditListAction.UpdateGroup -> updateState {
+            is ModifyListAction.UpdateGroup -> updateState {
                 copy(
                     currentGroupName = action.newGroupName
                 )
             }
-            EditListAction.Finalize -> {
+            ModifyListAction.Finalize -> {
                 viewModelScope.launch {
                     val currentList = navigationHandle.key.informativeList
                     val category = if (state.currentCategoryName.isNotBlank()) {
                         state.availableCategories.firstOrNull {
                             it.name == state.currentCategoryName
                         } ?: createListCategoryUseCase(state.currentCategoryName).data
-                    } else currentList.category
+                    } else null
                     val group = if (state.currentGroupName.isNotBlank()) state.availableGroups.firstOrNull {
                         it.name == state.currentGroupName
-                    } else currentList.group
+                    } else null
 
-                    val newList = navigationHandle.key.informativeList.copy(
+                    val newList = currentList.copy(
                         name = state.currentListName,
                         category = category,
                         group = group,
