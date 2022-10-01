@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -30,40 +31,38 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.account.toDisplayDate
+import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
 import com.azhapps.listapp.lists.R
 import com.azhapps.listapp.lists.model.Category
-import com.azhapps.listapp.lists.model.InformativeList
 import com.azhapps.listapp.lists.model.isOwnedBySelf
-import com.azhapps.listapp.lists.navigation.ListsInternalNavigationKeys
+import com.azhapps.listapp.lists.navigation.ListSelection
 import com.azhapps.listapp.lists.selection.ListSelectionViewModel
-import com.azhapps.listapp.lists.selection.mapByCategory
 import com.azhapps.listapp.lists.selection.model.ListSelectionAction
+import com.azhapps.listapp.lists.selection.model.ListSelectionItemState
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
 import dev.enro.core.compose.navigationHandle
 
 @Composable
 @ExperimentalComposableDestination
-@NavigationDestination(ListsInternalNavigationKeys.ListSelection::class)
+@NavigationDestination(ListSelection::class)
 fun ListSelectionScreen() {
-    val navigationHandle = navigationHandle<ListsInternalNavigationKeys.ListSelection>()
+    val navigationHandle = navigationHandle<ListSelection>()
     val viewModel = viewModel<ListSelectionViewModel>()
     val state = viewModel.collectAsState()
 
-    viewModel.dispatch(ListSelectionAction.GetAllLists)
     ListSelectionContent(
         actor = viewModel::dispatch,
-        personalLists = state.personalLists
+        informativeListMap = state.informativeListMap
     )
 }
 
 @Composable
-@ExperimentalFoundationApi
 fun ListSelectionContent(
     actor: (ListSelectionAction) -> Unit,
-    personalLists: List<InformativeList>
+    informativeListMap: Map<String, List<ListSelectionItemState>>
 ) {
     LazyVerticalGrid(
         modifier = Modifier
@@ -77,7 +76,7 @@ fun ListSelectionContent(
         horizontalArrangement = Arrangement.spacedBy(ListAppTheme.defaultSpacing),
         verticalArrangement = Arrangement.spacedBy(ListAppTheme.defaultSpacing),
         content = {
-            personalLists.mapByCategory().forEach {
+            informativeListMap.forEach {
                 header(
                     it.key
                 )
@@ -85,7 +84,7 @@ fun ListSelectionContent(
                 it.value.forEach {
                     item {
                         InformativeListCard(
-                            informativeList = it,
+                            itemState = it,
                             actor = actor
                         )
                     }
@@ -93,7 +92,7 @@ fun ListSelectionContent(
                 item {
                     AddListCard(
                         actor = actor,
-                        category = it.value.first().category
+                        category = it.value.first().informativeList.category
                     )
                 }
             }
@@ -118,7 +117,7 @@ fun LazyGridScope.header(header: String) {
 }
 
 @Composable
-fun ListCard(
+private fun ListCard(
     onClick: () -> Unit,
     onLongClick: (() -> Unit)? = null,
     content: @Composable RowScope.() -> Unit,
@@ -141,37 +140,44 @@ fun ListCard(
 
 @Composable
 fun InformativeListCard(
-    informativeList: InformativeList,
+    itemState: ListSelectionItemState,
     actor: (ListSelectionAction) -> Unit
 ) {
     ListCard(
         onClick = {
-            actor(ListSelectionAction.ShowList(informativeList))
+            actor(ListSelectionAction.ShowList(itemState.informativeList))
         }, onLongClick = {
-            actor(ListSelectionAction.EditList(informativeList))
+            actor(ListSelectionAction.EditList(itemState.informativeList))
         }
     ) {
         Column(
             modifier = Modifier
                 .fillMaxHeight()
+                .weight(1F)
         ) {
             Text(
-                text = informativeList.name,
+                text = itemState.informativeList.name,
                 style = Typography.h6
             )
             Text(
-                text = informativeList.date.toDisplayDate(),
+                text = itemState.informativeList.date.toDisplayDate(),
                 style = Typography.subtitle1
             )
-            Text(text = "${informativeList.items.size} items")
+            Text(text = "${itemState.informativeList.items.size} items")
         }
 
-        if (informativeList.group != null && !informativeList.isOwnedBySelf()) {
-            Spacer(modifier = Modifier.weight(1F))
-            Image(
-                imageVector = Icons.Filled.Group,
-                contentDescription = "From a group"
-            )
+        Column(Modifier.fillMaxHeight()) {
+            if (itemState.informativeList.group != null && !itemState.informativeList.isOwnedBySelf()) {
+                Image(
+                    imageVector = Icons.Filled.Group,
+                    contentDescription = "From a group"
+                )
+            }
+
+            if (itemState.uiState == UiState.Loading) {
+                Spacer(modifier = Modifier.weight(1F))
+                CircularProgressIndicator()
+            }
         }
     }
 }

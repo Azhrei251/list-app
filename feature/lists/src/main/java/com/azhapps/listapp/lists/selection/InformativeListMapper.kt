@@ -1,14 +1,17 @@
 package com.azhapps.listapp.lists.selection
 
 import com.azhapps.listapp.lists.model.InformativeList
+import com.azhapps.listapp.lists.selection.model.ListSelectionItemState
 
 private const val UNCATEGORIZED = "Uncategorized"
 
 fun List<InformativeList>.mapByCategory() =
-    sortedByDescending {
+    toMutableList().sortedByDescending {
         it.date
+    }.map {
+        ListSelectionItemState(it)
     }.groupBy {
-        it.category?.name ?: UNCATEGORIZED
+        it.informativeList.category?.name ?: UNCATEGORIZED
     }.toSortedMap { key1, key2 ->
         when {
             key1 == UNCATEGORIZED -> 1

@@ -1,6 +1,8 @@
 package com.azhapps.listapp.lists.data
 
+import com.azhapps.listapp.lists.edit.model.CreateListCategoryRequest
 import com.azhapps.listapp.lists.model.Category
+import com.azhapps.listapp.lists.model.Group
 import com.azhapps.listapp.lists.model.InformativeList
 import retrofit2.Response
 import retrofit2.http.Body
@@ -25,7 +27,7 @@ interface ListsRemoteDataSource {
     suspend fun updateList(
         @Path("listId") listId: Int,
         @Body request: InformativeList
-    ): Response<Unit>
+    ): Response<InformativeList>
 
     @DELETE("lists/{listId}")
     suspend fun deleteList(
@@ -48,8 +50,9 @@ interface ListsRemoteDataSource {
 
     @POST("lists/category")
     suspend fun createListCategory(
-        @Body request: Category
-    ): Response<Unit>
+        @Body request: CreateListCategoryRequest
+    ): Response<Category>
 
-
+    @GET("users/groups")
+    suspend fun getGroups(): Response<List<Group>>
 }

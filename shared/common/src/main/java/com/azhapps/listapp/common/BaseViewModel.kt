@@ -12,7 +12,7 @@ abstract class BaseViewModel<S, A>: ViewModel() {
         MutableStateFlow(initialState())
     }
 
-    private var state
+    protected var state
         get() = flow.value
         set(value) {
             flow.value = value

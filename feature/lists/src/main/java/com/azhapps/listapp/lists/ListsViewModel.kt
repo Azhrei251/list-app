@@ -3,7 +3,7 @@ package com.azhapps.listapp.lists
 import com.azhapps.listapp.common.BaseViewModel
 import com.azhapps.listapp.lists.model.ListsAction
 import com.azhapps.listapp.lists.model.ListsState
-import com.azhapps.listapp.lists.navigation.ListsInternalNavigationKeys
+import com.azhapps.listapp.lists.navigation.ListSelection
 import com.azhapps.listapp.navigation.Lists
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.enro.core.forward
@@ -16,7 +16,7 @@ class ListsViewModel @Inject constructor() : BaseViewModel<ListsState, ListsActi
 
     override fun dispatch(action: ListsAction) {
         when (action) {
-            ListsAction.NavigateToListSelection -> navigationHandle.forward(ListsInternalNavigationKeys.ListSelection)
+            ListsAction.NavigateToListSelection -> navigationHandle.forward(ListSelection)
         }
     }
 
