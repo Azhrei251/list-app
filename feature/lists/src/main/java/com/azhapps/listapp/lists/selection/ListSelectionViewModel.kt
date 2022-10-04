@@ -3,15 +3,17 @@ package com.azhapps.listapp.lists.selection
 import androidx.lifecycle.viewModelScope
 import com.azhapps.listapp.common.BaseViewModel
 import com.azhapps.listapp.common.UiState
+import com.azhapps.listapp.lists.model.InformativeList
 import com.azhapps.listapp.lists.modify.uc.CreateInformativeListUseCase
 import com.azhapps.listapp.lists.modify.uc.UpdateInformativeListUseCase
-import com.azhapps.listapp.lists.model.InformativeList
-import com.azhapps.listapp.lists.navigation.ModifyList
 import com.azhapps.listapp.lists.navigation.ListSelection
+import com.azhapps.listapp.lists.navigation.ModifyList
+import com.azhapps.listapp.lists.navigation.ViewList
 import com.azhapps.listapp.lists.selection.model.ListSelectionAction
 import com.azhapps.listapp.lists.selection.model.ListSelectionItemState
 import com.azhapps.listapp.lists.selection.model.ListSelectionState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.enro.core.forward
 import dev.enro.core.result.registerForNavigationResult
 import dev.enro.viewmodel.navigationHandle
 import kotlinx.coroutines.launch
@@ -40,19 +42,20 @@ class ListSelectionViewModel @Inject constructor(
         when (action) {
             is ListSelectionAction.GetAllLists -> getAllLists()
 
-            is ListSelectionAction.EditList -> {
-                editListResult.open(ModifyList(action.informativeList))
-            }
-            is ListSelectionAction.CreateList -> {
-                createListResult.open(ModifyList(InformativeList(
-                    name = "",
-                    category = action.category,
-                    group = null,
-                )))
-            }
+            is ListSelectionAction.EditList -> editListResult.open(ModifyList(action.informativeList))
 
-            else -> {
-                //TODO
+            is ListSelectionAction.CreateList -> createListResult.open(
+                ModifyList(
+                    InformativeList(
+                        name = "",
+                        category = action.category,
+                        group = null,
+                    )
+                )
+            )
+
+            is ListSelectionAction.ShowList -> {
+                navigationHandle.forward(ViewList(action.informativeList))
             }
         }
     }
@@ -66,7 +69,7 @@ class ListSelectionViewModel @Inject constructor(
             if (result.success) {
                 updateState {
                     copy(
-                        informativeListMap = result.data!!.mapByCategory().toMutableMap(),
+                        informativeListMap = result.data!!.mapByListCategory().toMutableMap(),
                     )
                 }
             } else {
@@ -88,7 +91,7 @@ class ListSelectionViewModel @Inject constructor(
                                 it.id == updatedList.id
                             })
                             set(i, apiResult.data!!)
-                        }.mapByCategory()
+                        }.mapByListCategory()
                     )
                 }
             } else {
@@ -107,7 +110,7 @@ class ListSelectionViewModel @Inject constructor(
                     copy(
                         informativeListMap = informativeListMap.toMutableList().apply {
                             add(apiResult.data!!)
-                        }.mapByCategory()
+                        }.mapByListCategory()
                     )
                 }
             } else {

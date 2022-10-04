@@ -138,6 +138,6 @@ private fun DropDownTextField(
         singleLine = true,
         trailingIcon = trailingIcon,
         colors = ExposedDropdownMenuDefaults.textFieldColors(),
-       // enabled = enabled && allowNew,
+        enabled = enabled && allowNew,
     )
 }

@@ -11,3 +11,8 @@ object ListSelection : NavigationKey
 data class ModifyList(
     val informativeList: InformativeList
 ) : NavigationKey.WithResult<InformativeList>
+
+@Parcelize
+data class ViewList(
+    val informativeList: InformativeList
+): NavigationKey

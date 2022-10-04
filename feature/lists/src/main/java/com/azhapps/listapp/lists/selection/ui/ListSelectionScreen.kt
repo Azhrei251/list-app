@@ -12,10 +12,9 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
@@ -27,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.account.toDisplayDate
@@ -41,6 +39,7 @@ import com.azhapps.listapp.lists.navigation.ListSelection
 import com.azhapps.listapp.lists.selection.ListSelectionViewModel
 import com.azhapps.listapp.lists.selection.model.ListSelectionAction
 import com.azhapps.listapp.lists.selection.model.ListSelectionItemState
+import com.azhapps.listapp.lists.ui.lazyHeader
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
 import dev.enro.core.compose.navigationHandle
@@ -77,7 +76,7 @@ fun ListSelectionContent(
         verticalArrangement = Arrangement.spacedBy(ListAppTheme.defaultSpacing),
         content = {
             informativeListMap.forEach {
-                header(
+                lazyHeader(
                     it.key
                 )
 
@@ -95,25 +94,12 @@ fun ListSelectionContent(
                         category = it.value.first().informativeList.category
                     )
                 }
+                item {
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
             }
-
         }
     )
-}
-
-fun LazyGridScope.header(header: String) {
-    item(
-        span = {
-            GridItemSpan(maxLineSpan)
-        }
-    ) {
-        Text(
-            text = header.uppercase(),
-            style = Typography.subtitle2,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1
-        )
-    }
 }
 
 @Composable
@@ -123,10 +109,12 @@ private fun ListCard(
     content: @Composable RowScope.() -> Unit,
 ) {
     Card(
-        modifier = Modifier.combinedClickable(
-            onClick = { onClick() },
-            onLongClick = { onLongClick?.invoke() }
-        ),
+        modifier = Modifier
+            .combinedClickable(
+                onClick = { onClick() },
+                onLongClick = { onLongClick?.invoke() }
+            )
+            .height(84.dp),
         elevation = 2.dp,
     ) {
         Row(
@@ -156,6 +144,7 @@ fun InformativeListCard(
                 .weight(1F)
         ) {
             Text(
+                modifier = Modifier.weight(1F),
                 text = itemState.informativeList.name,
                 style = Typography.h6
             )

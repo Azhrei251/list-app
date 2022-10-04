@@ -9,5 +9,5 @@ data class ListItem(
     val id: Int,
     @SerializedName("item_text") var itemText: String,
     var completed: Boolean,
-    val category: Category
+    val category: Category?
 ): Parcelable
