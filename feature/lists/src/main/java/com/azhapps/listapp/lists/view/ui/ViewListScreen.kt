@@ -1,16 +1,26 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.azhapps.listapp.lists.view.ui
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
@@ -18,6 +28,7 @@ import com.azhapps.listapp.lists.navigation.ViewList
 import com.azhapps.listapp.lists.ui.lazyHeader
 import com.azhapps.listapp.lists.view.ViewListViewModel
 import com.azhapps.listapp.lists.view.model.ListItemState
+import com.azhapps.listapp.lists.view.model.ViewListAction
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
 
@@ -31,7 +42,8 @@ fun ViewListScreen() {
     ViewListContent(
         title = state.title,
         category = state.category,
-        itemStates = state.itemStates
+        itemStates = state.itemStates,
+        actor = viewModel::dispatch,
     )
 }
 
@@ -40,6 +52,7 @@ fun ViewListContent(
     title: String,
     category: String,
     itemStates: Map<String, List<ListItemState>>,
+    actor: (ViewListAction) -> Unit,
 ) {
     Column(Modifier.fillMaxWidth()) {
         Row(
@@ -61,29 +74,58 @@ fun ViewListContent(
         }
 
         LazyColumn(content = {
-            itemStates.forEach {
-                lazyHeader(it.key)
-                it.value.forEach { itemState ->
-                    listItem(itemState)
+            itemStates.forEach { entry ->
+                lazyHeader(entry.key)
+                entry.value.forEach { itemState ->
+                    listItem(
+                        state = itemState,
+                        actor = actor,
+                    )
+                }
+                item {
+                    IconButton(onClick = {
+                        actor(ViewListAction.CreateItem(entry.value.firstOrNull()?.item?.category))
+                    }) {
+                        Icon(imageVector = Icons.Outlined.Add, contentDescription = "Add Item")
+                    }
+                }
+            }
+            if (itemStates.isEmpty()) {
+                item {
+                    IconButton(onClick = {
+                        actor(ViewListAction.CreateItem(null))
+                    }) {
+                        Icon(imageVector = Icons.Outlined.Add, contentDescription = "Add Item")
+                    }
                 }
             }
         })
     }
-
 }
 
-private fun LazyListScope.listItem(listItemState: ListItemState) {
+private fun LazyListScope.listItem(
+    state: ListItemState,
+    actor: (ViewListAction) -> Unit,
+) {
     item {
-        Box(
-
+        Row(
+            Modifier
+                .combinedClickable(onClick = {
+                    actor(ViewListAction.ToggleComplete(state.item))
+                }, onLongClick = {
+                    actor(ViewListAction.ModifyItem(state.item))
+                })
+                .fillMaxWidth()
+                .padding(ListAppTheme.defaultSpacing)
+                .height(ROW_HEIGHT),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(ListAppTheme.defaultSpacing)) {
-                Text(text = listItemState.item.itemText)
-            }
+            Text(
+                text = state.item.itemText,
+                textDecoration = if (state.item.completed) TextDecoration.LineThrough else TextDecoration.None,
+            )
         }
     }
 }
+
+private val ROW_HEIGHT = 16.dp

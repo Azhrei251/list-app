@@ -1,13 +1,8 @@
 package com.azhapps.listapp.lists.modify
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.azhapps.listapp.common.BaseViewModel
-import com.azhapps.listapp.common.UiState
-import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.model.isOwnedBySelf
-import com.azhapps.listapp.lists.modify.model.ModifyListAction
-import com.azhapps.listapp.lists.modify.model.ModifyListState
+import com.azhapps.listapp.lists.modify.model.ModifyState
 import com.azhapps.listapp.lists.modify.uc.CreateListCategoryUseCase
 import com.azhapps.listapp.lists.modify.uc.GetGroupsUseCase
 import com.azhapps.listapp.lists.modify.uc.GetListCategoriesUseCase
@@ -23,125 +18,43 @@ class ModifyListViewModel @Inject constructor(
     private val getListCategoriesUseCase: GetListCategoriesUseCase,
     private val getGroupsUseCase: GetGroupsUseCase,
     private val createListCategoryUseCase: CreateListCategoryUseCase,
-) : BaseViewModel<ModifyListState, ModifyListAction>() {
+) : BaseModifyViewModel<ModifyList>() {
 
-    private val navigationHandle by navigationHandle<ModifyList>()
-    private val logTag = ModifyListViewModel::class.java.simpleName
+    override val navigationHandle by navigationHandle<ModifyList>()
 
-    override fun initialState() = navigationHandle.key.informativeList.let {
-        fetchData()
-
-        ModifyListState(
-            currentListName = it.name,
+    override fun buildStateFromNavKey(): ModifyState = navigationHandle.key.informativeList.let {
+        ModifyState(
+            currentName = it.name,
             currentCategoryName = it.category?.name ?: "",
             currentGroupName = it.group?.name ?: "",
             editable = it.isOwnedBySelf(),
         )
     }
 
-    override fun dispatch(action: ModifyListAction) {
-        when (action) {
-            is ModifyListAction.UpdateCategory -> updateState {
-                copy(
-                    currentCategoryName = action.newCategoryName
-                )
-            }
+    override suspend fun createCategory(name: String) = createListCategoryUseCase(name)
 
-            is ModifyListAction.CreateCategory -> createListCategory(action.name)
+    override suspend fun getCategories() = getListCategoriesUseCase()
 
-            is ModifyListAction.UpdateListName -> updateState {
-                copy(
-                    currentListName = action.newListName
-                )
-            }
+    override suspend fun getGroups() = getGroupsUseCase()
 
-            is ModifyListAction.UpdateGroup -> updateState {
-                copy(
-                    currentGroupName = action.newGroupName
-                )
-            }
-            ModifyListAction.Finalize -> {
-                viewModelScope.launch {
-                    val currentList = navigationHandle.key.informativeList
-                    val category = if (state.currentCategoryName.isNotBlank()) {
-                        state.availableCategories.firstOrNull {
-                            it.name == state.currentCategoryName
-                        } ?: createListCategoryUseCase(state.currentCategoryName).data
-                    } else null
-                    val group = if (state.currentGroupName.isNotBlank()) state.availableGroups.firstOrNull {
-                        it.name == state.currentGroupName
-                    } else null
-
-                    val newList = currentList.copy(
-                        name = state.currentListName,
-                        category = category,
-                        group = group,
-                    )
-                    navigationHandle.closeWithResult(newList)
-                }
-            }
-        }
-    }
-
-    private fun fetchData() {
+    override fun finalize() {
         viewModelScope.launch {
-            val categoriesApiResult = getListCategoriesUseCase()
-            val categories = if (categoriesApiResult.success) {
-                categoriesApiResult.data!!
-            } else {
-                Log.e(logTag, "Failed to get categories", categoriesApiResult.error)
-                emptyList()
-            }
-            updateState {
-                copy(
-                    categoryUiState = UiState.Content,
-                    availableCategories = categories
-                )
-            }
-        }
-        viewModelScope.launch {
-            val categoriesApiResult = getGroupsUseCase()
-            val categories = if (categoriesApiResult.success) {
-                categoriesApiResult.data!!
-            } else {
-                Log.e(logTag, "Failed to get groups", categoriesApiResult.error)
-                emptyList()
-            }
-            updateState {
-                copy(
-                    groupUiState = UiState.Content,
-                    availableGroups = categories
-                )
-            }
-        }
-    }
+            val currentList = navigationHandle.key.informativeList
+            val category = if (state.currentCategoryName.isNotBlank()) {
+                state.availableCategories.firstOrNull {
+                    it.name == state.currentCategoryName
+                } ?: createListCategoryUseCase(state.currentCategoryName).data
+            } else null
+            val group = if (state.currentGroupName.isNotBlank()) state.availableGroups.firstOrNull {
+                it.name == state.currentGroupName
+            } else null
 
-    private fun createListCategory(
-        name: String,
-    ) {
-        updateState {
-            copy(categoryUiState = UiState.Loading)
-        }
-        viewModelScope.launch {
-            val result = createListCategoryUseCase(name)
-            if (result.success) {
-                updateState {
-                    copy(
-                        categoryUiState = UiState.Content,
-                        availableCategories = mutableListOf<Category>().apply {
-                            addAll(availableCategories)
-                            add(result.data!!)
-                        }
-                    )
-                }
-            } else {
-                Log.e(logTag, "Failed to create category", result.error)
-                updateState {
-                    copy(
-                        categoryUiState = UiState.Content
-                    )
-                }
-            }
+            val newList = currentList.copy(
+                name = state.currentName,
+                category = category,
+                group = group,
+            )
+            navigationHandle.closeWithResult(newList)
         }
     }
 }

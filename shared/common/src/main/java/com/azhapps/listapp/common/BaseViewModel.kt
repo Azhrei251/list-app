@@ -8,6 +8,8 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class BaseViewModel<S, A>: ViewModel() {
+    protected val logTag = this::class.java.simpleName
+
     private val flow by lazy {
         MutableStateFlow(initialState())
     }

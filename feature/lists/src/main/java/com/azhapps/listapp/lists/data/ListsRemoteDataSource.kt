@@ -1,10 +1,13 @@
 package com.azhapps.listapp.lists.data
 
-import com.azhapps.listapp.lists.modify.model.CreateListCategoryRequest
-import com.azhapps.listapp.lists.modify.model.CreateListRequest
 import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.model.Group
 import com.azhapps.listapp.lists.model.InformativeList
+import com.azhapps.listapp.lists.model.ListItem
+import com.azhapps.listapp.lists.modify.model.CreateCategoryRequest
+import com.azhapps.listapp.lists.selection.model.CreateListRequest
+import com.azhapps.listapp.lists.view.model.CreateListItemRequest
+import com.azhapps.listapp.lists.view.model.ModifyListItemRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -50,9 +53,28 @@ interface ListsRemoteDataSource {
 
     @POST("lists/category")
     suspend fun createListCategory(
-        @Body request: CreateListCategoryRequest
+        @Body request: CreateCategoryRequest
     ): Response<Category>
 
     @GET("users/groups")
     suspend fun getGroups(): Response<List<Group>>
+
+    @POST("lists/item")
+    suspend fun createListItem(
+        @Body request: CreateListItemRequest
+    ): Response<ListItem>
+
+    @GET("lists/item/category")
+    suspend fun getItemCategories(): Response<List<Category>>
+
+    @POST("lists/item/category")
+    suspend fun createItemCategory(
+        @Body request: CreateCategoryRequest
+    ): Response<Category>
+
+    @PUT("lists/item/{itemId}")
+    suspend fun updateItem(
+        @Path("itemId") itemId: Int,
+        @Body request: ModifyListItemRequest
+    ): Response<ListItem>
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.azhapps.listapp.common.BaseViewModel
 import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.lists.model.InformativeList
-import com.azhapps.listapp.lists.modify.uc.CreateInformativeListUseCase
+import com.azhapps.listapp.lists.selection.uc.CreateInformativeListUseCase
 import com.azhapps.listapp.lists.modify.uc.UpdateInformativeListUseCase
 import com.azhapps.listapp.lists.navigation.ListSelection
 import com.azhapps.listapp.lists.navigation.ModifyList

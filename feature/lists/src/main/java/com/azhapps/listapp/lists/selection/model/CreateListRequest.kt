@@ -1,4 +1,4 @@
-package com.azhapps.listapp.lists.modify.model
+package com.azhapps.listapp.lists.selection.model
 
 import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.model.Group

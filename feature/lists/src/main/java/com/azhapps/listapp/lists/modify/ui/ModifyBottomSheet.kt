@@ -16,9 +16,11 @@ import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
 import com.azhapps.listapp.lists.R
 import com.azhapps.listapp.lists.modify.ModifyListViewModel
-import com.azhapps.listapp.lists.modify.model.ModifyListAction
+import com.azhapps.listapp.lists.modify.model.ModifyAction
 import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.model.Group
+import com.azhapps.listapp.lists.modify.ModifyItemViewModel
+import com.azhapps.listapp.lists.navigation.ModifyItem
 import com.azhapps.listapp.lists.navigation.ModifyList
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
@@ -44,7 +46,32 @@ fun BottomSheetDestination.ModifyListBottomSheet() {
         availableCategories = state.availableCategories,
         availableGroups = state.availableGroups,
         currentCategoryName = state.currentCategoryName,
-        currentListName = state.currentListName,
+        currentListName = state.currentName,
+        currentGroupName = state.currentGroupName,
+        editable = state.editable,
+    )
+}
+
+@Composable
+@OptIn(ExperimentalMaterialApi::class)
+@ExperimentalComposableDestination
+@NavigationDestination(ModifyItem::class)
+fun BottomSheetDestination.ModifyItemBottomSheet() {
+    configureBottomSheet(block = {
+    })
+
+    val viewModel = viewModel<ModifyItemViewModel>()
+
+    val state = viewModel.collectAsState()
+
+    EditListBottomSheetContent(
+        actor = viewModel::dispatch,
+        isCategoriesLoading = state.categoryUiState == UiState.Loading,
+        isGroupsLoading = state.groupUiState == UiState.Loading,
+        availableCategories = state.availableCategories,
+        availableGroups = state.availableGroups,
+        currentCategoryName = state.currentCategoryName,
+        currentListName = state.currentName,
         currentGroupName = state.currentGroupName,
         editable = state.editable,
     )
@@ -52,7 +79,7 @@ fun BottomSheetDestination.ModifyListBottomSheet() {
 
 @Composable
 fun EditListBottomSheetContent(
-    actor: (ModifyListAction) -> Unit,
+    actor: (ModifyAction) -> Unit,
     isCategoriesLoading: Boolean,
     isGroupsLoading: Boolean,
     availableCategories: List<Category>,
@@ -76,7 +103,7 @@ fun EditListBottomSheetContent(
         NameField(
             name = currentListName,
             onNameChange = {
-                actor(ModifyListAction.UpdateListName(it))
+                actor(ModifyAction.UpdateListName(it))
             },
             enabled = editable
         )
@@ -85,7 +112,7 @@ fun EditListBottomSheetContent(
             currentText = currentCategoryName,
             availableOptions = availableCategories.map { it.name },
             onTextChanged = {
-                actor(ModifyListAction.UpdateCategory(it))
+                actor(ModifyAction.UpdateCategory(it))
             },
             isLoading = isCategoriesLoading,
             label = stringResource(id = R.string.lists_label_category),
@@ -97,7 +124,7 @@ fun EditListBottomSheetContent(
                 currentText = currentGroupName,
                 availableOptions = availableGroups.map { it.name },
                 onTextChanged = {
-                    actor(ModifyListAction.UpdateGroup(it))
+                    actor(ModifyAction.UpdateGroup(it))
                 },
                 isLoading = isGroupsLoading,
                 label = stringResource(id = R.string.lists_label_group),
@@ -107,7 +134,7 @@ fun EditListBottomSheetContent(
         }
 
         Button(
-            onClick = { actor(ModifyListAction.Finalize) },
+            onClick = { actor(ModifyAction.Finalize) },
             enabled = editable,
         ) {
             Text(text = stringResource(id = R.string.lists_button_save))

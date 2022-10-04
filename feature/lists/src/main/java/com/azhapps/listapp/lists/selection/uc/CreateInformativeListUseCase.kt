@@ -1,8 +1,8 @@
-package com.azhapps.listapp.lists.modify.uc
+package com.azhapps.listapp.lists.selection.uc
 
 import com.azhapps.listapp.lists.data.ListsRemoteDataSource
-import com.azhapps.listapp.lists.modify.model.toCreateRequest
 import com.azhapps.listapp.lists.model.InformativeList
+import com.azhapps.listapp.lists.selection.model.toCreateRequest
 import com.azhapps.listapp.network.Api.callApi
 import javax.inject.Inject
 

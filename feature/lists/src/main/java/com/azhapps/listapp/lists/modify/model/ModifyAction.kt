@@ -1,21 +1,21 @@
 package com.azhapps.listapp.lists.modify.model
 
-sealed class ModifyListAction {
+sealed class ModifyAction {
     data class CreateCategory(
         val name: String,
-    ) : ModifyListAction()
+    ) : ModifyAction()
 
     data class UpdateCategory(
         val newCategoryName: String,
-    ) : ModifyListAction()
+    ) : ModifyAction()
 
     data class UpdateListName(
         val newListName: String,
-    ) : ModifyListAction()
+    ) : ModifyAction()
 
     data class UpdateGroup(
         val newGroupName: String,
-    ) : ModifyListAction()
+    ) : ModifyAction()
 
-    object Finalize: ModifyListAction()
+    object Finalize: ModifyAction()
 }

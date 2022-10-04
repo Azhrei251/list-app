@@ -1,6 +1,7 @@
 package com.azhapps.listapp.lists.navigation
 
 import com.azhapps.listapp.lists.model.InformativeList
+import com.azhapps.listapp.lists.model.ListItem
 import dev.enro.core.NavigationKey
 import kotlinx.parcelize.Parcelize
 
@@ -16,3 +17,8 @@ data class ModifyList(
 data class ViewList(
     val informativeList: InformativeList
 ): NavigationKey
+
+@Parcelize
+data class ModifyItem(
+    val listItem: ListItem
+) : NavigationKey.WithResult<ListItem>
