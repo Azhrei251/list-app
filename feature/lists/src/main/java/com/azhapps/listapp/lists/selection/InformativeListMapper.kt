@@ -14,23 +14,20 @@ fun List<InformativeList>.mapByListCategory() =
         ListSelectionItemState(it)
     }.groupBy {
         it.informativeList.category?.name ?: UNCATEGORIZED
-    }.toSortedMap { key1, key2 ->
-        when {
-            key1 == UNCATEGORIZED -> 1
-            key2 == UNCATEGORIZED -> -1
-            else -> 0
-        }
-    }
+    }.toSortedMap(categoryNameComparator)
 
 fun List<ListItem>.mapByItemCategory() =
     map {
         ListItemState(it)
     }.groupBy {
         it.item.category?.name ?: UNCATEGORIZED
-    }.toSortedMap { key1, key2 ->
-        when {
-            key1 == UNCATEGORIZED -> 1
-            key2 == UNCATEGORIZED -> -1
-            else -> 0
-        }
-    }
+    }.toSortedMap(categoryNameComparator)
+
+private val categoryNameComparator = compareBy<String>(
+    {
+        it == UNCATEGORIZED
+    },
+    {
+        it
+    },
+)

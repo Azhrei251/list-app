@@ -28,7 +28,7 @@ import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
 import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.navigation.ViewList
-import com.azhapps.listapp.lists.ui.lazyHeader
+import com.azhapps.listapp.lists.ui.Header
 import com.azhapps.listapp.lists.view.ViewListViewModel
 import com.azhapps.listapp.lists.view.model.ListItemState
 import com.azhapps.listapp.lists.view.model.ViewListAction
@@ -62,7 +62,7 @@ fun ViewListContent(
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(all = ListAppTheme.defaultSpacing)
+            .padding(top = ListAppTheme.defaultSpacing)
     ) {
         Row(
             modifier = Modifier
@@ -82,51 +82,78 @@ fun ViewListContent(
         }
 
         LazyColumn(
-            modifier = Modifier.padding(bottom = ListAppTheme.defaultSpacing),
+            modifier = Modifier.padding(top = ListAppTheme.defaultSpacing, bottom = ListAppTheme.defaultSpacing),
             content = {
                 itemStates.forEach { entry ->
-                    lazyHeader(entry.key)
-                    entry.value.forEach { itemState ->
-                        listItem(
-                            state = itemState,
-                            actor = actor,
+                    item {
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 2.dp),
+                            elevation = 2.dp,
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(all = ListAppTheme.defaultSpacing),
+                                verticalArrangement = Arrangement.spacedBy(ListAppTheme.defaultSpacing)
+                            ) {
+
+                                Header(
+                                    header = entry.key,
+                                    onClick = {
+                                        //TODO collapse/expand
+                                    }
+                                )
+
+                                entry.value.forEach { state ->
+                                    Row(
+                                        Modifier
+                                            .combinedClickable(onClick = {
+                                                actor(ViewListAction.ToggleComplete(state.item))
+                                            }, onLongClick = {
+                                                actor(ViewListAction.ModifyItem(state.item))
+                                            })
+                                            .fillMaxWidth()
+                                    ) {
+                                        Text(
+                                            text = state.item.itemText,
+                                            textDecoration = if (state.item.completed) TextDecoration.LineThrough else TextDecoration.None,
+                                        )
+                                    }
+                                }
+
+                                AddItemButton(
+                                    category = entry.value.firstOrNull()?.item?.category,
+                                    actor = actor
+                                )
+
+                            }
+                        }
+                    }
+                }
+                //TODO Replace with toolbar button
+                if (itemStates.isEmpty()) {
+                    item {
+                        AddItemButton(
+                            category = null,
+                            actor = actor
                         )
                     }
-                    addItemCard(
-                        category = null,
-                        actor = actor
-                    )
-                }
-                if (itemStates.isEmpty()) {
-                    addItemCard(
-                        category = null,
-                        actor = actor
-                    )
                 }
             })
     }
 }
 
-private fun LazyListScope.addItemCard(
+@Composable
+private fun AddItemButton(
     category: Category?,
     actor: (ViewListAction) -> Unit,
 ) {
-    item {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(ROW_HEIGHT)
-                .padding(bottom = 2.dp),
-            elevation = 2.dp,
-        ) {
-            IconButton(
-                onClick = {
-                    actor(ViewListAction.CreateItem(category))
-                }
-            ) {
-                Icon(imageVector = Icons.Outlined.Add, contentDescription = "Add Item")
-            }
+    IconButton(
+        onClick = {
+            actor(ViewListAction.CreateItem(category))
         }
+    ) {
+        Icon(imageVector = Icons.Outlined.Add, contentDescription = "Add Item")
     }
 }
 
@@ -135,22 +162,6 @@ private fun LazyListScope.listItem(
     actor: (ViewListAction) -> Unit,
 ) {
     item {
-        Row(
-            Modifier
-                .combinedClickable(onClick = {
-                    actor(ViewListAction.ToggleComplete(state.item))
-                }, onLongClick = {
-                    actor(ViewListAction.ModifyItem(state.item))
-                })
-                .fillMaxWidth()
-                .padding(ListAppTheme.defaultSpacing)
-                .height(ROW_HEIGHT),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = state.item.itemText,
-                textDecoration = if (state.item.completed) TextDecoration.LineThrough else TextDecoration.None,
-            )
-        }
+
     }
 }

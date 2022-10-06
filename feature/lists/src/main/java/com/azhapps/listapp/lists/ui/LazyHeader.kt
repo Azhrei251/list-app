@@ -45,7 +45,7 @@ fun LazyListScope.lazyHeader(
 }
 
 @Composable
-private fun Header(
+fun Header(
     header: String,
     onClick: (String) -> Unit,
 ) {
