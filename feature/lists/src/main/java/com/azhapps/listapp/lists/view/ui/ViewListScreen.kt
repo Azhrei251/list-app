@@ -3,15 +3,15 @@
 package com.azhapps.listapp.lists.view.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -34,8 +34,6 @@ import com.azhapps.listapp.lists.view.model.ListItemState
 import com.azhapps.listapp.lists.view.model.ViewListAction
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
-
-private val ROW_HEIGHT = 32.dp
 
 @Composable
 @ExperimentalComposableDestination
@@ -61,28 +59,15 @@ fun ViewListContent(
 ) {
     Column(
         Modifier
-            .fillMaxWidth()
-            .padding(top = ListAppTheme.defaultSpacing)
+            .background(ListAppTheme.secondaryBackgroundColor)
+            .fillMaxSize()
+            .padding(top = ListAppTheme.defaultSpacing, start = ListAppTheme.defaultSpacing, end = ListAppTheme.defaultSpacing)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                modifier = Modifier.weight(1F),
-                style = Typography.h5,
-                text = title
-            )
-
-            Text(
-                style = Typography.subtitle1,
-                text = category
-            )
-        }
+        NameAndCategory(name = title, category = category)
 
         LazyColumn(
             modifier = Modifier.padding(top = ListAppTheme.defaultSpacing, bottom = ListAppTheme.defaultSpacing),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
             content = {
                 itemStates.forEach { entry ->
                     item {
@@ -105,41 +90,39 @@ fun ViewListContent(
                                 )
 
                                 entry.value.forEach { state ->
-                                    Row(
-                                        Modifier
-                                            .combinedClickable(onClick = {
-                                                actor(ViewListAction.ToggleComplete(state.item))
-                                            }, onLongClick = {
-                                                actor(ViewListAction.ModifyItem(state.item))
-                                            })
-                                            .fillMaxWidth()
-                                    ) {
-                                        Text(
-                                            text = state.item.itemText,
-                                            textDecoration = if (state.item.completed) TextDecoration.LineThrough else TextDecoration.None,
-                                        )
-                                    }
+                                    ListItem(
+                                        state = state,
+                                        actor = actor
+                                    )
                                 }
-
-                                AddItemButton(
-                                    category = entry.value.firstOrNull()?.item?.category,
-                                    actor = actor
-                                )
-
                             }
                         }
                     }
                 }
-                //TODO Replace with toolbar button
-                if (itemStates.isEmpty()) {
-                    item {
-                        AddItemButton(
-                            category = null,
-                            actor = actor
-                        )
-                    }
-                }
             })
+    }
+}
+
+@Composable
+private fun NameAndCategory(
+    name: String,
+    category: String,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            modifier = Modifier.weight(1F),
+            style = Typography.h5,
+            text = name
+        )
+
+        Text(
+            style = Typography.subtitle1,
+            text = category
+        )
     }
 }
 
@@ -157,11 +140,23 @@ private fun AddItemButton(
     }
 }
 
-private fun LazyListScope.listItem(
+@Composable
+private fun ListItem(
     state: ListItemState,
     actor: (ViewListAction) -> Unit,
 ) {
-    item {
-
+    Row(
+        Modifier
+            .combinedClickable(onClick = {
+                actor(ViewListAction.ToggleComplete(state.item))
+            }, onLongClick = {
+                actor(ViewListAction.ModifyItem(state.item))
+            })
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = state.item.itemText,
+            textDecoration = if (state.item.completed) TextDecoration.LineThrough else TextDecoration.None,
+        )
     }
 }

@@ -5,7 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 private val DarkColorPalette = darkColors(
@@ -47,4 +47,5 @@ fun ListAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
 
 object ListAppTheme {
     val defaultSpacing = 12.dp
+    val secondaryBackgroundColor = Color(0xFFF5F5F5)
 }
