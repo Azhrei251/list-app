@@ -35,7 +35,6 @@ interface ListsRemoteDataSource {
     @DELETE("lists/{listId}")
     suspend fun deleteList(
         @Path("listId") listId: Int,
-        @Body request: InformativeList
     ): Response<Unit>
 
     @GET("lists/{listId}")
@@ -77,4 +76,9 @@ interface ListsRemoteDataSource {
         @Path("itemId") itemId: Int,
         @Body request: ModifyListItemRequest
     ): Response<ListItem>
+
+    @DELETE("lists/item/{itemId}")
+    suspend fun deleteListItem(
+        @Path("itemId") itemId: Int,
+    ): Response<Unit>
 }

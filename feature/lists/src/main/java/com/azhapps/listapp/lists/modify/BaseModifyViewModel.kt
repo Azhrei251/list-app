@@ -44,7 +44,8 @@ abstract class BaseModifyViewModel<T : NavigationKey> : BaseViewModel<ModifyStat
                     currentGroupName = action.newGroupName
                 )
             }
-            ModifyAction.Finalize -> finalize()
+
+            is ModifyAction.Finalize -> finalize(action.deleted)
         }
     }
 
@@ -108,7 +109,7 @@ abstract class BaseModifyViewModel<T : NavigationKey> : BaseViewModel<ModifyStat
         }
     }
 
-    abstract fun finalize()
+    abstract fun finalize(deleted: Boolean)
 
     abstract suspend fun createCategory(name: String): ApiResult<Category>
 

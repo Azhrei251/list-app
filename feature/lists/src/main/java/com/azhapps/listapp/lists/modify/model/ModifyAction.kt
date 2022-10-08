@@ -17,5 +17,7 @@ sealed class ModifyAction {
         val newGroupName: String,
     ) : ModifyAction()
 
-    object Finalize: ModifyAction()
+    data class Finalize(
+        val deleted: Boolean = false
+    ): ModifyAction()
 }

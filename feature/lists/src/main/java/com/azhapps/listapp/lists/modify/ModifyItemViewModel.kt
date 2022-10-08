@@ -35,20 +35,24 @@ class ModifyItemViewModel @Inject constructor(
 
     override suspend fun getGroups(): ApiResult<List<Group>> = ApiResult(true, emptyList())
 
-    override fun finalize() {
-        viewModelScope.launch {
-            val currentItem = navigationHandle.key.listItem
-            val category = if (state.currentCategoryName.isNotBlank()) {
-                state.availableCategories.firstOrNull {
-                    it.name == state.currentCategoryName
-                } ?: createItemCategoryUseCase(state.currentCategoryName).data
-            } else null
+    override fun finalize(deleted: Boolean) {
+        if (deleted) {
+            navigationHandle.closeWithResult(Pair(true, navigationHandle.key.listItem))
+        } else {
+            viewModelScope.launch {
+                val currentItem = navigationHandle.key.listItem
+                val category = if (state.currentCategoryName.isNotBlank()) {
+                    state.availableCategories.firstOrNull {
+                        it.name == state.currentCategoryName
+                    } ?: createItemCategoryUseCase(state.currentCategoryName).data
+                } else null
 
-            val newItem = currentItem.copy(
-                itemText = state.currentName,
-                category = category,
-            )
-            navigationHandle.closeWithResult(newItem)
+                val newItem = currentItem.copy(
+                    itemText = state.currentName,
+                    category = category,
+                )
+                navigationHandle.closeWithResult(Pair(false, newItem))
+            }
         }
     }
 }

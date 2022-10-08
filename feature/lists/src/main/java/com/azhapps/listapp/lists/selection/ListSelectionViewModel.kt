@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.azhapps.listapp.common.BaseViewModel
 import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.lists.model.InformativeList
-import com.azhapps.listapp.lists.selection.uc.CreateInformativeListUseCase
 import com.azhapps.listapp.lists.modify.uc.UpdateInformativeListUseCase
 import com.azhapps.listapp.lists.navigation.ListSelection
 import com.azhapps.listapp.lists.navigation.ModifyList
@@ -12,6 +11,9 @@ import com.azhapps.listapp.lists.navigation.ViewList
 import com.azhapps.listapp.lists.selection.model.ListSelectionAction
 import com.azhapps.listapp.lists.selection.model.ListSelectionItemState
 import com.azhapps.listapp.lists.selection.model.ListSelectionState
+import com.azhapps.listapp.lists.selection.uc.CreateInformativeListUseCase
+import com.azhapps.listapp.lists.selection.uc.DeleteInformativeListUseCase
+import com.azhapps.listapp.lists.selection.uc.GetPersonalListsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.enro.core.forward
 import dev.enro.core.result.registerForNavigationResult
@@ -24,6 +26,7 @@ class ListSelectionViewModel @Inject constructor(
     val getPersonalListsUseCase: GetPersonalListsUseCase,
     val updateInformativeListUseCase: UpdateInformativeListUseCase,
     val createInformativeListUseCase: CreateInformativeListUseCase,
+    val deleteInformativeListUseCase: DeleteInformativeListUseCase,
 ) : BaseViewModel<ListSelectionState, ListSelectionAction>() {
     private val navigationHandle by navigationHandle<ListSelection>()
 
@@ -31,11 +34,19 @@ class ListSelectionViewModel @Inject constructor(
         dispatch(ListSelectionAction.GetAllLists)
     }
 
-    private val editListResult by registerForNavigationResult<InformativeList> {
-        editList(it)
+    private val editListResult by registerForNavigationResult<Pair<Boolean, InformativeList>> {
+        if (it.first) {
+            deleteList(it.second.id)
+        } else {
+            editList(it.second)
+        }
     }
-    private val createListResult by registerForNavigationResult<InformativeList> {
-        createList(it)
+    private val createListResult by registerForNavigationResult<Pair<Boolean, InformativeList>> {
+        if (it.first) {
+            deleteList(it.second.id)
+        } else {
+            createList(it.second)
+        }
     }
 
     override fun dispatch(action: ListSelectionAction) {
@@ -115,6 +126,27 @@ class ListSelectionViewModel @Inject constructor(
                 }
             } else {
                 updateItemUiState(updatedList.id, UiState.Error())
+            }
+        }
+    }
+
+    private fun deleteList(
+        listId: Int
+    ) {
+        viewModelScope.launch {
+            val result = deleteInformativeListUseCase(listId)
+            if (result.success) {
+                val newLists = state.informativeListMap.toMutableList()
+                newLists.removeIf {
+                    it.id == listId
+                }
+                updateState {
+                    copy(
+                        informativeListMap = newLists.mapByListCategory()
+                    )
+                }
+            } else {
+                updateItemUiState(listId, UiState.Error())
             }
         }
     }

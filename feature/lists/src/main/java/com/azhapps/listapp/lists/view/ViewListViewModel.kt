@@ -14,6 +14,7 @@ import com.azhapps.listapp.lists.view.model.ListItemState
 import com.azhapps.listapp.lists.view.model.ViewListAction
 import com.azhapps.listapp.lists.view.model.ViewListState
 import com.azhapps.listapp.lists.view.uc.CreateListItemUseCase
+import com.azhapps.listapp.lists.view.uc.DeleteListItemUseCase
 import com.azhapps.listapp.lists.view.uc.UpdateListItemUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.enro.core.result.registerForNavigationResult
@@ -25,15 +26,24 @@ import javax.inject.Inject
 class ViewListViewModel @Inject constructor(
     val createListItemUseCase: CreateListItemUseCase,
     val updateListItemUseCase: UpdateListItemUseCase,
+    val deleteListItemUseCase: DeleteListItemUseCase,
 ) : BaseViewModel<ViewListState, ViewListAction>() {
     private val navigationHandle by navigationHandle<ViewList>()
 
-    private val createItemResult by registerForNavigationResult<ListItem> {
-        createItem(it)
+    private val createItemResult by registerForNavigationResult<Pair<Boolean, ListItem>> {
+        if (it.first) {
+            deleteItem(it.second.id)
+        } else {
+            createItem(it.second)
+        }
     }
 
-    private val modifyItemResult by registerForNavigationResult<ListItem> {
-        editItem(it)
+    private val modifyItemResult by registerForNavigationResult<Pair<Boolean, ListItem>> {
+        if (it.first) {
+            deleteItem(it.second.id)
+        } else {
+            editItem(it.second)
+        }
     }
 
     override fun initialState() = navigationHandle.key.informativeList.let { informativeList ->
@@ -107,14 +117,44 @@ class ViewListViewModel @Inject constructor(
         }
     }
 
+    private fun deleteItem(itemId: Int) {
+        viewModelScope.launch {
+            val result = deleteListItemUseCase(itemId)
+            if (result.success) {
+                val newList = state.itemStates
+                newList.forEach { entry ->
+                    entry.value.items.forEach {
+                        if (it.item.id == itemId) {
+                            val mutableList = entry.value.items.toMutableList()
+                            mutableList.remove(it)
+                            updateState {
+                                copy(
+                                    itemStates = state.itemStates.toMutableMap().apply {
+                                        set(
+                                            entry.key, entry.value.copy(
+                                                items = mutableList
+                                            )
+                                        )
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+            } else {
+                updateItemUiState(itemId, UiState.Error())
+            }
+        }
+    }
+
     private fun updateItemUiState(
-        listId: Int,
+        itemId: Int,
         newUiState: UiState,
     ) {
         state.itemStates.forEach {
             var newList: MutableList<ListItemState>? = null
             it.value.items.forEachIndexed { i, item ->
-                if (item.item.id == listId) {
+                if (item.item.id == itemId) {
                     newList = it.value.items.toMutableList()
                     newList!![i] = item.copy(
                         uiState = newUiState

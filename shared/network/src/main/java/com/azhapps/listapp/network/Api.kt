@@ -1,7 +1,6 @@
 package com.azhapps.listapp.network
 
 import android.util.Log
-import com.azhapps.listapp.network.auth.RefreshManager
 import com.azhapps.listapp.network.model.ApiResult
 import com.azhapps.listapp.network.model.BackendError
 import retrofit2.Response
@@ -11,13 +10,17 @@ object Api {
 
     private val TAG = Api::class.java.simpleName
 
-    inline fun <T> callApi(
+    inline fun <reified T> callApi(
         apiCall: () -> Response<T>
     ): ApiResult<T> = try {
         val apiResponse = apiCall()
-        val body = apiResponse.body()
-        if (apiResponse.isSuccessful && body != null) {
-            ApiResult(true, body)
+        if (apiResponse.isSuccessful && (apiResponse.body() != null || T::class == Unit::class)) {
+            val result = if (T::class == Unit::class) {
+                Unit as T
+            } else {
+                apiResponse.body()!!
+            }
+            ApiResult(true, result)
         } else {
             val message = apiResponse.message() ?: apiResponse.errorBody()?.string() ?: "Backend returned null error body"
             ApiResult(false, null, buildErrorResult(message, apiResponse.code()))

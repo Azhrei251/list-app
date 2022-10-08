@@ -7,10 +7,10 @@ import com.azhapps.listapp.network.Api
 import com.azhapps.listapp.network.Api.callApi
 import javax.inject.Inject
 
-class CreateListItemUseCase @Inject constructor(
+class DeleteListItemUseCase @Inject constructor(
     private val remoteDataSource: ListsRemoteDataSource,
 ) {
-    suspend operator fun invoke(item: ListItem, listId: Int) = callApi {
-        remoteDataSource.createListItem(item.toCreateRequest(listId))
+    suspend operator fun invoke(itemId: Int) = callApi {
+        remoteDataSource.deleteListItem(itemId)
     }
 }

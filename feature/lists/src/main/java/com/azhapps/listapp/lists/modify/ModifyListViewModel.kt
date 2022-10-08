@@ -37,24 +37,28 @@ class ModifyListViewModel @Inject constructor(
 
     override suspend fun getGroups() = getGroupsUseCase()
 
-    override fun finalize() {
-        viewModelScope.launch {
-            val currentList = navigationHandle.key.informativeList
-            val category = if (state.currentCategoryName.isNotBlank()) {
-                state.availableCategories.firstOrNull {
-                    it.name == state.currentCategoryName
-                } ?: createListCategoryUseCase(state.currentCategoryName).data
-            } else null
-            val group = if (state.currentGroupName.isNotBlank()) state.availableGroups.firstOrNull {
-                it.name == state.currentGroupName
-            } else null
+    override fun finalize(deleted: Boolean) {
+        if (deleted) {
+            navigationHandle.closeWithResult(Pair(true, navigationHandle.key.informativeList))
+        } else {
+            viewModelScope.launch {
+                val currentList = navigationHandle.key.informativeList
+                val category = if (state.currentCategoryName.isNotBlank()) {
+                    state.availableCategories.firstOrNull {
+                        it.name == state.currentCategoryName
+                    } ?: createListCategoryUseCase(state.currentCategoryName).data
+                } else null
+                val group = if (state.currentGroupName.isNotBlank()) state.availableGroups.firstOrNull {
+                    it.name == state.currentGroupName
+                } else null
 
-            val newList = currentList.copy(
-                name = state.currentName,
-                category = category,
-                group = group,
-            )
-            navigationHandle.closeWithResult(newList)
+                val newList = currentList.copy(
+                    name = state.currentName,
+                    category = category,
+                    group = group,
+                )
+                navigationHandle.closeWithResult(Pair(false, newList))
+            }
         }
     }
 }

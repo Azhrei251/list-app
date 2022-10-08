@@ -1,4 +1,4 @@
-package com.azhapps.listapp.lists.selection
+package com.azhapps.listapp.lists.selection.uc
 
 import com.azhapps.listapp.lists.data.ListsRemoteDataSource
 import com.azhapps.listapp.network.Api.callApi

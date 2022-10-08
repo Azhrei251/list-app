@@ -11,7 +11,7 @@ object ListSelection : NavigationKey
 @Parcelize
 data class ModifyList(
     val informativeList: InformativeList
-) : NavigationKey.WithResult<InformativeList>
+) : NavigationKey.WithResult<Pair<Boolean, InformativeList>>
 
 @Parcelize
 data class ViewList(
@@ -21,4 +21,4 @@ data class ViewList(
 @Parcelize
 data class ModifyItem(
     val listItem: ListItem
-) : NavigationKey.WithResult<ListItem>
+) : NavigationKey.WithResult<Pair<Boolean, ListItem>>
