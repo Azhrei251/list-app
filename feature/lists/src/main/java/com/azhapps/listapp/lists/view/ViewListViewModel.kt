@@ -3,11 +3,13 @@ package com.azhapps.listapp.lists.view
 import androidx.lifecycle.viewModelScope
 import com.azhapps.listapp.common.BaseViewModel
 import com.azhapps.listapp.common.UiState
+import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.model.ListItem
 import com.azhapps.listapp.lists.navigation.ModifyItem
 import com.azhapps.listapp.lists.navigation.ViewList
 import com.azhapps.listapp.lists.selection.UNCATEGORIZED
 import com.azhapps.listapp.lists.selection.mapByItemCategory
+import com.azhapps.listapp.lists.view.model.ItemCategoryState
 import com.azhapps.listapp.lists.view.model.ListItemState
 import com.azhapps.listapp.lists.view.model.ViewListAction
 import com.azhapps.listapp.lists.view.model.ViewListState
@@ -37,8 +39,8 @@ class ViewListViewModel @Inject constructor(
     override fun initialState() = navigationHandle.key.informativeList.let { informativeList ->
         ViewListState(
             itemStates = informativeList.items.mapByItemCategory(),
-            title = informativeList.name,
-            category = informativeList.category?.name ?: UNCATEGORIZED
+            listTitle = informativeList.name,
+            listCategory = informativeList.category?.name ?: UNCATEGORIZED
         )
     }
 
@@ -54,9 +56,13 @@ class ViewListViewModel @Inject constructor(
 
             is ViewListAction.ModifyItem -> modifyItemResult.open(ModifyItem(action.item))
 
-            is ViewListAction.ToggleComplete -> editItem(action.item.copy(
-                completed = !action.item.completed
-            ))
+            is ViewListAction.ToggleComplete -> editItem(
+                action.item.copy(
+                    completed = !action.item.completed
+                )
+            )
+
+            is ViewListAction.ToggleCollapsed -> toggleCategoryCollapsed(action.category)
         }
     }
 
@@ -107,9 +113,9 @@ class ViewListViewModel @Inject constructor(
     ) {
         state.itemStates.forEach {
             var newList: MutableList<ListItemState>? = null
-            it.value.forEachIndexed { i, item ->
+            it.value.items.forEachIndexed { i, item ->
                 if (item.item.id == listId) {
-                    newList = it.value.toMutableList()
+                    newList = it.value.items.toMutableList()
                     newList!![i] = item.copy(
                         uiState = newUiState
                     )
@@ -119,17 +125,41 @@ class ViewListViewModel @Inject constructor(
                 updateState {
                     copy(
                         itemStates = itemStates.toMutableMap().apply {
-                            set(it.key, newList!!)
+                            set(
+                                it.key, it.value.copy(
+                                    items = newList!!
+                                )
+                            )
                         }
                     )
                 }
             }
         }
     }
+
+    private fun toggleCategoryCollapsed(
+        category: Category?
+    ) {
+        val name = category?.name ?: UNCATEGORIZED
+        val categoryToUpdate = state.itemStates[name]
+        if (categoryToUpdate != null) {
+            updateState {
+                copy(
+                    itemStates = itemStates.toMutableMap().apply {
+                        set(
+                            name, categoryToUpdate.copy(
+                                collapsed = !categoryToUpdate.collapsed
+                            )
+                        )
+                    }
+                )
+            }
+        }
+    }
 }
 
-private fun Map<String, List<ListItemState>>.toMutableList(): MutableList<ListItem> = flatMap {
-    it.value.map { state ->
+private fun Map<String, ItemCategoryState>.toMutableList(): MutableList<ListItem> = flatMap {
+    it.value.items.map { state ->
         state.item
     }
 }.toMutableList()

@@ -16,4 +16,8 @@ sealed class ViewListAction {
     data class ToggleComplete(
         val item: ListItem
     ) : ViewListAction()
+
+    data class ToggleCollapsed(
+        val category: Category?
+    ) : ViewListAction()
 }

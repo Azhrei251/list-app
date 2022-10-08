@@ -4,6 +4,7 @@ package com.azhapps.listapp.lists.view.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -30,6 +32,7 @@ import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.navigation.ViewList
 import com.azhapps.listapp.lists.ui.Header
 import com.azhapps.listapp.lists.view.ViewListViewModel
+import com.azhapps.listapp.lists.view.model.ItemCategoryState
 import com.azhapps.listapp.lists.view.model.ListItemState
 import com.azhapps.listapp.lists.view.model.ViewListAction
 import dev.enro.annotations.ExperimentalComposableDestination
@@ -43,8 +46,8 @@ fun ViewListScreen() {
     val state = viewModel.collectAsState()
 
     ViewListContent(
-        title = state.title,
-        category = state.category,
+        listTitle = state.listTitle,
+        listCategory = state.listCategory,
         itemStates = state.itemStates,
         actor = viewModel::dispatch,
     )
@@ -52,9 +55,9 @@ fun ViewListScreen() {
 
 @Composable
 fun ViewListContent(
-    title: String,
-    category: String,
-    itemStates: Map<String, List<ListItemState>>,
+    listTitle: String,
+    listCategory: String,
+    itemStates: Map<String, ItemCategoryState>,
     actor: (ViewListAction) -> Unit,
 ) {
     Column(
@@ -63,43 +66,64 @@ fun ViewListContent(
             .fillMaxSize()
             .padding(top = ListAppTheme.defaultSpacing, start = ListAppTheme.defaultSpacing, end = ListAppTheme.defaultSpacing)
     ) {
-        NameAndCategory(name = title, category = category)
+        NameAndCategory(name = listTitle, category = listCategory)
 
         LazyColumn(
             modifier = Modifier.padding(top = ListAppTheme.defaultSpacing, bottom = ListAppTheme.defaultSpacing),
             verticalArrangement = Arrangement.spacedBy(4.dp),
             content = {
                 itemStates.forEach { entry ->
-                    item {
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 2.dp),
-                            elevation = 2.dp,
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(all = ListAppTheme.defaultSpacing),
-                                verticalArrangement = Arrangement.spacedBy(ListAppTheme.defaultSpacing)
-                            ) {
+                    itemCategoryCard(
+                        entry.key,
+                        entry.value,
+                        actor
+                    )
+                }
+            }
+        )
+    }
+}
 
-                                Header(
-                                    header = entry.key,
-                                    onClick = {
-                                        //TODO collapse/expand
-                                    }
-                                )
+private fun LazyListScope.itemCategoryCard(
+    categoryName: String,
+    itemCategoryState: ItemCategoryState,
+    actor: (ViewListAction) -> Unit,
+) {
+    item {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 2.dp),
+            elevation = 2.dp,
+        ) {
+            Column(
+                modifier = Modifier.padding(all = ListAppTheme.defaultSpacing),
+                verticalArrangement = Arrangement.spacedBy(ListAppTheme.defaultSpacing),
+            ) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            actor(ViewListAction.ToggleCollapsed(itemCategoryState.category))
+                        }) {
+                    Header(
+                        modifier = Modifier.weight(1F),
+                        header = categoryName,
+                    )
 
-                                entry.value.forEach { state ->
-                                    ListItem(
-                                        state = state,
-                                        actor = actor
-                                    )
-                                }
-                            }
-                        }
+                    DropDownIcon(dropped = itemCategoryState.collapsed)
+                }
+
+                if (!itemCategoryState.collapsed) {
+                    itemCategoryState.items.forEach { state ->
+                        ListItem(
+                            state = state,
+                            actor = actor
+                        )
                     }
                 }
-            })
+            }
+        }
     }
 }
 

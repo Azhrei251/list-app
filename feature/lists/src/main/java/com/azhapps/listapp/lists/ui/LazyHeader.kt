@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
@@ -48,10 +47,11 @@ fun LazyListScope.lazyHeader(
 @Composable
 fun Header(
     header: String,
-    onClick: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit = {},
 ) {
     Text(
-        modifier = Modifier
+        modifier = modifier
             .clickable {
                 onClick(header)
             }

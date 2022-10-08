@@ -7,4 +7,6 @@
     <string name="lists_label_name">Name</string>
     <string name="lists_label_group">Group</string>
     <string name="lists_button_save">Save</string>
+    <string name="lists_drop_down_collapsed">Collapsed</string>
+    <string name="lists_drop_down_expanded">Expanded</string>
 </resources>
