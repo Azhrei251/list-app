@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.enro.annotations.NavigationDestination
 import dev.enro.core.NavigationInstruction
 import dev.enro.core.close
+import dev.enro.core.compose.EmptyBehavior
 import dev.enro.core.compose.EnroContainer
 import dev.enro.core.compose.rememberEnroContainerController
 import dev.enro.core.navigationHandle
@@ -32,6 +33,7 @@ class ListsActivity : BaseActivity() {
     override fun Content() {
         val containerController = rememberEnroContainerController(
             initialState = listOf(NavigationInstruction.Forward(ListSelection)),
+            emptyBehavior = EmptyBehavior.CloseParent,
         )
         Column(Modifier.fillMaxSize()) {
             EnroContainer(
