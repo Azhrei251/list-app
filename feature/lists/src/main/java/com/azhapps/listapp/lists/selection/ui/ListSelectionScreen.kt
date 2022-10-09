@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -19,6 +20,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -31,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.account.toDisplayDate
 import com.azhapps.listapp.common.UiState
+import com.azhapps.listapp.common.ui.TopBar
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
 import com.azhapps.listapp.lists.R
@@ -43,20 +46,30 @@ import com.azhapps.listapp.lists.selection.model.ListSelectionItemState
 import com.azhapps.listapp.lists.ui.lazyHeader
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
+import dev.enro.core.close
 import dev.enro.core.compose.navigationHandle
 
 @Composable
 @ExperimentalComposableDestination
 @NavigationDestination(ListSelection::class)
 fun ListSelectionScreen() {
-    val navigationHandle = navigationHandle<ListSelection>()
     val viewModel = viewModel<ListSelectionViewModel>()
     val state = viewModel.collectAsState()
 
-    ListSelectionContent(
-        actor = viewModel::dispatch,
-        informativeListMap = state.informativeListMap
-    )
+    Scaffold(
+        topBar = {
+            TopBar(
+                title = stringResource(R.string.lists_selection_title),
+            )
+        }
+    ) {
+        Box(Modifier.padding(it)) {
+            ListSelectionContent(
+                actor = viewModel::dispatch,
+                informativeListMap = state.informativeListMap
+            )
+        }
+    }
 }
 
 @Composable

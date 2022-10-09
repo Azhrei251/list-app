@@ -1,12 +1,14 @@
-package com.azhapps.listapp.login.ui
+package com.azhapps.listapp.auth.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,12 +19,44 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.azhapps.listapp.common.ui.TopBar
 import com.azhapps.listapp.common.ui.theme.Typography
+import com.azhapps.listapp.auth.login.LoginViewModel
 import com.azhapps.listapp.login.R
-import com.azhapps.listapp.login.model.LoginAction
+import com.azhapps.listapp.auth.login.model.LoginAction
+import com.azhapps.listapp.auth.navigation.Login
+import dev.enro.annotations.ExperimentalComposableDestination
+import dev.enro.annotations.NavigationDestination
+import dev.enro.core.close
+import dev.enro.core.compose.navigationHandle
 
 @Composable
-fun LoginScreen(
+@ExperimentalComposableDestination
+@NavigationDestination(Login::class)
+fun LoginScreen() {
+    val viewModel = viewModel<LoginViewModel>()
+    val navigationHandle = navigationHandle<Login>()
+
+    Scaffold(
+        topBar = {
+            TopBar(
+                title = stringResource(R.string.auth_title_log_in),
+                backAction = {
+                    navigationHandle.close()
+                },
+                showBackArrow = true
+            )
+        }
+    ) {
+        Box(Modifier.padding(it)) {
+            LoginContent(actor = viewModel::dispatch)
+        }
+    }
+}
+
+@Composable
+fun LoginContent(
     actor: (LoginAction) -> Unit,
 ) {
     var username by rememberSaveable { mutableStateOf("") }

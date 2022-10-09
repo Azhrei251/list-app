@@ -1,4 +1,4 @@
-package com.azhapps.listapp.login.data
+package com.azhapps.listapp.auth.data
 
 import com.azhapps.listapp.network.auth.model.AuthToken
 import com.azhapps.listapp.network.auth.model.GrantType

@@ -1,4 +1,4 @@
-package com.azhapps.listapp.login.ui
+package com.azhapps.listapp.auth.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions

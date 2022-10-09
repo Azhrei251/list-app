@@ -1,10 +1,12 @@
-package com.azhapps.listapp.login.ui
+package com.azhapps.listapp.auth.registration.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,13 +17,49 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.azhapps.listapp.common.ui.TopBar
 import com.azhapps.listapp.common.ui.theme.Typography
 import com.azhapps.listapp.login.R
-import com.azhapps.listapp.login.model.LoginAction
+import com.azhapps.listapp.auth.login.model.LoginAction
+import com.azhapps.listapp.auth.navigation.Register
+import com.azhapps.listapp.auth.registration.RegistrationViewModel
+import com.azhapps.listapp.auth.registration.model.RegistrationAction
+import com.azhapps.listapp.auth.ui.EmailField
+import com.azhapps.listapp.auth.ui.PasswordField
+import com.azhapps.listapp.auth.ui.UsernameField
+import dev.enro.annotations.ExperimentalComposableDestination
+import dev.enro.annotations.NavigationDestination
+import dev.enro.core.close
+import dev.enro.core.compose.navigationHandle
 
 @Composable
-fun RegistrationScreen(
-    actor: (LoginAction) -> Unit,
+@ExperimentalComposableDestination
+@NavigationDestination(Register::class)
+fun RegistrationScreen() {
+    val viewModel = viewModel<RegistrationViewModel>()
+    val navigationHandle = navigationHandle<Register>()
+
+    Scaffold(
+        topBar = {
+            TopBar(
+                title = stringResource(R.string.auth_title_register),
+                backAction = {
+                    navigationHandle.close()
+                },
+                showBackArrow = true
+            )
+        }
+    ) {
+        Box(Modifier.padding(it)) {
+            RegistrationContent(actor = viewModel::dispatch)
+        }
+    }
+}
+
+@Composable
+fun RegistrationContent(
+    actor: (RegistrationAction) -> Unit,
 ) {
     var username by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
@@ -60,7 +98,7 @@ fun RegistrationScreen(
 
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { actor(LoginAction.RegisterAccount(username, password, email)) }
+                onClick = { actor(RegistrationAction.RegisterAccount(username, password, email)) }
             ) {
                 Text(stringResource(id = R.string.auth_button_secondary))
             }

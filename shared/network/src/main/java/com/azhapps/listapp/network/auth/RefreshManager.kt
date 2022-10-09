@@ -41,7 +41,9 @@ object RefreshManager {
                 tokenManager.setAuthToken(refreshResult.data!!)
                 refreshResult.data.accessToken
             } else {
-                tokenManager.clear()
+                if (clearOnFailure) {
+                    tokenManager.clear()
+                }
                 throw IOException("Failed to refresh auth token", refreshResult.error)
             }
         } else {

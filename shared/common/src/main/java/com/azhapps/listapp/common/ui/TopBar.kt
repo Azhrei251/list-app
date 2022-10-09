@@ -19,8 +19,8 @@ import com.azhapps.listapp.common.ui.theme.Typography
 @Composable
 fun TopBar(
     title: String,
-    showBackArrow: Boolean,
-    backAction: () -> Unit,
+    showBackArrow: Boolean = false,
+    backAction: () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     TopAppBar(

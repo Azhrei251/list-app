@@ -1,4 +1,4 @@
-package com.azhapps.listapp.login.data
+package com.azhapps.listapp.auth.data
 
 import dagger.Module
 import dagger.Provides

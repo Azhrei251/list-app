@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="auth_title">Log in</string>
+    <string name="auth_title_log_in">Log in</string>
+    <string name="auth_title_register">Register</string>
     <string name="auth_label_email">Email</string>
     <string name="auth_label_username">Username</string>
     <string name="auth_label_password">Password</string>

@@ -4,6 +4,6 @@
 
     <application
         android:networkSecurityConfig="@xml/network_security_config">
-        <activity android:name=".AuthActivity" />
+        <activity android:name="com.azhapps.listapp.auth.AuthActivity" />
     </application>
 </manifest>

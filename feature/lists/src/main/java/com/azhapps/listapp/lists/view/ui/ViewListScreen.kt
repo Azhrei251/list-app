@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,17 +18,21 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.azhapps.listapp.common.ui.TopBar
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
+import com.azhapps.listapp.lists.R
 import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.navigation.ViewList
 import com.azhapps.listapp.lists.ui.Header
@@ -37,20 +42,38 @@ import com.azhapps.listapp.lists.view.model.ListItemState
 import com.azhapps.listapp.lists.view.model.ViewListAction
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
+import dev.enro.core.close
+import dev.enro.core.compose.navigationHandle
 
 @Composable
 @ExperimentalComposableDestination
 @NavigationDestination(ViewList::class)
 fun ViewListScreen() {
+    val navigationHandle = navigationHandle<ViewList>()
     val viewModel = viewModel<ViewListViewModel>()
     val state = viewModel.collectAsState()
 
-    ViewListContent(
-        listTitle = state.listTitle,
-        listCategory = state.listCategory,
-        itemStates = state.itemStates,
-        actor = viewModel::dispatch,
-    )
+    Scaffold(
+        //TODO Add button
+        topBar = {
+            TopBar(
+                title = stringResource(R.string.lists_view_title),
+                backAction = {
+                    navigationHandle.close()
+                },
+                showBackArrow = true
+            )
+        }
+    ) {
+        Box(Modifier.padding(it)) {
+            ViewListContent(
+                listTitle = state.listTitle,
+                listCategory = state.listCategory,
+                itemStates = state.itemStates,
+                actor = viewModel::dispatch,
+            )
+        }
+    }
 }
 
 @Composable
