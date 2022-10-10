@@ -2,6 +2,7 @@ package com.azhapps.listapp.lists.model
 
 import android.os.Parcelable
 import com.azhapps.listapp.account.SelectedAccount
+import com.azhapps.listapp.common.model.Group
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

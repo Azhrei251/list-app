@@ -55,6 +55,7 @@ dependencies {
     implementation project(':shared:utils')
     implementation project(":feature:lists")
     implementation project(':feature:auth')
+    implementation project(':feature:groups')
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"

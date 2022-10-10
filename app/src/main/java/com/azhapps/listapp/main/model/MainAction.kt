@@ -4,7 +4,7 @@ sealed class MainAction {
 
     object NavigateToLogin : MainAction()
 
-    object NavigateToLists : MainAction()
+    object NavigateToLanding : MainAction()
 
     object NavigateToRegister : MainAction()
 }

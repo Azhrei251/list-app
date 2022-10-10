@@ -6,9 +6,6 @@ import dev.enro.core.NavigationKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-object ListSelection : NavigationKey
-
-@Parcelize
 data class ModifyList(
     val informativeList: InformativeList,
     val canDelete: Boolean = true,

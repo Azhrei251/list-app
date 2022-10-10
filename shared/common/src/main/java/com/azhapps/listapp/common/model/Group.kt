@@ -1,4 +1,4 @@
-package com.azhapps.listapp.lists.model
+package com.azhapps.listapp.common.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

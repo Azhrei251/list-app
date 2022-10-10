@@ -4,4 +4,8 @@
     <string name="main_button_login">@string/auth_button_primary</string>
     <string name="main_button_register">@string/auth_button_secondary</string>
     <string name="main_title">Welcome</string>
+
+    <string name="landing_button_lists">Lists</string>
+    <string name="landing_button_groups">Group</string>
+    <string name="landing_button_more">More</string>
 </resources>

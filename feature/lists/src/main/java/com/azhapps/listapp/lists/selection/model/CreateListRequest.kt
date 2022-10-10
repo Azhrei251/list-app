@@ -1,7 +1,7 @@
 package com.azhapps.listapp.lists.selection.model
 
 import com.azhapps.listapp.lists.model.Category
-import com.azhapps.listapp.lists.model.Group
+import com.azhapps.listapp.common.model.Group
 import com.azhapps.listapp.lists.model.InformativeList
 
 data class CreateListRequest(

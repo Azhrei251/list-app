@@ -41,11 +41,11 @@ import com.azhapps.listapp.common.ui.theme.Typography
 import com.azhapps.listapp.lists.R
 import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.model.isOwnedBySelf
-import com.azhapps.listapp.lists.navigation.ListSelection
 import com.azhapps.listapp.lists.selection.ListSelectionViewModel
 import com.azhapps.listapp.lists.selection.model.ListSelectionAction
 import com.azhapps.listapp.lists.selection.model.ListSelectionItemState
 import com.azhapps.listapp.lists.ui.lazyHeader
+import com.azhapps.listapp.navigation.Lists
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
 import dev.enro.core.close
@@ -53,7 +53,7 @@ import dev.enro.core.compose.navigationHandle
 
 @Composable
 @ExperimentalComposableDestination
-@NavigationDestination(ListSelection::class)
+@NavigationDestination(Lists::class)
 fun ListSelectionScreen() {
     val navigationHandle = navigationHandle()
     val viewModel = viewModel<ListSelectionViewModel>()

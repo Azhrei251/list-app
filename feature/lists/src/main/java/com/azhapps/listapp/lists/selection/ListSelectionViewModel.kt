@@ -6,7 +6,6 @@ import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.lists.ListsSharedStateManager
 import com.azhapps.listapp.lists.model.InformativeList
 import com.azhapps.listapp.lists.modify.uc.UpdateInformativeListUseCase
-import com.azhapps.listapp.lists.navigation.ListSelection
 import com.azhapps.listapp.lists.navigation.ModifyList
 import com.azhapps.listapp.lists.navigation.ViewList
 import com.azhapps.listapp.lists.selection.model.ListSelectionAction
@@ -15,6 +14,7 @@ import com.azhapps.listapp.lists.selection.model.ListSelectionState
 import com.azhapps.listapp.lists.selection.uc.CreateInformativeListUseCase
 import com.azhapps.listapp.lists.selection.uc.DeleteInformativeListUseCase
 import com.azhapps.listapp.lists.selection.uc.GetPersonalListsUseCase
+import com.azhapps.listapp.navigation.Lists
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.enro.core.forward
 import dev.enro.core.result.registerForNavigationResult
@@ -29,7 +29,8 @@ class ListSelectionViewModel @Inject constructor(
     val createInformativeListUseCase: CreateInformativeListUseCase,
     val deleteInformativeListUseCase: DeleteInformativeListUseCase,
 ) : BaseViewModel<ListSelectionState, ListSelectionAction>() {
-    private val navigationHandle by navigationHandle<ListSelection>()
+
+    private val navigationHandle by navigationHandle<Lists>()
 
     init {
         dispatch(ListSelectionAction.GetAllLists)

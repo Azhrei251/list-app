@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.azhapps.listapp.common.BaseViewModel
 import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.lists.model.Category
-import com.azhapps.listapp.lists.model.Group
+import com.azhapps.listapp.common.model.Group
 import com.azhapps.listapp.lists.modify.model.ModifyAction
 import com.azhapps.listapp.lists.modify.model.ModifyState
 import com.azhapps.listapp.network.model.ApiResult

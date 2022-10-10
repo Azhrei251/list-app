@@ -2,7 +2,7 @@ package com.azhapps.listapp.lists.modify.model
 
 import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.lists.model.Category
-import com.azhapps.listapp.lists.model.Group
+import com.azhapps.listapp.common.model.Group
 
 data class ModifyState(
     val categoryUiState: UiState = UiState.Loading,

@@ -2,7 +2,7 @@ package com.azhapps.listapp.lists.modify
 
 import androidx.lifecycle.viewModelScope
 import com.azhapps.listapp.lists.model.Category
-import com.azhapps.listapp.lists.model.Group
+import com.azhapps.listapp.common.model.Group
 import com.azhapps.listapp.lists.modify.model.ModifyState
 import com.azhapps.listapp.lists.modify.uc.CreateItemCategoryUseCase
 import com.azhapps.listapp.lists.modify.uc.GetItemCategoriesUseCase
