@@ -13,4 +13,5 @@ data class ModifyState(
     val currentName: String = "",
     val currentGroupName: String = "",
     val editable: Boolean = true,
+    val canDelete: Boolean = true,
 )

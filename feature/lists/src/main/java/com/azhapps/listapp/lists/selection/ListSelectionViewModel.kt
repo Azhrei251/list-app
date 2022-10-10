@@ -57,11 +57,12 @@ class ListSelectionViewModel @Inject constructor(
 
             is ListSelectionAction.CreateList -> createListResult.open(
                 ModifyList(
-                    InformativeList(
+                    informativeList = InformativeList(
                         name = "",
                         category = action.category,
                         group = null,
-                    )
+                    ),
+                    canDelete = false
                 )
             )
 
@@ -74,17 +75,27 @@ class ListSelectionViewModel @Inject constructor(
     override fun initialState() = ListSelectionState()
 
     private fun getAllLists() {
+        updateState {
+            copy(
+                uiState = UiState.Loading
+            )
+        }
         viewModelScope.launch {
             val result = getPersonalListsUseCase()
 
             if (result.success) {
                 updateState {
                     copy(
+                        uiState = UiState.Content,
                         informativeListMap = result.data!!.mapByListCategory().toMutableMap(),
                     )
                 }
             } else {
-                //TODO
+                updateState {
+                    copy(
+                        uiState = UiState.Error(result.error)
+                    )
+                }
             }
         }
     }

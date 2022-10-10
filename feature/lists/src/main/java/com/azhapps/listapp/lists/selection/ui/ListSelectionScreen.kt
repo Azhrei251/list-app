@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.account.toDisplayDate
 import com.azhapps.listapp.common.UiState
+import com.azhapps.listapp.common.ui.ErrorPage
+import com.azhapps.listapp.common.ui.LoadingPage
 import com.azhapps.listapp.common.ui.TopBar
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
@@ -53,6 +55,7 @@ import dev.enro.core.compose.navigationHandle
 @ExperimentalComposableDestination
 @NavigationDestination(ListSelection::class)
 fun ListSelectionScreen() {
+    val navigationHandle = navigationHandle()
     val viewModel = viewModel<ListSelectionViewModel>()
     val state = viewModel.collectAsState()
 
@@ -64,10 +67,21 @@ fun ListSelectionScreen() {
         }
     ) {
         Box(Modifier.padding(it)) {
-            ListSelectionContent(
-                actor = viewModel::dispatch,
-                informativeListMap = state.informativeListMap
-            )
+            when (state.uiState) {
+                UiState.Content -> ListSelectionContent(
+                    actor = viewModel::dispatch,
+                    informativeListMap = state.informativeListMap
+                )
+
+                is UiState.Error -> ErrorPage(
+                    errorMessage = stringResource(id = R.string.lists_selection_error_message),
+                    errorTitle = stringResource(id = R.string.lists_selection_error_title),
+                    retryAction = { viewModel.dispatch(ListSelectionAction.GetAllLists) },
+                    cancelAction = { navigationHandle.close() }
+                )
+
+                UiState.Loading -> LoadingPage()
+            }
         }
     }
 }

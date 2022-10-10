@@ -57,6 +57,7 @@ fun BottomSheetDestination.ModifyListBottomSheet() {
         currentListName = state.currentName,
         currentGroupName = state.currentGroupName,
         editable = state.editable,
+        canDelete = state.canDelete,
     )
 }
 
@@ -82,6 +83,7 @@ fun BottomSheetDestination.ModifyItemBottomSheet() {
         currentListName = state.currentName,
         currentGroupName = state.currentGroupName,
         editable = state.editable,
+        canDelete = state.canDelete,
     )
 }
 
@@ -96,6 +98,7 @@ fun EditListBottomSheetContent(
     currentListName: String,
     currentGroupName: String,
     editable: Boolean,
+    canDelete: Boolean,
 ) {
     Column(
         modifier = Modifier
@@ -113,20 +116,22 @@ fun EditListBottomSheetContent(
                 style = Typography.h6
             )
 
-            IconButton(
-                enabled = editable,
-                onClick = {
-                    actor(ModifyAction.Finalize(true))
-                },
-            ) {
-                Icon(
-                    modifier = Modifier.size(32.dp),
-                    painter = painterResource(id = R.drawable.ic_trash_bin),
-                    contentDescription = stringResource(
-                        id = R.string.lists_delete
-                    ),
-                    tint = Color.Unspecified,
-                )
+            if (canDelete) {
+                IconButton(
+                    enabled = editable,
+                    onClick = {
+                        actor(ModifyAction.Finalize(true))
+                    },
+                ) {
+                    Icon(
+                        modifier = Modifier.size(32.dp),
+                        painter = painterResource(id = R.drawable.ic_trash_bin),
+                        contentDescription = stringResource(
+                            id = R.string.lists_delete
+                        ),
+                        tint = Color.Unspecified,
+                    )
+                }
             }
         }
 

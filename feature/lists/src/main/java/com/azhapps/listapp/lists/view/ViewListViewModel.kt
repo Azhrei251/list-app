@@ -58,9 +58,10 @@ class ViewListViewModel @Inject constructor(
         when (action) {
             is ViewListAction.CreateItem -> createItemResult.open(
                 ModifyItem(
-                    ListItem(
+                    listItem = ListItem(
                         category = action.category
-                    )
+                    ),
+                    canDelete = false
                 )
             )
 

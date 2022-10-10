@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.azhapps.listapp.common.R
 import com.azhapps.listapp.common.ui.theme.BackgroundColor
@@ -57,7 +58,10 @@ fun ErrorPage(
             style = Typography.h4,
             text = errorTitle
         )
-        Text(errorMessage)
+        Text(
+            text = errorMessage,
+            textAlign = TextAlign.Center,
+        )
 
         Spacer(modifier = Modifier.weight(1F))
 

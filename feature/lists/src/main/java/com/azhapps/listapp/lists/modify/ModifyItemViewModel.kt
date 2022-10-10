@@ -25,7 +25,8 @@ class ModifyItemViewModel @Inject constructor(
     override fun buildStateFromNavKey() = navigationHandle.key.listItem.let {
         ModifyState(
             currentName = it.itemText,
-            currentCategoryName = it.category?.name ?: ""
+            currentCategoryName = it.category?.name ?: "",
+            canDelete = navigationHandle.key.canDelete,
         )
     }
 

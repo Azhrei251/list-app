@@ -15,10 +15,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
 
-@JvmOverloads //Weirdly needed by compose or it crashes?
 fun LazyGridScope.lazyHeader(
     header: String,
-    onClick: (String) -> Unit = {},
 ) {
     item(
         span = {
@@ -27,19 +25,16 @@ fun LazyGridScope.lazyHeader(
     ) {
         Header(
             header = header,
-            onClick = onClick,
         )
     }
 }
 
 fun LazyListScope.lazyHeader(
     header: String,
-    onClick: (String) -> Unit = {},
 ) {
     stickyHeader {
         Header(
             header = header,
-            onClick = onClick,
         )
     }
 }
@@ -48,13 +43,9 @@ fun LazyListScope.lazyHeader(
 fun Header(
     header: String,
     modifier: Modifier = Modifier,
-    onClick: (String) -> Unit = {},
 ) {
     Text(
         modifier = modifier
-            .clickable {
-                onClick(header)
-            }
             .padding(end = ListAppTheme.defaultSpacing),
         text = header.uppercase(),
         style = Typography.subtitle2,

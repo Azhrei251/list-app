@@ -28,6 +28,7 @@ class ModifyListViewModel @Inject constructor(
             currentCategoryName = it.category?.name ?: "",
             currentGroupName = it.group?.name ?: "",
             editable = it.isOwnedBySelf(),
+            canDelete = navigationHandle.key.canDelete,
         )
     }
 

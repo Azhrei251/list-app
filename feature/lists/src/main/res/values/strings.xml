@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="lists_selection_title">Select a list</string>
-    <string name="lists_selection_add_new">Add new</string>
+    <string name="lists_selection_add_new">Add new list</string>
+    <string name="lists_selection_error_title">Sorry!</string>
+    <string name="lists_selection_error_message">Something went wrong, we can\'t retrieve your lists right now. Please try again later.</string>
     <string name="lists_edit_list_sheet_title">Update list</string>
     <string name="lists_label_category">Category</string>
     <string name="lists_label_name">Name</string>
@@ -11,4 +13,6 @@
     <string name="lists_drop_down_expanded">Expanded</string>
     <string name="lists_delete">Delete</string>
     <string name="lists_view_title">View list</string>
+    <string name="lists_view_add_new">Add new item</string>
+    <string name="lists_view_item_save_error">Update failed</string>
 </resources>

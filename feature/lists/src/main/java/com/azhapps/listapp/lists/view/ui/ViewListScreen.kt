@@ -13,27 +13,33 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.common.ui.TopBar
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
 import com.azhapps.listapp.lists.R
-import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.navigation.ViewList
 import com.azhapps.listapp.lists.ui.Header
 import com.azhapps.listapp.lists.view.ViewListViewModel
@@ -54,7 +60,6 @@ fun ViewListScreen() {
     val state = viewModel.collectAsState()
 
     Scaffold(
-        //TODO Add button
         topBar = {
             TopBar(
                 title = stringResource(R.string.lists_view_title),
@@ -62,7 +67,16 @@ fun ViewListScreen() {
                     navigationHandle.close()
                 },
                 showBackArrow = true
-            )
+            ) {
+                IconButton(onClick = {
+                    viewModel.dispatch(ViewListAction.CreateItem(null))
+                }) {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = stringResource(id = R.string.lists_view_add_new),
+                    )
+                }
+            }
         }
     ) {
         Box(Modifier.padding(it)) {
@@ -102,6 +116,11 @@ fun ViewListContent(
                         actor
                     )
                 }
+                if (itemStates.isEmpty()) {
+                    item {
+                        AddItemButton(actor)
+                    }
+                }
             }
         )
     }
@@ -121,14 +140,15 @@ private fun LazyListScope.itemCategoryCard(
         ) {
             Column(
                 modifier = Modifier.padding(all = ListAppTheme.defaultSpacing),
-                verticalArrangement = Arrangement.spacedBy(ListAppTheme.defaultSpacing),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .clickable {
                             actor(ViewListAction.ToggleCollapsed(itemCategoryState.category))
-                        }) {
+                        }
+                ) {
                     Header(
                         modifier = Modifier.weight(1F),
                         header = categoryName,
@@ -138,7 +158,10 @@ private fun LazyListScope.itemCategoryCard(
                 }
 
                 if (!itemCategoryState.collapsed) {
-                    itemCategoryState.items.forEach { state ->
+                    itemCategoryState.items.forEachIndexed { position, state ->
+                        if (position != 0) {
+                            Divider()
+                        }
                         ListItem(
                             state = state,
                             actor = actor
@@ -175,16 +198,33 @@ private fun NameAndCategory(
 
 @Composable
 private fun AddItemButton(
-    category: Category?,
     actor: (ViewListAction) -> Unit,
 ) {
-    IconButton(
-        onClick = {
-            actor(ViewListAction.CreateItem(category))
-        }
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 2.dp),
+        elevation = 2.dp,
     ) {
-        Icon(imageVector = Icons.Outlined.Add, contentDescription = "Add Item")
+        Column(
+            modifier = Modifier.padding(all = ListAppTheme.defaultSpacing),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = stringResource(id = R.string.lists_view_add_new))
+
+            IconButton(
+                onClick = {
+                    actor(ViewListAction.CreateItem(null))
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = stringResource(id = R.string.lists_view_add_new)
+                )
+            }
+        }
     }
+
 }
 
 @Composable
@@ -199,11 +239,43 @@ private fun ListItem(
             }, onLongClick = {
                 actor(ViewListAction.ModifyItem(state.item))
             })
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
+            modifier = Modifier.weight(1f),
             text = state.item.itemText,
             textDecoration = if (state.item.completed) TextDecoration.LineThrough else TextDecoration.None,
         )
+
+        when (state.uiState) {
+            UiState.Content -> {
+                //Nothing extra required
+            }
+            is UiState.Error -> {
+                Text(
+                    modifier = Modifier.padding(
+                        start = 8.dp,
+                        end = 8.dp
+                    ),
+                    text = stringResource(id = R.string.lists_view_item_save_error),
+                    color = Color.Red
+                )
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    imageVector = Icons.Filled.Error,
+                    contentDescription = "Error",
+                    tint = Color.Red
+                )
+            }
+            UiState.Loading -> {
+                Box(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(16.dp),
+                        strokeWidth = 2.dp
+                    )
+                }
+            }
+        }
     }
 }
