@@ -3,6 +3,7 @@ package com.azhapps.listapp.lists.view
 import androidx.lifecycle.viewModelScope
 import com.azhapps.listapp.common.BaseViewModel
 import com.azhapps.listapp.common.UiState
+import com.azhapps.listapp.lists.ListsSharedStateManager
 import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.model.ListItem
 import com.azhapps.listapp.lists.navigation.ModifyItem
@@ -93,6 +94,7 @@ class ViewListViewModel @Inject constructor(
                         }.mapByItemCategory()
                     )
                 }
+                dispatchSharedStateChange()
             } else {
                 updateItemUiState(itemToEdit.id, UiState.Error())
             }
@@ -112,6 +114,7 @@ class ViewListViewModel @Inject constructor(
                         }.mapByItemCategory()
                     )
                 }
+                dispatchSharedStateChange()
             } else {
                 updateItemUiState(itemToCreate.id, UiState.Error())
             }
@@ -142,6 +145,7 @@ class ViewListViewModel @Inject constructor(
                         }
                     }
                 }
+                dispatchSharedStateChange()
             } else {
                 updateItemUiState(itemId, UiState.Error())
             }
@@ -196,6 +200,14 @@ class ViewListViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private suspend fun dispatchSharedStateChange() {
+        ListsSharedStateManager.dispatch(ListsSharedStateManager.Event.ListUpdate(
+            navigationHandle.key.informativeList.copy(
+                items = state.itemStates.toMutableList()
+            )
+        ))
     }
 }
 

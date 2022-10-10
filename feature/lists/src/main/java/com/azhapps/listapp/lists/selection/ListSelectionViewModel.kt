@@ -3,6 +3,7 @@ package com.azhapps.listapp.lists.selection
 import androidx.lifecycle.viewModelScope
 import com.azhapps.listapp.common.BaseViewModel
 import com.azhapps.listapp.common.UiState
+import com.azhapps.listapp.lists.ListsSharedStateManager
 import com.azhapps.listapp.lists.model.InformativeList
 import com.azhapps.listapp.lists.modify.uc.UpdateInformativeListUseCase
 import com.azhapps.listapp.lists.navigation.ListSelection
@@ -32,6 +33,14 @@ class ListSelectionViewModel @Inject constructor(
 
     init {
         dispatch(ListSelectionAction.GetAllLists)
+        viewModelScope.launch {
+            ListsSharedStateManager.flow.collect { event ->
+                when (event) {
+                    is ListsSharedStateManager.Event.ListDelete -> removeListFromState(event.listId)
+                    is ListsSharedStateManager.Event.ListUpdate -> updateListInState(event.informativeList)
+                }
+            }
+        }
     }
 
     private val editListResult by registerForNavigationResult<Pair<Boolean, InformativeList>> {
@@ -106,16 +115,7 @@ class ListSelectionViewModel @Inject constructor(
 
             val apiResult = updateInformativeListUseCase(updatedList)
             if (apiResult.success) {
-                updateState {
-                    copy(
-                        informativeListMap = informativeListMap.toMutableList().apply {
-                            val i = indexOf(firstOrNull {
-                                it.id == updatedList.id
-                            })
-                            set(i, apiResult.data!!)
-                        }.mapByListCategory()
-                    )
-                }
+                updateListInState(apiResult.data!!)
             } else {
                 updateItemUiState(updatedList.id, UiState.Error())
             }
@@ -147,15 +147,7 @@ class ListSelectionViewModel @Inject constructor(
         viewModelScope.launch {
             val result = deleteInformativeListUseCase(listId)
             if (result.success) {
-                val newLists = state.informativeListMap.toMutableList()
-                newLists.removeIf {
-                    it.id == listId
-                }
-                updateState {
-                    copy(
-                        informativeListMap = newLists.mapByListCategory()
-                    )
-                }
+               removeListFromState(listId)
             } else {
                 updateItemUiState(listId, UiState.Error())
             }
@@ -185,6 +177,31 @@ class ListSelectionViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    private fun updateListInState(updatedList: InformativeList) {
+        updateState {
+            copy(
+                informativeListMap = informativeListMap.toMutableList().apply {
+                    val i = indexOf(firstOrNull {
+                        it.id == updatedList.id
+                    })
+                    set(i, updatedList)
+                }.mapByListCategory()
+            )
+        }
+    }
+
+    private fun removeListFromState(listId: Int) {
+        val newLists = state.informativeListMap.toMutableList()
+        newLists.removeIf {
+            it.id == listId
+        }
+        updateState {
+            copy(
+                informativeListMap = newLists.mapByListCategory()
+            )
         }
     }
 }
