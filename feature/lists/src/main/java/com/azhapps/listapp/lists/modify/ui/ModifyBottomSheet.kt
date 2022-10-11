@@ -25,6 +25,7 @@ import com.azhapps.listapp.common.ui.theme.Typography
 import com.azhapps.listapp.lists.R
 import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.common.model.Group
+import com.azhapps.listapp.common.ui.NameField
 import com.azhapps.listapp.lists.modify.ModifyItemViewModel
 import com.azhapps.listapp.lists.modify.ModifyListViewModel
 import com.azhapps.listapp.lists.modify.model.ModifyAction

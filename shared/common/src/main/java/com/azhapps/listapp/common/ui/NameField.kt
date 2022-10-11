@@ -1,4 +1,4 @@
-package com.azhapps.listapp.lists.modify.ui
+package com.azhapps.listapp.common.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Text
@@ -6,7 +6,7 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.azhapps.listapp.lists.R
+import com.azhapps.listapp.common.R
 
 @Composable
 fun NameField(
@@ -18,7 +18,7 @@ fun NameField(
         value = name,
         onValueChange = onNameChange,
         label = {
-            Text(text = stringResource(id = R.string.lists_label_name))
+            Text(text = stringResource(id = R.string.label_name))
         },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,

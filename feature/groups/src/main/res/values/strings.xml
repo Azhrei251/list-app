@@ -2,7 +2,10 @@
 <resources>
     <string name="groups_title">Select a group</string>
     <string name="groups_add_new">Add a new group</string>
+    <string name="groups_remove_member">Remove member from group</string>
     <string name="groups_selection_error_title">Sorry!</string>
     <string name="groups_selection_error_message">Something went wrong, we can\'t retrieve your groups right now. Please try again later.</string>
-
+    <string name="groups_create_sheet_title">Modify group</string>
+    <string name="groups_bottom_sheet_title">Modify group</string>
+    <string name="groups_bottom_sheet_label_users">Users</string>
 </resources>

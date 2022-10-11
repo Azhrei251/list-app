@@ -6,7 +6,6 @@
     <string name="lists_selection_error_message">Something went wrong, we can\'t retrieve your lists right now. Please try again later.</string>
     <string name="lists_edit_list_sheet_title">Update list</string>
     <string name="lists_label_category">Category</string>
-    <string name="lists_label_name">Name</string>
     <string name="lists_label_group">Group</string>
     <string name="lists_button_save">Save</string>
     <string name="lists_drop_down_collapsed">Collapsed</string>
