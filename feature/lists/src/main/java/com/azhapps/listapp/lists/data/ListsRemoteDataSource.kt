@@ -55,9 +55,6 @@ interface ListsRemoteDataSource {
         @Body request: CreateCategoryRequest
     ): Response<Category>
 
-    @GET("users/groups")
-    suspend fun getGroups(): Response<List<Group>>
-
     @POST("lists/item")
     suspend fun createListItem(
         @Body request: CreateListItemRequest

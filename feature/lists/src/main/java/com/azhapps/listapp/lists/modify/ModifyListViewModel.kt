@@ -1,10 +1,10 @@
 package com.azhapps.listapp.lists.modify
 
 import androidx.lifecycle.viewModelScope
+import com.azhapps.listapp.common.uc.GetGroupsUseCase
 import com.azhapps.listapp.lists.model.isOwnedBySelf
 import com.azhapps.listapp.lists.modify.model.ModifyState
 import com.azhapps.listapp.lists.modify.uc.CreateListCategoryUseCase
-import com.azhapps.listapp.lists.modify.uc.GetGroupsUseCase
 import com.azhapps.listapp.lists.modify.uc.GetListCategoriesUseCase
 import com.azhapps.listapp.lists.navigation.ModifyList
 import dagger.hilt.android.lifecycle.HiltViewModel

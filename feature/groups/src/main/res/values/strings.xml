@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="groups_title">Select a group</string>
+    <string name="groups_add_new">Add a new group</string>
+    <string name="groups_selection_error_title">Sorry!</string>
+    <string name="groups_selection_error_message">Something went wrong, we can\'t retrieve your groups right now. Please try again later.</string>
+
+</resources>
