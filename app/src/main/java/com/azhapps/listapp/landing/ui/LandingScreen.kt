@@ -18,9 +18,7 @@ import com.azhapps.listapp.landing.LandingViewModel
 import com.azhapps.listapp.landing.model.LandingAction
 import com.azhapps.listapp.landing.model.LandingState
 import com.azhapps.listapp.main.navigation.Landing
-import com.azhapps.listapp.navigation.Groups
 import com.azhapps.listapp.navigation.Lists
-import com.azhapps.listapp.navigation.More
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
 import dev.enro.core.NavigationInstruction
@@ -40,13 +38,7 @@ fun LandingScreen() {
     )
     val state = viewModel.collectAsState()
 
-    containerController.push(
-        when (state.currentTab) {
-            LandingState.Tab.LISTS -> NavigationInstruction.Replace(Lists)
-            LandingState.Tab.GROUPS -> NavigationInstruction.Replace(Groups)
-            LandingState.Tab.MORE -> NavigationInstruction.Replace(More)
-        }
-    )
+    containerController.push(NavigationInstruction.Replace(state.currentTab.key))
 
     Scaffold(
         bottomBar = {

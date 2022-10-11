@@ -1,6 +1,7 @@
 package com.azhapps.listapp.lists.selection
 
 import androidx.lifecycle.viewModelScope
+import com.azhapps.listapp.account.SelectedAccount
 import com.azhapps.listapp.common.BaseViewModel
 import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.lists.ListsSharedStateManager
@@ -71,8 +72,9 @@ class ListSelectionViewModel @Inject constructor(
                         name = "",
                         category = action.category,
                         group = null,
+                        owner = SelectedAccount.currentAccountName!!
                     ),
-                    canDelete = false
+                    canDelete = false,
                 )
             )
 

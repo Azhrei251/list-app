@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -106,7 +108,7 @@ fun ViewListContent(
         NameAndCategory(name = listTitle, category = listCategory)
 
         LazyColumn(
-            modifier = Modifier.padding(top = ListAppTheme.defaultSpacing, bottom = ListAppTheme.defaultSpacing),
+            modifier = Modifier.padding(top = ListAppTheme.defaultSpacing),
             verticalArrangement = Arrangement.spacedBy(4.dp),
             content = {
                 itemStates.forEach { entry ->
@@ -120,6 +122,9 @@ fun ViewListContent(
                     item {
                         AddItemButton(actor)
                     }
+                }
+                item {
+                    Spacer(modifier = Modifier.height(ListAppTheme.defaultSpacing))
                 }
             }
         )

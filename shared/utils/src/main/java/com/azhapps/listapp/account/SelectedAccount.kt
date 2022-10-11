@@ -10,7 +10,6 @@ object SelectedAccount {
 
     fun init(sharedPreferences: SharedPreferences) {
         currentAccountName = sharedPreferences.getString(CURRENT_ACCOUNT_KEY, null)
-
     }
 
     fun update(

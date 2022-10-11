@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
@@ -123,9 +124,11 @@ fun ListSelectionContent(
                         category = it.value.first().informativeList.category
                     )
                 }
-                item {
-                    Spacer(modifier = Modifier.height(4.dp))
-                }
+            }
+            item(span = {
+                GridItemSpan(maxLineSpan)
+            }) {
+                Spacer(modifier = Modifier.height(ListAppTheme.defaultSpacing))
             }
         }
     )

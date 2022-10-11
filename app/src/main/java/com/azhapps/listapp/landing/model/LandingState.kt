@@ -16,10 +16,11 @@ data class LandingState(
 ) {
     enum class Tab(
         @StringRes val buttonText: Int,
-        @DrawableRes val icon: Int
+        @DrawableRes val icon: Int,
+        val key: NavigationKey
     ) {
-        LISTS(R.string.landing_button_lists, R.drawable.ic_nav_lists),
-        GROUPS(R.string.landing_button_groups, R.drawable.ic_nav_groups),
-        MORE(R.string.landing_button_more, R.drawable.ic_nav_more),
+        LISTS(R.string.landing_button_lists, R.drawable.ic_nav_lists, Lists),
+        GROUPS(R.string.landing_button_groups, R.drawable.ic_nav_groups, Groups),
+        MORE(R.string.landing_button_more, R.drawable.ic_nav_more, More),
     }
 }
