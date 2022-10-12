@@ -100,7 +100,7 @@ fun ViewListContent(
 ) {
     Column(
         Modifier
-            .background(ListAppTheme.secondaryBackgroundColor)
+            .background(ListAppTheme.alternateBackgroundColor)
             .fillMaxSize()
             .padding(top = ListAppTheme.defaultSpacing, start = ListAppTheme.defaultSpacing, end = ListAppTheme.defaultSpacing)
     ) {

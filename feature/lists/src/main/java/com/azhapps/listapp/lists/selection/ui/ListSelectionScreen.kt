@@ -94,7 +94,7 @@ fun ListSelectionContent(
 ) {
     LazyVerticalGrid(
         modifier = Modifier
-            .background(ListAppTheme.secondaryBackgroundColor)
+            .background(ListAppTheme.alternateBackgroundColor)
             .fillMaxSize()
             .padding(
                 top = ListAppTheme.defaultSpacing,

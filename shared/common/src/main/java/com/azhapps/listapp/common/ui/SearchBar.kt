@@ -28,7 +28,7 @@ fun SearchBar(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier.background(color = ListAppTheme.secondaryBackgroundColor, shape = RoundedCornerShape(16.dp))
+        modifier = modifier.background(color = ListAppTheme.alternateBackgroundColor, shape = RoundedCornerShape(16.dp))
     ) {
         TextField(
             modifier = modifier,

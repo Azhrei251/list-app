@@ -146,7 +146,7 @@ private fun GroupsContent(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(ListAppTheme.secondaryBackgroundColor)
+            .background(ListAppTheme.alternateBackgroundColor)
             .padding(start = 8.dp, end = 8.dp, top = 8.dp),
         verticalArrangement = Arrangement.spacedBy(ListAppTheme.defaultSpacing),
         content = {
