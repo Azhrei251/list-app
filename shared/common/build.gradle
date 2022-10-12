@@ -40,6 +40,8 @@ android {
 
 dependencies {
     implementation project(":shared:network")
+    implementation project(":shared:utils")
+
     implementation "androidx.core:core-ktx:$kotlin_core_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$app_compat_version"

@@ -1,8 +1,8 @@
 package com.azhapps.listapp.groups.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -170,14 +171,23 @@ private fun GroupCard(
     itemState: GroupItemState,
     actor: (GroupsAction) -> Unit,
 ) {
+    val context = LocalContext.current
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .combinedClickable(
                 onClick = {
-                    actor(GroupsAction.EditGroup(itemState.group))
+                    if (itemState.editable) {
+                        actor(GroupsAction.EditGroup(itemState.group))
+                    } else {
+                        Toast
+                            .makeText(context, context.getString(R.string.groups_unowned), Toast.LENGTH_LONG)
+                            .show()
+                    }
                 }, onLongClick = {
-                    actor(GroupsAction.ShowConfirmDeleteDialog(itemState.group))
+                    if (itemState.editable) {
+                        actor(GroupsAction.ShowConfirmDeleteDialog(itemState.group))
+                    }
                 }
             ),
         elevation = 2.dp,

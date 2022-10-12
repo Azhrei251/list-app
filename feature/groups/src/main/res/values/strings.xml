@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="groups_title">Select a group</string>
+    <string name="groups_unowned">You can\'t edit this group</string>
     <string name="groups_find_user_title">Select a user</string>
     <string name="groups_find_user_hint">Search</string>
     <string name="groups_add_new">Add a new group</string>
