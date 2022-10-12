@@ -27,17 +27,16 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.common.UiState
+import com.azhapps.listapp.common.ui.ErrorMarker
 import com.azhapps.listapp.common.ui.TopBar
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
@@ -257,22 +256,7 @@ private fun ListItem(
             UiState.Content -> {
                 //Nothing extra required
             }
-            is UiState.Error -> {
-                Text(
-                    modifier = Modifier.padding(
-                        start = 8.dp,
-                        end = 8.dp
-                    ),
-                    text = stringResource(id = R.string.lists_view_item_save_error),
-                    color = Color.Red
-                )
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = Icons.Filled.Error,
-                    contentDescription = "Error",
-                    tint = Color.Red
-                )
-            }
+            is UiState.Error -> ErrorMarker()
             UiState.Loading -> {
                 Box(modifier = Modifier.padding(start = 4.dp, end = 4.dp)) {
                     CircularProgressIndicator(

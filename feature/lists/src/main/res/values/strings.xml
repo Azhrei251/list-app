@@ -13,5 +13,4 @@
     <string name="lists_delete">Delete</string>
     <string name="lists_view_title">View list</string>
     <string name="lists_view_add_new">Add new item</string>
-    <string name="lists_view_item_save_error">Update failed</string>
 </resources>

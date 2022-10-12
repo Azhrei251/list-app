@@ -1,15 +1,23 @@
 package com.azhapps.listapp.groups.model
 
+import com.azhapps.listapp.common.model.User
+
 sealed interface GroupBottomSheetAction {
     data class UpdateName(
         val newName: String,
     ): GroupBottomSheetAction
 
-    data class AddMember(
-        val userId: Int,
+    object FindMember: GroupBottomSheetAction
+
+    data class ConfirmRemoveMember(
+        val user: User,
     ) : GroupBottomSheetAction
 
     data class RemoveMember(
-        val userId: Int,
+        val user: User,
     ) : GroupBottomSheetAction
+
+    object DismissDialog : GroupBottomSheetAction
+
+    object Finalize: GroupBottomSheetAction
 }

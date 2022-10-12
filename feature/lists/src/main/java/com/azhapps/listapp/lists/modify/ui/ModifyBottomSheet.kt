@@ -20,12 +20,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.common.UiState
+import com.azhapps.listapp.common.model.Group
+import com.azhapps.listapp.common.ui.NameField
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
 import com.azhapps.listapp.lists.R
 import com.azhapps.listapp.lists.model.Category
-import com.azhapps.listapp.common.model.Group
-import com.azhapps.listapp.common.ui.NameField
 import com.azhapps.listapp.lists.modify.ModifyItemViewModel
 import com.azhapps.listapp.lists.modify.ModifyListViewModel
 import com.azhapps.listapp.lists.modify.model.ModifyAction
@@ -41,8 +41,7 @@ import dev.enro.core.compose.dialog.configureBottomSheet
 @ExperimentalComposableDestination
 @NavigationDestination(ModifyList::class)
 fun BottomSheetDestination.ModifyListBottomSheet() {
-    configureBottomSheet(block = {
-    })
+    configureBottomSheet {}
 
     val viewModel = viewModel<ModifyListViewModel>()
 
@@ -67,8 +66,7 @@ fun BottomSheetDestination.ModifyListBottomSheet() {
 @ExperimentalComposableDestination
 @NavigationDestination(ModifyItem::class)
 fun BottomSheetDestination.ModifyItemBottomSheet() {
-    configureBottomSheet(block = {
-    })
+    configureBottomSheet {}
 
     val viewModel = viewModel<ModifyItemViewModel>()
 

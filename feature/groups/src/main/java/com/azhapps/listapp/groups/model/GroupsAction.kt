@@ -14,4 +14,10 @@ sealed interface GroupsAction {
     ) : GroupsAction
 
     object CreateGroup : GroupsAction
+
+    data class ShowConfirmDeleteDialog(
+        val group: Group
+    ): GroupsAction
+
+    object HideConfirmDeleteDialog: GroupsAction
 }

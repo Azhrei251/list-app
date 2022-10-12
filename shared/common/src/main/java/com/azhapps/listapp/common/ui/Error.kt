@@ -29,8 +29,8 @@ import com.azhapps.listapp.common.ui.theme.Typography
 //TODO Add logout functionality for refresh fail
 @Composable
 fun ErrorPage(
-    errorMessage: String,
-    errorTitle: String,
+    errorMessage: String = stringResource(id = R.string.error_default_message),
+    errorTitle: String = stringResource(id = R.string.error_default_title),
     retryText: String = stringResource(R.string.btn_retry),
     cancelText: String = stringResource(R.string.btn_cancel),
     retryAction: () -> Unit,

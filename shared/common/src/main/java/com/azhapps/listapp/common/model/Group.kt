@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Group(
-    val id: Int,
+    val id: Int = -1,
     val name: String,
     @SerializedName("user_set") val users: List<User> = emptyList()
 ): Parcelable

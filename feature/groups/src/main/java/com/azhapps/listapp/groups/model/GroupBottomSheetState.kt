@@ -1,8 +1,11 @@
 package com.azhapps.listapp.groups.model
 
+import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.common.model.User
 
 data class GroupBottomSheetState(
     val currentName: String = "",
-    val currentMembers: List<User> = emptyList()
+    val currentMembers: List<User> = emptyList(),
+    val showConfirmRemoveRememberDialog: Boolean = false,
+    val currentlySelectedUser: User? = null,
 )

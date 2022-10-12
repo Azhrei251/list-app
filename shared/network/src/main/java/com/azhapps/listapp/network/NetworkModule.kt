@@ -14,12 +14,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    const val DEFAULT_HOST = "http://localhost"
+
     @Provides
     fun provideRetrofit(
         httpClient: OkHttpClient,
     ): Retrofit = Retrofit.Builder()
         .client(httpClient)
-        .baseUrl("http://localhost")
+        .baseUrl(DEFAULT_HOST)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

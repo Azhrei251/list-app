@@ -1,5 +1,6 @@
 package com.azhapps.listapp.network
 
+import com.azhapps.listapp.network.NetworkModule.DEFAULT_HOST
 import com.azhapps.listapp.network.model.Environment
 import dagger.Module
 import dagger.Provides
@@ -16,8 +17,7 @@ class EnvironmentInterceptor: Interceptor {
         val originalRequest = chain.request()
         val newRequest = originalRequest
             .newBuilder()
-            .url(Environment.currentlySelected.baseUrl
-                    + originalRequest.url.pathSegments.joinToString(separator = "/", prefix = "/"))
+            .url(originalRequest.url.toString().replace(DEFAULT_HOST, Environment.currentlySelected.baseUrl))
             .build()
 
         return chain.proceed(newRequest)

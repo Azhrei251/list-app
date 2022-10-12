@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="groups_title">Select a group</string>
+    <string name="groups_find_user_title">Select a user</string>
+    <string name="groups_find_user_hint">Search</string>
     <string name="groups_add_new">Add a new group</string>
+    <string name="groups_add_member">Add member to group</string>
     <string name="groups_remove_member">Remove member from group</string>
     <string name="groups_selection_error_title">Sorry!</string>
     <string name="groups_selection_error_message">Something went wrong, we can\'t retrieve your groups right now. Please try again later.</string>
-    <string name="groups_create_sheet_title">Modify group</string>
+    <string name="groups_create_sheet_title">Create group</string>
     <string name="groups_bottom_sheet_title">Modify group</string>
     <string name="groups_bottom_sheet_label_users">Users</string>
+    <string name="groups_bottom_confirm_title">Are you sure?</string>
+    <string name="groups_bottom_confirm_button">Confirm</string>
+    <string name="groups_bottom_confirm_remove_group_text">Do you want to remove group %s?</string>
+    <string name="groups_bottom_confirm_remove_member_text">Do you want to remove user %1$s from group %2$s</string>
+    <string name="groups_bottom_button_save">Save</string>
 </resources>
