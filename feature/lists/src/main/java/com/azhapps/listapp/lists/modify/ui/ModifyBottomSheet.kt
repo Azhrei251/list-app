@@ -73,18 +73,20 @@ fun BottomSheetDestination.ModifyItemBottomSheet() {
 
     val state = viewModel.collectAsState()
 
-    EditListBottomSheetContent(
-        actor = viewModel::dispatch,
-        isCategoriesLoading = state.categoryUiState == UiState.Loading,
-        isGroupsLoading = state.groupUiState == UiState.Loading,
-        availableCategories = state.availableCategories,
-        availableGroups = state.availableGroups,
-        currentCategoryName = state.currentCategoryName,
-        currentListName = state.currentName,
-        currentGroupName = state.currentGroupName,
-        editable = state.editable,
-        canDelete = state.canDelete,
-    )
+    ListAppTheme {
+        EditListBottomSheetContent(
+            actor = viewModel::dispatch,
+            isCategoriesLoading = state.categoryUiState == UiState.Loading,
+            isGroupsLoading = state.groupUiState == UiState.Loading,
+            availableCategories = state.availableCategories,
+            availableGroups = state.availableGroups,
+            currentCategoryName = state.currentCategoryName,
+            currentListName = state.currentName,
+            currentGroupName = state.currentGroupName,
+            editable = state.editable,
+            canDelete = state.canDelete,
+        )
+    }
 }
 
 @Composable
@@ -169,6 +171,7 @@ fun EditListBottomSheetContent(
         }
 
         Button(
+            modifier = Modifier.fillMaxWidth(),
             onClick = { actor(ModifyAction.Finalize()) },
             enabled = editable,
         ) {

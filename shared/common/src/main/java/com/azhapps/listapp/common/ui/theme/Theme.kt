@@ -9,15 +9,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = DarkPrimary,
+    primaryVariant = DarkPrimaryVariant,
+    onPrimary = DarkOnPrimary,
+    secondary = DarkSecondary,
+    secondaryVariant = DarkSecondaryVariant
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = LightPrimary,
+    primaryVariant = LightPrimaryVariant,
+    onPrimary = LightOnPrimary,
+    secondary = LightSecondary,
+    secondaryVariant = LightSecondaryVariant,
 
     /* Other default colors to override
     background = Color.White,
@@ -47,5 +51,12 @@ fun ListAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
 
 object ListAppTheme {
     val defaultSpacing = 12.dp
-    val secondaryBackgroundColor = Color(0xFFF5F5F5)
+
+    var secondaryBackgroundColor = Color(0xFFF5F5F5)
+
+    fun init(isSystemInDarkTheme: Boolean) {
+        if (isSystemInDarkTheme) {
+            secondaryBackgroundColor = Color(0xFF3f3f3f)
+        }
+    }
 }

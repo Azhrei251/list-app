@@ -3,7 +3,6 @@
 package com.azhapps.listapp.lists.selection.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +20,7 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -189,7 +189,7 @@ fun InformativeListCard(
 
         Column(Modifier.fillMaxHeight()) {
             if (itemState.informativeList.group != null && !itemState.informativeList.isOwnedBySelf()) {
-                Image(
+                Icon(
                     imageVector = Icons.Filled.Group,
                     contentDescription = "From a group"
                 )
@@ -220,7 +220,7 @@ fun AddListCard(
         ) {
             Text(text = stringResource(id = R.string.lists_selection_add_new))
 
-            Image(
+            Icon(
                 imageVector = Icons.Filled.Add,
                 contentDescription = "Add new list",
             )

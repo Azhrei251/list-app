@@ -8,6 +8,7 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.ExposedDropdownMenuDefaults
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
@@ -67,7 +68,7 @@ private fun LoadingDropDownTextField(
         onTextChanged = onTextChanged,
         label = label
     ) {
-        Image(
+        Icon(
             imageVector = Icons.Filled.Downloading,
             contentDescription = "Loading"
         )

@@ -84,19 +84,21 @@ fun GroupBottomSheetWrapper(
     state: GroupBottomSheetState,
     actor: (GroupBottomSheetAction) -> Unit,
 ) {
-    GroupBottomSheetContent(
-        title = title,
-        currentName = state.currentName,
-        currentMembers = state.currentMembers,
-        actor = actor,
-    )
-
-    if (state.showConfirmRemoveRememberDialog) {
-        ConfirmRemoveMemberDialog(
-            user = state.currentlySelectedUser!!,
-            groupName = state.currentName,
+    ListAppTheme {
+        GroupBottomSheetContent(
+            title = title,
+            currentName = state.currentName,
+            currentMembers = state.currentMembers,
             actor = actor,
         )
+
+        if (state.showConfirmRemoveRememberDialog) {
+            ConfirmRemoveMemberDialog(
+                user = state.currentlySelectedUser!!,
+                groupName = state.currentName,
+                actor = actor,
+            )
+        }
     }
 }
 
