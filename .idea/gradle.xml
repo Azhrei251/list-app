@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/feature/auth" />
             <option value="$PROJECT_DIR$/feature/groups" />
             <option value="$PROJECT_DIR$/feature/lists" />
+            <option value="$PROJECT_DIR$/feature/more" />
             <option value="$PROJECT_DIR$/shared" />
             <option value="$PROJECT_DIR$/shared/common" />
             <option value="$PROJECT_DIR$/shared/navigation" />

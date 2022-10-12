@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="more_title">More</string>
+    <string name="more_option_settings_title">Settings</string>
+    <string name="more_option_settings_subtitle">Configure the app</string>
+    <string name="more_option_developer_options_title">Developer options</string>
+    <string name="more_option_about_title">About app</string>
+    <string name="more_option_about_subtitle">View details about the app</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_default_group">Default group</string>
+    <string name="settings_default_group_explanation">Select a group to add your lists to by default</string>
+</resources>

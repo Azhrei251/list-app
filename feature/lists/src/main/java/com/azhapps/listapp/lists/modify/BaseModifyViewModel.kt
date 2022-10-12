@@ -82,7 +82,12 @@ abstract class BaseModifyViewModel<T : NavigationKey> : BaseViewModel<ModifyStat
                     availableGroups = groups
                 )
             }
+            onGroupsUpdate()
         }
+    }
+
+    open fun onGroupsUpdate() {
+        //Empty hook
     }
 
     private fun createAndUpdateCategory(name: String) {

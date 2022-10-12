@@ -1,6 +1,8 @@
 package com.azhapps.listapp.lists.modify
 
+import android.content.SharedPreferences
 import androidx.lifecycle.viewModelScope
+import com.azhapps.listapp.account.DataModule.DEFAULT_GROUP_KEY
 import com.azhapps.listapp.common.uc.GetGroupsUseCase
 import com.azhapps.listapp.lists.model.isOwnedBySelf
 import com.azhapps.listapp.lists.modify.model.ModifyState
@@ -18,6 +20,7 @@ class ModifyListViewModel @Inject constructor(
     private val getListCategoriesUseCase: GetListCategoriesUseCase,
     private val getGroupsUseCase: GetGroupsUseCase,
     private val createListCategoryUseCase: CreateListCategoryUseCase,
+    private val sharedPreferences: SharedPreferences,
 ) : BaseModifyViewModel<ModifyList>() {
 
     override val navigationHandle by navigationHandle<ModifyList>()
@@ -59,6 +62,20 @@ class ModifyListViewModel @Inject constructor(
                     group = group,
                 )
                 navigationHandle.closeWithResult(Pair(false, newList))
+            }
+        }
+    }
+
+    override fun onGroupsUpdate() {
+        if (state.currentGroupName.isEmpty()) {
+            sharedPreferences.getInt(DEFAULT_GROUP_KEY, -1).takeIf { it != -1 }?.let { defaultId ->
+                updateState {
+                    copy(
+                        currentGroupName = availableGroups.firstOrNull {
+                            it.id == defaultId
+                        }?.name ?: ""
+                    )
+                }
             }
         }
     }

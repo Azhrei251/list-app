@@ -14,6 +14,7 @@ import dagger.hilt.components.SingletonComponent
 object DataModule {
 
     private const val SHARED_PREFERENCES_PATH = "some_preferences_path"
+    const val DEFAULT_GROUP_KEY = "default_group_key"
 
     @Provides
     fun provideSharedPreferences(

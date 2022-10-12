@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.common.model.Group
+import com.azhapps.listapp.common.ui.DropDownField
 import com.azhapps.listapp.common.ui.NameField
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
