@@ -11,3 +11,6 @@ object DeveloperOptions: NavigationKey
 
 @Parcelize
 object About: NavigationKey
+
+@Parcelize
+object PrivacyPolicy: NavigationKey

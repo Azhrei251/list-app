@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
@@ -26,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.azhapps.listapp.common.ui.DialogButton
 import com.azhapps.listapp.common.ui.TopBar
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.more.About
@@ -36,7 +32,6 @@ import com.azhapps.listapp.more.R
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 @ExperimentalComposableDestination
 @NavigationDestination(About::class)
@@ -44,38 +39,16 @@ fun AboutScreen() {
     val viewModel = viewModel<AboutViewModel>()
     val state = viewModel.collectAsState()
 
-    BottomSheetScaffold(
+    Scaffold(
         topBar = {
             TopBar(
                 title = stringResource(R.string.about_title),
             )
         },
-        sheetContent = {
-            PrivacyPolicy(actor = viewModel::dispatch)
-        }
     ) {
         Box(Modifier.padding(it)) {
             AboutContent(viewModel::dispatch)
         }
-    }
-}
-
-@Composable
-fun PrivacyPolicy(
-    actor: (AboutAction) -> Unit
-) {
-    Column {
-        Text(text = stringResource(id = R.string.about_app_dialog_privacy_title))
-
-        val scrollState = rememberScrollState()
-        Column(modifier = Modifier.verticalScroll(scrollState)) {
-            Text(text = stringResource(id = R.string.about_app_dialog_privacy_policy))
-        }
-
-        DialogButton(
-            action = { actor(AboutAction.HidePrivacyPolicy) },
-            text = stringResource(id = R.string.about_app_privacy_button_ok)
-        )
     }
 }
 
