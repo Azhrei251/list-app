@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -46,6 +47,7 @@ import com.azhapps.listapp.lists.selection.ListSelectionViewModel
 import com.azhapps.listapp.lists.selection.model.ListSelectionAction
 import com.azhapps.listapp.lists.selection.model.ListSelectionItemState
 import com.azhapps.listapp.lists.ui.lazyHeader
+import com.azhapps.listapp.lists.view.model.ViewListAction
 import com.azhapps.listapp.navigation.Lists
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
@@ -64,7 +66,16 @@ fun ListSelectionScreen() {
         topBar = {
             TopBar(
                 title = stringResource(R.string.lists_selection_title),
-            )
+            ) {
+                IconButton(onClick = {
+                    viewModel.dispatch(ListSelectionAction.CreateList(null))
+                }) {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = stringResource(id = R.string.lists_view_add_new),
+                    )
+                }
+            }
         }
     ) {
         Box(Modifier.padding(it)) {
