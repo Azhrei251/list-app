@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.R
 import com.azhapps.listapp.common.ui.TopBar
+import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.main.MainViewModel
 import com.azhapps.listapp.main.model.MainAction
 import com.azhapps.listapp.main.navigation.Welcome
@@ -36,25 +37,28 @@ fun MainScreen() {
     val navigationHandle = navigationHandle<Welcome>()
     val viewModel = viewModel<MainViewModel>()
 
-    Scaffold(
-        topBar = {
-            TopBar(
-                title = stringResource(R.string.main_title),
-                backAction = {
-                    navigationHandle.close()
-                },
-                showBackArrow = true
-            )
-        }
-    ) {
-        Box(
-            Modifier
-                .padding(it)
-                .fillMaxSize()
-                .padding(top = 24.dp),
-            contentAlignment = Alignment.TopCenter,
+    //Shouldn't be required but it is?
+    ListAppTheme {
+        Scaffold(
+            topBar = {
+                TopBar(
+                    title = stringResource(R.string.main_title),
+                    backAction = {
+                        navigationHandle.close()
+                    },
+                    showBackArrow = true
+                )
+            }
         ) {
-            MainContent(actor = viewModel::dispatch)
+            Box(
+                Modifier
+                    .padding(it)
+                    .fillMaxSize()
+                    .padding(top = 24.dp),
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                MainContent(actor = viewModel::dispatch)
+            }
         }
     }
 }

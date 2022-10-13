@@ -5,7 +5,7 @@ import com.azhapps.listapp.common.model.Group
 import com.azhapps.listapp.common.model.User
 import com.azhapps.listapp.groups.model.GroupBottomSheetState
 import com.azhapps.listapp.groups.navigation.CreateGroup
-import com.azhapps.listapp.groups.uc.GetOwnUserInfoUseCase
+import com.azhapps.listapp.common.uc.GetOwnUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.enro.core.result.closeWithResult
 import dev.enro.viewmodel.navigationHandle

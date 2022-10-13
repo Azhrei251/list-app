@@ -42,9 +42,6 @@ interface GroupsRemoteDataSource {
         @Query("filter") filter: String,
     ): Response<List<User>>
 
-    @GET("users/info")
-    suspend fun userInfo(): Response<User>
-
     @DELETE("users/group/{groupId}")
     suspend fun deleteGroup(
         @Path("groupId") groupId: Int,

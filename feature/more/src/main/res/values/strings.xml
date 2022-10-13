@@ -13,11 +13,13 @@
 
     <string name="about_title">About</string>
     <string name="about_app_version">App Version</string>
+    <string name="about_app_user_section_title">Current user</string>
+    <string name="about_app_username_title">Username</string>
+    <string name="about_app_email_title">Email</string>
     <string name="about_app_privacy_policy">Privacy policy</string>
     <string name="about_app_privacy_button" />
     <string name="about_app_privacy_button_ok">OK</string>
     <string name="about_app_dialog_privacy_title">Privacy policy</string>
-
     <string name="about_app_dialog_privacy_policy">Privacy Policy of Azh Apps
         \nThis Application collects some Personal Data from its Users.
         \nData Controller and Owner
