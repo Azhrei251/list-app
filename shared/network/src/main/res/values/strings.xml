@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="environment_prod_name">Production</string>
+    <string name="environment_test_name">Test</string>
+</resources>

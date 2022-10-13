@@ -9,6 +9,7 @@ import com.azhapps.listapp.common.BuildConfig
 import com.azhapps.listapp.more.model.MoreAction
 import com.azhapps.listapp.more.model.MoreLineState
 import com.azhapps.listapp.more.model.MoreState
+import com.azhapps.listapp.navigation.DeveloperOptions
 import com.azhapps.listapp.navigation.More
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.enro.core.forward
@@ -40,7 +41,7 @@ class MoreViewModel @Inject constructor() : BaseViewModel<MoreState, MoreAction>
                     MoreLineState(
                         title = R.string.more_option_developer_options_title,
                         icon = Icons.Filled.DeveloperMode,
-                        action = MoreAction.OpenAbout,
+                        action = MoreAction.OpenDeveloperOptions,
                     )
                 )
             }

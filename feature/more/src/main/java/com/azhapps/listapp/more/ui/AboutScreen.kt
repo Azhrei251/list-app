@@ -36,6 +36,8 @@ import com.azhapps.listapp.more.BuildConfig
 import com.azhapps.listapp.more.R
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
+import dev.enro.core.close
+import dev.enro.core.compose.navigationHandle
 
 @Composable
 @ExperimentalComposableDestination
@@ -43,11 +45,16 @@ import dev.enro.annotations.NavigationDestination
 fun AboutScreen() {
     val viewModel = viewModel<AboutViewModel>()
     val state = viewModel.collectAsState()
+    val navigationHandle = navigationHandle<About>()
 
     Scaffold(
         topBar = {
             TopBar(
                 title = stringResource(R.string.about_title),
+                backAction = {
+                    navigationHandle.close()
+                },
+                showBackArrow = true
             )
         },
     ) {

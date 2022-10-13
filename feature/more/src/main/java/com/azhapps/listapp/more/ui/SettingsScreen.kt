@@ -22,6 +22,8 @@ import com.azhapps.listapp.more.SettingsViewModel
 import com.azhapps.listapp.more.model.SettingsAction
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
+import dev.enro.core.close
+import dev.enro.core.compose.navigationHandle
 
 @Composable
 @ExperimentalComposableDestination
@@ -29,11 +31,16 @@ import dev.enro.annotations.NavigationDestination
 fun SettingsScreen() {
     val viewModel = viewModel<SettingsViewModel>()
     val state = viewModel.collectAsState()
+    val navigationHandle = navigationHandle<Settings>()
 
     Scaffold(
         topBar = {
             TopBar(
                 title = stringResource(R.string.settings_title),
+                backAction = {
+                    navigationHandle.close()
+                },
+                showBackArrow = true
             )
         }
     ) {

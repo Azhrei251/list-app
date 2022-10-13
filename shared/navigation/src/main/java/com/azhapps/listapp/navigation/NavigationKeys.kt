@@ -24,3 +24,6 @@ object Groups: NavigationKey
 
 @Parcelize
 object More: NavigationKey
+
+@Parcelize
+object DeveloperOptions: NavigationKey

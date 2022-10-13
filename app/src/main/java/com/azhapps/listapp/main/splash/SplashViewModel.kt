@@ -1,7 +1,10 @@
 package com.azhapps.listapp.main.splash
 
+import android.accounts.Account
+import android.accounts.AccountManager
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
+import com.azhapps.listapp.account.BuildConfig
 import com.azhapps.listapp.account.SelectedAccount
 import com.azhapps.listapp.main.navigation.Landing
 import com.azhapps.listapp.main.navigation.Splash
@@ -16,6 +19,7 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     private val tokenManager: TokenManager,
+    private val accountManager: AccountManager,
 ) : ViewModel() {
 
     private val navigationHandle by navigationHandle<Splash>()
@@ -29,7 +33,12 @@ class SplashViewModel @Inject constructor(
             val defaultAccountName = tokenManager.getDefaultAccountName()
             if (defaultAccountName != null) {
                 SelectedAccount.update(defaultAccountName, sharedPreferences)
-                Landing
+                if (tokenManager.getAuthToken() == null) {
+                    accountManager.removeAccountExplicitly(Account(defaultAccountName, BuildConfig.ACCOUNT_TYPE))
+                    Welcome
+                } else {
+                    Landing
+                }
             } else {
                 Welcome
             }

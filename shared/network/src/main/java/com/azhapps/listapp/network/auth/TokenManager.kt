@@ -5,6 +5,7 @@ import android.accounts.AccountManager
 import com.azhapps.listapp.account.BuildConfig
 import com.azhapps.listapp.account.SelectedAccount
 import com.azhapps.listapp.network.auth.model.AuthToken
+import com.azhapps.listapp.network.model.Environment
 import javax.inject.Inject
 
 
@@ -25,11 +26,11 @@ class TokenManager @Inject constructor(private val accountManager: AccountManage
 
     fun getAuthToken(
         accountName: String? = SelectedAccount.currentAccountName,
-    ): String? = getToken(AUTH_TOKEN_TYPE, accountName)
+    ): String? = getToken(getKey(AUTH_TOKEN_TYPE), accountName)
 
     fun getRefreshToken(
         accountName: String? = SelectedAccount.currentAccountName,
-    ): String? = getToken(REFRESH_TOKEN_TYPE, accountName)
+    ): String? = getToken(getKey(REFRESH_TOKEN_TYPE), accountName)
 
     private fun getToken(
         tokenType: String,
@@ -43,7 +44,7 @@ class TokenManager @Inject constructor(private val accountManager: AccountManage
         accountName: String? = SelectedAccount.currentAccountName,
     ): Long {
         val account = getAccount(accountName)
-        return if (account == null) -1 else accountManager.getUserData(account, EXPIRY_KEY).toLong()
+        return if (account == null) -1 else accountManager.getUserData(account, getKey(EXPIRY_KEY)).toLong()
     }
 
     fun setAuthToken(
@@ -55,11 +56,11 @@ class TokenManager @Inject constructor(private val accountManager: AccountManage
             account = Account(accountName, BuildConfig.ACCOUNT_TYPE)
             accountManager.addAccountExplicitly(account, "", null)
         }
-        accountManager.setAuthToken(account, AUTH_TOKEN_TYPE, authToken.accessToken)
-        accountManager.setAuthToken(account, REFRESH_TOKEN_TYPE, authToken.refreshToken)
+        accountManager.setAuthToken(account, getKey(AUTH_TOKEN_TYPE), authToken.accessToken)
+        accountManager.setAuthToken(account, getKey(REFRESH_TOKEN_TYPE), authToken.refreshToken)
 
         val expiryTime = System.currentTimeMillis() + (authToken.expiryTimeInSeconds * 1000)
-        accountManager.setUserData(account, EXPIRY_KEY, expiryTime.toString())
+        accountManager.setUserData(account, getKey(EXPIRY_KEY), expiryTime.toString())
     }
 
     fun clear(
@@ -73,4 +74,9 @@ class TokenManager @Inject constructor(private val accountManager: AccountManage
     ): Account? = accountManager.accounts.firstOrNull {
         it.type == BuildConfig.ACCOUNT_TYPE && it.name == accountName
     }
+
+    private fun getKey(
+        baseKey: String,
+        environment: Environment = Environment.currentlySelected,
+    ): String = baseKey + environment.tag
 }

@@ -7,9 +7,6 @@ import kotlinx.parcelize.Parcelize
 object Settings: NavigationKey
 
 @Parcelize
-object DeveloperOptions: NavigationKey
-
-@Parcelize
 object About: NavigationKey
 
 @Parcelize
