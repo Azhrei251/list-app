@@ -3,6 +3,7 @@
     <string name="main_button_call_to_action">Please log in or register to use the app</string>
     <string name="main_button_login">@string/auth_button_primary</string>
     <string name="main_button_register">@string/auth_button_secondary</string>
+    <string name="main_button_developer_options">Developer options</string>
     <string name="main_title">Welcome</string>
 
     <string name="landing_button_lists">Lists</string>
