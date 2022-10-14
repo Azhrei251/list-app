@@ -1,6 +1,5 @@
 package com.azhapps.listapp.common.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
@@ -24,7 +23,7 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun ListAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun ListAppTheme(darkTheme: Boolean = ListAppTheme.isSystemInDarkTheme, content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
@@ -43,8 +42,10 @@ object ListAppTheme {
     val defaultSpacing = 12.dp
 
     var alternateBackgroundColor = LightAlternateBackground
+    var isSystemInDarkTheme = false
 
     fun init(isSystemInDarkTheme: Boolean) {
+        ListAppTheme.isSystemInDarkTheme = isSystemInDarkTheme
         if (isSystemInDarkTheme) {
             alternateBackgroundColor = DarkAlternateBackground
         }

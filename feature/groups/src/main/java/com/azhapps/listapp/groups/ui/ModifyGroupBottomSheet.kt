@@ -71,11 +71,13 @@ fun BottomSheetDestination.CreateGroupBottomSheet() {
     val viewModel = viewModel<CreateGroupViewModel>()
     val state = viewModel.collectAsState()
 
-    GroupBottomSheetWrapper(
-        title = stringResource(id = R.string.groups_create_sheet_title),
-        state = state,
-        actor = viewModel::dispatch,
-    )
+    ListAppTheme {
+        GroupBottomSheetWrapper(
+            title = stringResource(id = R.string.groups_create_sheet_title),
+            state = state,
+            actor = viewModel::dispatch,
+        )
+    }
 }
 
 @Composable
@@ -84,21 +86,19 @@ fun GroupBottomSheetWrapper(
     state: GroupBottomSheetState,
     actor: (GroupBottomSheetAction) -> Unit,
 ) {
-    ListAppTheme {
-        GroupBottomSheetContent(
-            title = title,
-            currentName = state.currentName,
-            currentMembers = state.currentMembers,
+    GroupBottomSheetContent(
+        title = title,
+        currentName = state.currentName,
+        currentMembers = state.currentMembers,
+        actor = actor,
+    )
+
+    if (state.showConfirmRemoveRememberDialog) {
+        ConfirmRemoveMemberDialog(
+            user = state.currentlySelectedUser!!,
+            groupName = state.currentName,
             actor = actor,
         )
-
-        if (state.showConfirmRemoveRememberDialog) {
-            ConfirmRemoveMemberDialog(
-                user = state.currentlySelectedUser!!,
-                groupName = state.currentName,
-                actor = actor,
-            )
-        }
     }
 }
 

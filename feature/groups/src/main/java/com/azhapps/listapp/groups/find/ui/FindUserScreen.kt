@@ -39,18 +39,20 @@ fun FindUserScreen() {
     val viewModel = viewModel<FindUserViewModel>()
     val state = viewModel.collectAsState()
     val navigationHandle = navigationHandle()
-    when (state.uiState) {
-        UiState.Content -> FindUserScaffold(
-            userList = state.availableUsers,
-            actor = viewModel::dispatch,
-            searchFilter = state.searchFilter,
-        )
-        is UiState.Error -> ErrorPage(retryAction = {
-            viewModel.dispatch(FindUserAction.SearchUsers())
-        }, cancelAction = {
-            navigationHandle.close()
-        })
-        UiState.Loading -> LoadingPage()
+    ListAppTheme {
+        when (state.uiState) {
+            UiState.Content -> FindUserScaffold(
+                userList = state.availableUsers,
+                actor = viewModel::dispatch,
+                searchFilter = state.searchFilter,
+            )
+            is UiState.Error -> ErrorPage(retryAction = {
+                viewModel.dispatch(FindUserAction.SearchUsers())
+            }, cancelAction = {
+                navigationHandle.close()
+            })
+            UiState.Loading -> LoadingPage()
+        }
     }
 }
 
