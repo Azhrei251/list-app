@@ -116,7 +116,7 @@ class GroupsViewModel @Inject constructor(
             copy(
                 groupItemStates = groupItemStates.toMutableList().apply {
                     set(indexOfFirst {
-                        it.group.name == group.name
+                        it.group.name == group.name ||it.group.id == group.id
                     }, GroupItemState(group, newUiState))
                 }
             )

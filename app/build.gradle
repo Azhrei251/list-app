@@ -21,11 +21,36 @@ android {
             useSupportLibrary true
         }
     }
+    signingConfigs {
+        def propertiesFile = rootProject.file('local.properties')
+        def properties = new Properties()
+        properties.load(new FileInputStream(propertiesFile))
 
-    buildTypes {
         release {
+            storeFile file("$rootDir/keystores/keystore.jks")
+            storePassword properties.getProperty('keystore.password')
+            keyAlias properties.getProperty('keystore.key.alias')
+            keyPassword properties.getProperty('keystore.key.password')
+        }
+    }
+    buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+        }
+        release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    applicationVariants.all { variant ->
+        switch (variant.name) {
+            case "debug":
+                variant.resValue "string", "app_name", "Lists debug"
+                break
+            case "release":
+                variant.resValue "string", "app_name", "Lists"
+                break
         }
     }
     compileOptions {
