@@ -19,7 +19,6 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     private val tokenManager: TokenManager,
-    private val accountManager: AccountManager,
 ) : ViewModel() {
 
     private val navigationHandle by navigationHandle<Splash>()
@@ -34,7 +33,7 @@ class SplashViewModel @Inject constructor(
             if (defaultAccountName != null) {
                 SelectedAccount.update(defaultAccountName, sharedPreferences)
                 if (tokenManager.getAuthToken() == null) {
-                    accountManager.removeAccountExplicitly(Account(defaultAccountName, BuildConfig.ACCOUNT_TYPE))
+                    tokenManager.clear(defaultAccountName)
                     Welcome
                 } else {
                     Landing

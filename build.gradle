@@ -13,7 +13,7 @@ buildscript {
         material_version = "1.7.0-rc01"
         retrofit_version = '2.9.0'
 
-        version_name = "2.0"
+        version_name = "2.1"
     }
     repositories {
         google()

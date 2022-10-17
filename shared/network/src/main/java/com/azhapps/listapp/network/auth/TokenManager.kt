@@ -66,7 +66,7 @@ class TokenManager @Inject constructor(private val accountManager: AccountManage
     fun clear(
         accountName: String? = SelectedAccount.currentAccountName
     ) {
-        accountManager.removeAccount(getAccount(accountName), null, null, null)
+        accountManager.removeAccountExplicitly(getAccount(accountName))
     }
 
     private fun getAccount(

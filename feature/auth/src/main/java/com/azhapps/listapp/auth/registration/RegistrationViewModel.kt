@@ -14,6 +14,7 @@ import com.azhapps.listapp.auth.uc.RegisterAccountUseCase
 import com.azhapps.listapp.common.BaseViewModel
 import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.navigation.Lists
+import com.azhapps.listapp.navigation.Main
 import com.azhapps.listapp.network.auth.TokenManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.enro.core.forward
@@ -94,7 +95,7 @@ class RegistrationViewModel @Inject constructor(
                         uiState = UiState.Content,
                     )
                 }
-                navigationHandle.replace(Lists)
+                navigationHandle.replace(Main)
 
             } else {
                 updateState {

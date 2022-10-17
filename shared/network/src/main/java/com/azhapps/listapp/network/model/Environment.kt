@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.annotation.StringRes
+import com.azhapps.listapp.account.AppUtils.triggerRebirth
 import com.azhapps.listapp.account.ApplicationModule
 import com.azhapps.listapp.account.DataModule
 import com.azhapps.listapp.network.BuildConfig
@@ -53,15 +54,6 @@ sealed class Environment(
             currentlySelected = environment
             sharedPreferences.edit().putString(SELECTED_ENVIRONMENT_KEY, environment.tag).commit()
             triggerRebirth(ApplicationModule.applicationContext)
-        }
-
-        private fun triggerRebirth(context: Context) {
-            val packageManager = context.packageManager
-            val intent = packageManager.getLaunchIntentForPackage(context.packageName)
-            val componentName = intent!!.component
-            val mainIntent = Intent.makeRestartActivityTask(componentName)
-            context.startActivity(mainIntent)
-            exitProcess(0)
         }
     }
 }
