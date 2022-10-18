@@ -6,6 +6,7 @@
 
     <string name="error_default_title">Oops</string>
     <string name="error_default_message">Something went wrong</string>
+    <string name="error_default_button">OK</string>
     <string name="error_update_failed">Update failed</string>
 
     <string name="label_name">Name</string>

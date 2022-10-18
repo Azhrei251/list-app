@@ -8,4 +8,4 @@ data class GroupItemState(
     val group: Group,
     val uiState: UiState = UiState.Content,
     val editable: Boolean = group.isOwnedBySelf(),
-    )
+)

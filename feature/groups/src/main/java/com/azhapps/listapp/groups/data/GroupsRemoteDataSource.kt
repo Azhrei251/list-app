@@ -2,7 +2,7 @@ package com.azhapps.listapp.groups.data
 
 import com.azhapps.listapp.common.model.Group
 import com.azhapps.listapp.common.model.User
-import com.azhapps.listapp.groups.model.CreateGroupRequest
+import com.azhapps.listapp.groups.model.ModifyGroupRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -16,13 +16,13 @@ interface GroupsRemoteDataSource {
 
     @POST("users/groups")
     suspend fun createGroup(
-        @Body createGroupRequest: CreateGroupRequest
+        @Body createGroupRequest: ModifyGroupRequest
     ): Response<Group>
 
     @PUT("users/group/{groupId}")
     suspend fun updateGroup(
         @Path("groupId") groupId: Int,
-        @Body group: Group
+        @Body group: ModifyGroupRequest
     ): Response<Group>
 
     @PUT("users/group/{groupId}/member/{userId}")

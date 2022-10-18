@@ -40,6 +40,7 @@ class LoginViewModel @Inject constructor(
             )
 
             LoginAction.NavigateToRegistration -> navigationHandle.forward(Register)
+            LoginAction.DismissErrorPopup -> updateState { copy(uiState = UiState.Content) }
         }
     }
 

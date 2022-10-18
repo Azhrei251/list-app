@@ -3,8 +3,6 @@ package com.azhapps.listapp.auth.registration
 import android.content.SharedPreferences
 import androidx.lifecycle.viewModelScope
 import com.azhapps.listapp.account.SelectedAccount
-import com.azhapps.listapp.auth.login.model.LoginAction
-import com.azhapps.listapp.auth.login.model.LoginState
 import com.azhapps.listapp.auth.navigation.Login
 import com.azhapps.listapp.auth.navigation.Register
 import com.azhapps.listapp.auth.registration.model.RegistrationAction
@@ -13,7 +11,6 @@ import com.azhapps.listapp.auth.uc.GetAuthTokenUseCase
 import com.azhapps.listapp.auth.uc.RegisterAccountUseCase
 import com.azhapps.listapp.common.BaseViewModel
 import com.azhapps.listapp.common.UiState
-import com.azhapps.listapp.navigation.Lists
 import com.azhapps.listapp.navigation.Main
 import com.azhapps.listapp.network.auth.TokenManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,6 +43,7 @@ class RegistrationViewModel @Inject constructor(
                 action.password,
                 action.email
             )
+            RegistrationAction.DismissErrorPopup -> updateState { copy(uiState = UiState.Content) }
         }
     }
 

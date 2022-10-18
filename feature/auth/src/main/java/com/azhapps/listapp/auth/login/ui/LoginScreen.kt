@@ -1,4 +1,4 @@
-package com.azhapps.listapp.auth.ui
+package com.azhapps.listapp.auth.login.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +26,9 @@ import com.azhapps.listapp.auth.login.LoginViewModel
 import com.azhapps.listapp.login.R
 import com.azhapps.listapp.auth.login.model.LoginAction
 import com.azhapps.listapp.auth.navigation.Login
+import com.azhapps.listapp.auth.ui.PasswordField
+import com.azhapps.listapp.auth.ui.UsernameField
+import com.azhapps.listapp.common.ui.ContentWithDialogs
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
 import dev.enro.core.close
@@ -37,6 +40,7 @@ import dev.enro.core.compose.navigationHandle
 fun LoginScreen() {
     val viewModel = viewModel<LoginViewModel>()
     val navigationHandle = navigationHandle<Login>()
+    val state = viewModel.collectAsState()
 
     Scaffold(
         topBar = {
@@ -50,7 +54,13 @@ fun LoginScreen() {
         }
     ) {
         Box(Modifier.padding(it)) {
-            LoginContent(actor = viewModel::dispatch)
+            ContentWithDialogs(
+                uiState = state.uiState,
+                onErrorDismiss = { viewModel.dispatch(LoginAction.DismissErrorPopup) },
+                onErrorButton = { viewModel.dispatch(LoginAction.DismissErrorPopup) }
+            ) {
+                LoginContent(actor = viewModel::dispatch)
+            }
         }
     }
 }
