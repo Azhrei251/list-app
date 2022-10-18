@@ -195,7 +195,7 @@ fun InformativeListCard(
                 text = itemState.informativeList.date.toDisplayDate(),
                 style = Typography.subtitle1
             )
-            Text(text = "${itemState.informativeList.items.size} items")
+            Text(text = "${itemState.informativeList.items.count { !it.completed }}/${itemState.informativeList.items.size} items remaining")
         }
 
         Column(Modifier.fillMaxHeight()) {
