@@ -1,6 +1,7 @@
 package com.azhapps.listapp.groups
 
 import androidx.lifecycle.viewModelScope
+import com.azhapps.listapp.common.model.Group
 import com.azhapps.listapp.common.model.User
 import com.azhapps.listapp.groups.model.GroupBottomSheetState
 import com.azhapps.listapp.groups.navigation.ModifyGroup
@@ -39,6 +40,7 @@ class ModifyGroupViewModel @Inject constructor(
                         }
                     )
                 }
+                notifyGroupUpdate()
             } else {
                 //TODO error handle
             }
@@ -59,6 +61,7 @@ class ModifyGroupViewModel @Inject constructor(
                         }
                     )
                 }
+                notifyGroupUpdate()
             } else {
                 //TODO error handle
             }
@@ -72,5 +75,11 @@ class ModifyGroupViewModel @Inject constructor(
                 users = state.currentMembers,
             )
         )
+    }
+
+    private suspend fun notifyGroupUpdate() {
+        GroupsSharedStateManager.dispatch(GroupsSharedStateManager.Event.GroupUpdate(navigationHandle.key.group.copy(
+            users = state.currentMembers
+        )))
     }
 }

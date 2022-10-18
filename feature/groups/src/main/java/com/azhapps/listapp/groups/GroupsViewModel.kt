@@ -36,6 +36,14 @@ class GroupsViewModel @Inject constructor(
 
     init {
         dispatch(GroupsAction.GetGroups)
+        viewModelScope.launch {
+            GroupsSharedStateManager.flow.collect { event ->
+                when (event) {
+                    is GroupsSharedStateManager.Event.GroupDelete -> removeGroupFromState(event.groupId)
+                    is GroupsSharedStateManager.Event.GroupUpdate -> updateGroupItemState(event.group, UiState.Content)
+                }
+            }
+        }
     }
 
     override fun initialState() = GroupsState()
@@ -128,18 +136,22 @@ class GroupsViewModel @Inject constructor(
         viewModelScope.launch {
             val result = deleteGroupUseCase(group)
             if (result.success) {
-                updateState {
-                    copy(
-                        groupItemStates = groupItemStates.toMutableList().apply {
-                            removeIf {
-                                it.group == group
-                            }
-                        }
-                    )
-                }
+                removeGroupFromState(groupId = group.id)
             } else {
                 updateGroupItemState(group, UiState.Error(result.error))
             }
+        }
+    }
+
+    private fun removeGroupFromState(groupId: Int) {
+        updateState {
+            copy(
+                groupItemStates = groupItemStates.toMutableList().apply {
+                    removeIf {
+                        it.group.id == groupId
+                    }
+                }
+            )
         }
     }
 

@@ -1,10 +1,10 @@
-package com.azhapps.listapp.lists
+package com.azhapps.listapp.groups
 
-import com.azhapps.listapp.lists.model.InformativeList
+import com.azhapps.listapp.common.model.Group
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
-object ListsSharedStateManager {
+object GroupsSharedStateManager {
     private val _flow by lazy {
         MutableSharedFlow<Event>()
     }
@@ -15,12 +15,12 @@ object ListsSharedStateManager {
     }
 
     sealed interface Event {
-        data class ListUpdate(
-            val informativeList: InformativeList,
+        data class GroupUpdate(
+            val group: Group,
         ) : Event
 
-        data class ListDelete(
-            val listId: Int,
+        data class GroupDelete(
+            val groupId: Int,
         ) : Event
     }
 }

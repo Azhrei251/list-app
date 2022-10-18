@@ -181,7 +181,11 @@ private fun AddMemberItem(
     ClickablePill(onClick = {
         actor(GroupBottomSheetAction.FindMember)
     }) {
-        Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(id = R.string.groups_add_member))
+        Icon(
+            imageVector = Icons.Filled.Add,
+            contentDescription = stringResource(id = R.string.groups_add_member),
+            tint = MaterialTheme.colors.onSecondary
+        )
     }
 }
 
