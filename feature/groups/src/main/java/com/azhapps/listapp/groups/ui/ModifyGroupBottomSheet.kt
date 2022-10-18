@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.common.model.User
+import com.azhapps.listapp.common.ui.BottomSheetContent
 import com.azhapps.listapp.common.ui.DialogButton
 import com.azhapps.listapp.common.ui.NameField
 import com.azhapps.listapp.common.ui.OverflowRow
@@ -42,23 +43,22 @@ import com.azhapps.listapp.groups.navigation.ModifyGroup
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
 import dev.enro.core.compose.dialog.BottomSheetDestination
-import dev.enro.core.compose.dialog.configureBottomSheet
 
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 @ExperimentalComposableDestination
 @NavigationDestination(ModifyGroup::class)
 fun BottomSheetDestination.ModifyGroupBottomSheet() {
-    configureBottomSheet {}
-
     val viewModel = viewModel<ModifyGroupViewModel>()
     val state = viewModel.collectAsState()
 
-    GroupBottomSheetWrapper(
-        title = stringResource(id = R.string.groups_bottom_sheet_title),
-        state = state,
-        actor = viewModel::dispatch,
-    )
+    BottomSheetContent {
+        GroupBottomSheetWrapper(
+            title = stringResource(id = R.string.groups_bottom_sheet_title),
+            state = state,
+            actor = viewModel::dispatch,
+        )
+    }
 }
 
 @Composable
@@ -66,12 +66,10 @@ fun BottomSheetDestination.ModifyGroupBottomSheet() {
 @ExperimentalComposableDestination
 @NavigationDestination(CreateGroup::class)
 fun BottomSheetDestination.CreateGroupBottomSheet() {
-    configureBottomSheet {}
-
     val viewModel = viewModel<CreateGroupViewModel>()
     val state = viewModel.collectAsState()
 
-    ListAppTheme {
+    BottomSheetContent {
         GroupBottomSheetWrapper(
             title = stringResource(id = R.string.groups_create_sheet_title),
             state = state,

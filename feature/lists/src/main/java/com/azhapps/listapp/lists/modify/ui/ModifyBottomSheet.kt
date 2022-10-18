@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.common.model.Group
+import com.azhapps.listapp.common.ui.BottomSheetContent
 import com.azhapps.listapp.common.ui.DropDownField
 import com.azhapps.listapp.common.ui.NameField
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
@@ -35,31 +36,29 @@ import com.azhapps.listapp.lists.navigation.ModifyList
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
 import dev.enro.core.compose.dialog.BottomSheetDestination
-import dev.enro.core.compose.dialog.configureBottomSheet
 
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 @ExperimentalComposableDestination
 @NavigationDestination(ModifyList::class)
 fun BottomSheetDestination.ModifyListBottomSheet() {
-    configureBottomSheet {}
-
     val viewModel = viewModel<ModifyListViewModel>()
-
     val state = viewModel.collectAsState()
 
-    EditListBottomSheetContent(
-        actor = viewModel::dispatch,
-        isCategoriesLoading = state.categoryUiState == UiState.Loading,
-        isGroupsLoading = state.groupUiState == UiState.Loading,
-        availableCategories = state.availableCategories,
-        availableGroups = state.availableGroups,
-        currentCategoryName = state.currentCategoryName,
-        currentListName = state.currentName,
-        currentGroupName = state.currentGroupName,
-        editable = state.editable,
-        canDelete = state.canDelete,
-    )
+    BottomSheetContent {
+        EditListBottomSheetContent(
+            actor = viewModel::dispatch,
+            isCategoriesLoading = state.categoryUiState == UiState.Loading,
+            isGroupsLoading = state.groupUiState == UiState.Loading,
+            availableCategories = state.availableCategories,
+            availableGroups = state.availableGroups,
+            currentCategoryName = state.currentCategoryName,
+            currentListName = state.currentName,
+            currentGroupName = state.currentGroupName,
+            editable = state.editable,
+            canDelete = state.canDelete,
+        )
+    }
 }
 
 @Composable
@@ -67,13 +66,10 @@ fun BottomSheetDestination.ModifyListBottomSheet() {
 @ExperimentalComposableDestination
 @NavigationDestination(ModifyItem::class)
 fun BottomSheetDestination.ModifyItemBottomSheet() {
-    configureBottomSheet {}
-
     val viewModel = viewModel<ModifyItemViewModel>()
-
     val state = viewModel.collectAsState()
 
-    ListAppTheme {
+    BottomSheetContent {
         EditListBottomSheetContent(
             actor = viewModel::dispatch,
             isCategoriesLoading = state.categoryUiState == UiState.Loading,

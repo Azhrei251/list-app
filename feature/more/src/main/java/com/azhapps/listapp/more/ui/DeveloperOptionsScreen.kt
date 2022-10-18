@@ -31,23 +31,25 @@ fun DeveloperOptionsScreen() {
     val viewModel = viewModel<DeveloperOptionsViewModel>()
     val state = viewModel.collectAsState()
 
-    Scaffold(
-        topBar = {
-            TopBar(
-                title = stringResource(R.string.settings_title),
-                backAction = {
-                    navigationHandle.close()
-                },
-                showBackArrow = true
-            )
-        }
-    ) {
-        Box(Modifier.padding(it)) {
-            DeveloperOptionsContent(
-                currentEnvironment = state.currentEnvironment,
-                availableEnvironments = state.availableEnvironments,
-                actor = viewModel::dispatch
-            )
+    ListAppTheme {
+        Scaffold(
+            topBar = {
+                TopBar(
+                    title = stringResource(R.string.settings_title),
+                    backAction = {
+                        navigationHandle.close()
+                    },
+                    showBackArrow = true
+                )
+            }
+        ) {
+            Box(Modifier.padding(it)) {
+                DeveloperOptionsContent(
+                    currentEnvironment = state.currentEnvironment,
+                    availableEnvironments = state.availableEnvironments,
+                    actor = viewModel::dispatch
+                )
+            }
         }
     }
 }

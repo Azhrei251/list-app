@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.azhapps.listapp.common.R
 import com.azhapps.listapp.common.UiState
+import com.azhapps.listapp.common.ui.theme.ListAppTheme
 
 @Composable
 fun ContentWithDialogs(
@@ -53,7 +53,7 @@ fun ContentWithDialogs(
             Box(
                 modifier = Modifier
                     .background(
-                        color = MaterialTheme.colors.background,
+                        color = ListAppTheme.alternateBackgroundColor,
                         shape = RoundedCornerShape(4.dp),
                     )
                     .padding(28.dp),
