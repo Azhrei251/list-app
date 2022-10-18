@@ -14,14 +14,19 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-
-        buildConfigField  "String", "ACCOUNT_TYPE", '"com.azhapps"'
-        resValue "string", "account_type", 'com.azhapps'
-        resValue "string", "account_label", 'Azhapps'
     }
 
     buildTypes {
+        debug {
+            buildConfigField  "String", "ACCOUNT_TYPE", '"com.azhapps.debug"'
+            resValue "string", "account_type", 'com.azhapps.debug'
+            resValue "string", "account_label", 'Azhapps Debug'
+        }
         release {
+            buildConfigField  "String", "ACCOUNT_TYPE", '"com.azhapps"'
+            resValue "string", "account_type", 'com.azhapps'
+            resValue "string", "account_label", 'Azhapps'
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
