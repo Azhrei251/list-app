@@ -1,9 +1,9 @@
 package com.azhapps.listapp.lists.data
 
 import com.azhapps.listapp.lists.model.Category
-import com.azhapps.listapp.common.model.Group
 import com.azhapps.listapp.lists.model.InformativeList
 import com.azhapps.listapp.lists.model.ListItem
+import com.azhapps.listapp.lists.model.requests.ModifyInformativeListRequest
 import com.azhapps.listapp.lists.modify.model.CreateCategoryRequest
 import com.azhapps.listapp.lists.selection.model.CreateListRequest
 import com.azhapps.listapp.lists.view.model.CreateListItemRequest
@@ -29,7 +29,7 @@ interface ListsRemoteDataSource {
     @PUT("lists/{listId}")
     suspend fun updateList(
         @Path("listId") listId: Int,
-        @Body request: InformativeList
+        @Body request: ModifyInformativeListRequest
     ): Response<InformativeList>
 
     @DELETE("lists/{listId}")

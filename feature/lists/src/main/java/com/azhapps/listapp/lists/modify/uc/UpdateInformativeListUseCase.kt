@@ -2,6 +2,7 @@ package com.azhapps.listapp.lists.modify.uc
 
 import com.azhapps.listapp.lists.data.ListsRemoteDataSource
 import com.azhapps.listapp.lists.model.InformativeList
+import com.azhapps.listapp.lists.model.requests.toModifyRequest
 import com.azhapps.listapp.network.Api.callApi
 import javax.inject.Inject
 
@@ -10,6 +11,6 @@ class UpdateInformativeListUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(informativeList: InformativeList) =
         callApi {
-            listsRemoteDataSource.updateList(informativeList.id, informativeList)
+            listsRemoteDataSource.updateList(informativeList.id, informativeList.toModifyRequest())
         }
 }
