@@ -129,12 +129,6 @@ fun ListSelectionContent(
                         )
                     }
                 }
-                item {
-                    AddListCard(
-                        actor = actor,
-                        category = it.value.first().informativeList.category
-                    )
-                }
             }
             item(span = {
                 GridItemSpan(maxLineSpan)
@@ -156,8 +150,7 @@ private fun ListCard(
             .combinedClickable(
                 onClick = { onClick() },
                 onLongClick = { onLongClick?.invoke() }
-            )
-            .height(84.dp),
+            ),
         elevation = 2.dp,
     ) {
         Row(
@@ -187,7 +180,6 @@ fun InformativeListCard(
                 .weight(1F)
         ) {
             Text(
-                modifier = Modifier.weight(1F),
                 text = itemState.informativeList.name,
                 style = Typography.h6
             )
@@ -210,31 +202,6 @@ fun InformativeListCard(
                 Spacer(modifier = Modifier.weight(1F))
                 CircularProgressIndicator()
             }
-        }
-    }
-}
-
-@Composable
-fun AddListCard(
-    category: Category?,
-    actor: (ListSelectionAction) -> Unit
-) {
-    ListCard(
-        onClick = {
-            actor(ListSelectionAction.CreateList(category))
-        }
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(ListAppTheme.defaultSpacing, Alignment.CenterVertically)
-        ) {
-            Text(text = stringResource(id = R.string.lists_selection_add_new))
-
-            Icon(
-                imageVector = Icons.Filled.Add,
-                contentDescription = "Add new list",
-            )
         }
     }
 }
