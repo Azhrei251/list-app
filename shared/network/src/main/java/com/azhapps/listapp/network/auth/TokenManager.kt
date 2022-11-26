@@ -12,6 +12,7 @@ import javax.inject.Inject
 private const val AUTH_TOKEN_TYPE = "oauth"
 private const val REFRESH_TOKEN_TYPE = "oauth_refresh"
 private const val EXPIRY_KEY = "token_expiry"
+private const val EXPIRY_TIME_OFFSET = 1000L
 
 class TokenManager @Inject constructor(private val accountManager: AccountManager) {
 
@@ -40,7 +41,13 @@ class TokenManager @Inject constructor(private val accountManager: AccountManage
         return if (account == null) null else accountManager.peekAuthToken(account, tokenType)
     }
 
-    fun getExpiryTime(
+    fun isTokenExpired(
+        tokenExpiryTime: Long = getExpiryTime(),
+        currentTime: Long = System.currentTimeMillis(),
+        offset: Long = EXPIRY_TIME_OFFSET
+    ): Boolean = tokenExpiryTime < (currentTime - offset)
+
+    private fun getExpiryTime(
         accountName: String? = SelectedAccount.currentAccountName,
     ): Long {
         val account = getAccount(accountName)

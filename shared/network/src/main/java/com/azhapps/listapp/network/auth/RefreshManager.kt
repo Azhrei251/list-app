@@ -6,6 +6,8 @@ import com.azhapps.listapp.network.BuildConfig
 import com.azhapps.listapp.network.data.AuthRemoteDataSource
 import com.azhapps.listapp.network.model.Environment
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -28,29 +30,47 @@ object RefreshManager {
         .build()
 
     private val refreshTokenUseCase = RefreshTokenUseCase(retrofit.create(AuthRemoteDataSource::class.java))
+    private val mutex = Mutex()
 
     fun refreshAuthToken(
         clearOnFailure: Boolean,
         tokenManager: TokenManager = TokenManager(AccountManager.get(ApplicationModule.applicationContext))
     ): String = runBlocking {
-        val refreshToken = tokenManager.getRefreshToken()
-        if (refreshToken != null) {
-            val refreshResult = refreshTokenUseCase(refreshToken)
+        mutex.withLock {
+            doTokenRefresh(clearOnFailure, tokenManager)
+        }
+    }
 
-            if (refreshResult.success) {
-                tokenManager.setAuthToken(refreshResult.data!!)
-                refreshResult.data.accessToken
+    private suspend fun doTokenRefresh(
+        clearOnFailure: Boolean,
+        tokenManager: TokenManager = TokenManager(AccountManager.get(ApplicationModule.applicationContext))
+    ): String {
+        if (tokenManager.isTokenExpired()) {
+            val refreshToken = tokenManager.getRefreshToken()
+            if (refreshToken != null) {
+                val refreshResult = refreshTokenUseCase(refreshToken)
+
+                if (refreshResult.success) {
+                    tokenManager.setAuthToken(refreshResult.data!!)
+                    return refreshResult.data.accessToken
+                } else {
+                    if (clearOnFailure) {
+                        tokenManager.clear()
+                    }
+                    throw IOException("Failed to refresh auth token", refreshResult.error)
+                }
             } else {
                 if (clearOnFailure) {
                     tokenManager.clear()
                 }
-                throw IOException("Failed to refresh auth token", refreshResult.error)
+                throw IOException("Refresh token missing")
             }
         } else {
-            if (clearOnFailure) {
-                tokenManager.clear()
+            val accessToken = tokenManager.getAuthToken()
+            if (accessToken.isNullOrBlank()) {
+                throw IOException("Access token was not expired but blank")
             }
-            throw IOException("Refresh token missing")
+            return accessToken
         }
     }
 }
