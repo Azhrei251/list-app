@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.account.toDisplayDate
@@ -73,10 +74,14 @@ fun ListSelectionScreen() {
     ) {
         Box(Modifier.padding(it)) {
             when (state.uiState) {
-                UiState.Content -> ListSelectionContent(
-                    actor = viewModel::dispatch,
-                    informativeListMap = state.informativeListMap
-                )
+                UiState.Content -> if (state.informativeListMap.isNotEmpty()) {
+                    ListSelectionContent(
+                        actor = viewModel::dispatch,
+                        informativeListMap = state.informativeListMap
+                    )
+                } else {
+                    ListSelectionEmptyContent()
+                }
 
                 is UiState.Error -> ErrorPage(
                     errorMessage = stringResource(id = R.string.lists_selection_error_message),
@@ -87,6 +92,23 @@ fun ListSelectionScreen() {
 
                 UiState.Loading -> LoadingPage()
             }
+        }
+    }
+}
+
+@Composable
+private fun ListSelectionEmptyContent() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(all = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row {
+            Text(
+                text = stringResource(id = R.string.lists_selection_empty),
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
