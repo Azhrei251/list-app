@@ -7,4 +7,5 @@ data class ViewListState(
     val itemStates: Map<String, ItemCategoryState>,
     val listTitle: String,
     val listCategory: String,
+    val refreshing: Boolean = false,
 )

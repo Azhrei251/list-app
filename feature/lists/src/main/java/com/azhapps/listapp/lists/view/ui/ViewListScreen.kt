@@ -21,12 +21,16 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,6 +53,7 @@ import com.azhapps.listapp.lists.view.model.ViewListAction
 import dev.enro.core.close
 import dev.enro.core.compose.navigationHandle
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ViewListScreen(viewModel: ViewListViewModel) {
     val navigationHandle = navigationHandle<ViewList>()
@@ -74,13 +79,20 @@ fun ViewListScreen(viewModel: ViewListViewModel) {
             }
         }
     ) {
-        Box(Modifier.padding(it)) {
+        val pullRefreshState = rememberPullRefreshState(state.refreshing, { viewModel.dispatch(ViewListAction.RefreshList) })
+
+        Box(
+            Modifier
+                .padding(it)
+                .pullRefresh(pullRefreshState)
+        ) {
             ViewListContent(
                 listTitle = state.listTitle,
                 listCategory = state.listCategory,
                 itemStates = state.itemStates,
                 actor = viewModel::dispatch,
             )
+            PullRefreshIndicator(state.refreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
         }
     }
 }

@@ -16,6 +16,7 @@ import com.azhapps.listapp.lists.view.model.ViewListAction
 import com.azhapps.listapp.lists.view.model.ViewListState
 import com.azhapps.listapp.lists.view.uc.CreateListItemUseCase
 import com.azhapps.listapp.lists.view.uc.DeleteListItemUseCase
+import com.azhapps.listapp.lists.view.uc.GetInformativeListUseCase
 import com.azhapps.listapp.lists.view.uc.UpdateListItemUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.enro.core.result.registerForNavigationResult
@@ -28,8 +29,11 @@ class ViewListViewModel @Inject constructor(
     val createListItemUseCase: CreateListItemUseCase,
     val updateListItemUseCase: UpdateListItemUseCase,
     val deleteListItemUseCase: DeleteListItemUseCase,
+    val getInformativeListUseCase: GetInformativeListUseCase,
 ) : BaseViewModel<ViewListState, ViewListAction>() {
+
     private val navigationHandle by navigationHandle<ViewList>()
+    private var informativeList = navigationHandle.key.informativeList
 
     private val createItemResult by registerForNavigationResult<Pair<Boolean, ListItem>> {
         if (it.first) {
@@ -47,13 +51,7 @@ class ViewListViewModel @Inject constructor(
         }
     }
 
-    override fun initialState() = navigationHandle.key.informativeList.let { informativeList ->
-        ViewListState(
-            itemStates = informativeList.items.mapByItemCategory(),
-            listTitle = informativeList.name,
-            listCategory = informativeList.category?.name ?: UNCATEGORIZED
-        )
-    }
+    override fun initialState() = buildStateFromList()
 
     override fun dispatch(action: ViewListAction) {
         when (action) {
@@ -75,6 +73,39 @@ class ViewListViewModel @Inject constructor(
             )
 
             is ViewListAction.ToggleCollapsed -> toggleCategoryCollapsed(action.category)
+
+            is ViewListAction.RefreshList -> refreshList()
+        }
+    }
+
+    private fun buildStateFromList() = informativeList.let { informativeList ->
+        ViewListState(
+            itemStates = informativeList.items.mapByItemCategory(),
+            listTitle = informativeList.name,
+            listCategory = informativeList.category?.name ?: UNCATEGORIZED
+        )
+    }
+
+    private fun refreshList() {
+        updateState {
+            copy(
+                refreshing = true
+            )
+        }
+        viewModelScope.launch {
+            val apiResult = getInformativeListUseCase(informativeList.id)
+
+            if (apiResult.success) {
+                informativeList = apiResult.data!!
+                updateState {
+                    buildStateFromList()
+                }
+            }
+            updateState {
+                copy(
+                    refreshing = false
+                )
+            }
         }
     }
 
@@ -82,7 +113,7 @@ class ViewListViewModel @Inject constructor(
         viewModelScope.launch {
             updateItemUiState(itemToEdit.id, UiState.Loading)
 
-            val apiResult = updateListItemUseCase(itemToEdit, navigationHandle.key.informativeList.id)
+            val apiResult = updateListItemUseCase(itemToEdit, informativeList.id)
             if (apiResult.success) {
                 updateState {
                     copy(
@@ -105,7 +136,7 @@ class ViewListViewModel @Inject constructor(
         viewModelScope.launch {
             updateItemUiState(itemToCreate.id, UiState.Loading)
 
-            val apiResult = createListItemUseCase(itemToCreate, navigationHandle.key.informativeList.id)
+            val apiResult = createListItemUseCase(itemToCreate, informativeList.id)
             if (apiResult.success) {
                 updateState {
                     copy(
@@ -204,7 +235,7 @@ class ViewListViewModel @Inject constructor(
 
     private suspend fun dispatchSharedStateChange() {
         ListsSharedStateManager.dispatch(ListsSharedStateManager.Event.ListUpdate(
-            navigationHandle.key.informativeList.copy(
+            informativeList.copy(
                 items = state.itemStates.toMutableList()
             )
         ))

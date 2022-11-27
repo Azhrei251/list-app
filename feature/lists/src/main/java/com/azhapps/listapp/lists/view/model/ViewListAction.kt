@@ -3,21 +3,23 @@ package com.azhapps.listapp.lists.view.model
 import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.model.ListItem
 
-sealed class ViewListAction {
+sealed interface ViewListAction {
+
+    object RefreshList : ViewListAction
 
     data class CreateItem(
         val category: Category?
-    ) : ViewListAction()
+    ) : ViewListAction
 
     data class ModifyItem(
         val item: ListItem
-    ) : ViewListAction()
+    ) : ViewListAction
 
     data class ToggleComplete(
         val item: ListItem
-    ) : ViewListAction()
+    ) : ViewListAction
 
     data class ToggleCollapsed(
         val category: Category?
-    ) : ViewListAction()
+    ) : ViewListAction
 }
