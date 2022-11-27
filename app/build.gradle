@@ -22,15 +22,11 @@ android {
         }
     }
     signingConfigs {
-        def propertiesFile = rootProject.file('local.properties')
-        def properties = new Properties()
-        properties.load(new FileInputStream(propertiesFile))
-
         release {
             storeFile file("$rootDir/keystores/keystore.jks")
-            storePassword properties.getProperty('keystore.password')
-            keyAlias properties.getProperty('keystore.key.alias')
-            keyPassword properties.getProperty('keystore.key.password')
+            storePassword rootProject.ext.storePassword
+            keyAlias rootProject.ext.keyAlias
+            keyPassword rootProject.ext.keyPassword
         }
     }
     buildTypes {

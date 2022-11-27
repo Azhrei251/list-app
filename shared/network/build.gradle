@@ -15,15 +15,12 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
         buildConfigField  "String", "TEST_BASE_URL", '"http://192.168.0.3:8000"'
-        buildConfigField  "String", "TEST_CLIENT_ID", properties.getProperty('test.client.id')
-        buildConfigField  "String", "TEST_CLIENT_SECRET", properties.getProperty('test.client.secret')
+        buildConfigField  "String", "TEST_CLIENT_ID", rootProject.ext.testClientId
+        buildConfigField  "String", "TEST_CLIENT_SECRET", rootProject.ext.testClientSecret
         buildConfigField  "String", "PROD_BASE_URL", '"https://mobile.azhapps.com"'
-        buildConfigField  "String", "PROD_CLIENT_ID", properties.getProperty('prod.client.id')
-        buildConfigField  "String", "PROD_CLIENT_SECRET", properties.getProperty('prod.client.secret')
+        buildConfigField  "String", "PROD_CLIENT_ID", rootProject.ext.prodClientId
+        buildConfigField  "String", "PROD_CLIENT_SECRET", rootProject.ext.prodClientSecret
         buildConfigField  "String", "VERSION_NAME", '"' + version_name + '"'
     }
 
