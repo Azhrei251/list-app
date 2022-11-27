@@ -20,12 +20,16 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,6 +54,7 @@ import com.azhapps.listapp.lists.ui.lazyHeader
 import dev.enro.core.close
 import dev.enro.core.compose.navigationHandle
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ListSelectionScreen() {
     val navigationHandle = navigationHandle()
@@ -72,7 +77,12 @@ fun ListSelectionScreen() {
             }
         }
     ) {
-        Box(Modifier.padding(it)) {
+        val pullRefreshState = rememberPullRefreshState(state.refreshing, { viewModel.dispatch(ListSelectionAction.GetAllLists(true)) })
+        Box(
+            Modifier
+                .padding(it)
+                .pullRefresh(pullRefreshState)
+        ) {
             when (state.uiState) {
                 UiState.Content -> if (state.informativeListMap.isNotEmpty()) {
                     ListSelectionContent(
@@ -86,12 +96,13 @@ fun ListSelectionScreen() {
                 is UiState.Error -> ErrorPage(
                     errorMessage = stringResource(id = R.string.lists_selection_error_message),
                     errorTitle = stringResource(id = R.string.lists_selection_error_title),
-                    retryAction = { viewModel.dispatch(ListSelectionAction.GetAllLists) },
+                    retryAction = { viewModel.dispatch(ListSelectionAction.GetAllLists(false)) },
                     cancelAction = { navigationHandle.close() }
                 )
 
                 UiState.Loading -> LoadingPage()
             }
+            PullRefreshIndicator(state.refreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
         }
     }
 }

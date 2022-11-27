@@ -34,7 +34,7 @@ class ListSelectionViewModel @Inject constructor(
     private val navigationHandle by navigationHandle<Landing>()
 
     init {
-        dispatch(ListSelectionAction.GetAllLists)
+        dispatch(ListSelectionAction.GetAllLists(false))
         viewModelScope.launch {
             ListsSharedStateManager.flow.collect { event ->
                 when (event) {
@@ -62,7 +62,7 @@ class ListSelectionViewModel @Inject constructor(
 
     override fun dispatch(action: ListSelectionAction) {
         when (action) {
-            is ListSelectionAction.GetAllLists -> getAllLists()
+            is ListSelectionAction.GetAllLists -> getAllLists(action.isRefresh)
 
             is ListSelectionAction.EditList -> editListResult.open(ModifyList(action.informativeList))
 
@@ -86,12 +86,19 @@ class ListSelectionViewModel @Inject constructor(
 
     override fun initialState() = ListSelectionState()
 
-    private fun getAllLists() {
+    private fun getAllLists(isRefresh: Boolean) {
         updateState {
-            copy(
-                uiState = UiState.Loading
-            )
+            if (isRefresh) {
+                copy(
+                    refreshing = true
+                )
+            } else {
+                copy(
+                    uiState = UiState.Loading
+                )
+            }
         }
+
         viewModelScope.launch {
             val result = getPersonalListsUseCase()
 
@@ -100,12 +107,14 @@ class ListSelectionViewModel @Inject constructor(
                     copy(
                         uiState = UiState.Content,
                         informativeListMap = result.data!!.mapByListCategory().toMutableMap(),
+                        refreshing = false,
                     )
                 }
             } else {
                 updateState {
                     copy(
-                        uiState = UiState.Error(result.error)
+                        uiState = UiState.Error(result.error),
+                        refreshing = false,
                     )
                 }
             }
