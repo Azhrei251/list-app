@@ -19,7 +19,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -36,6 +35,7 @@ import com.azhapps.listapp.common.ui.DialogButton
 import com.azhapps.listapp.common.ui.ErrorMarker
 import com.azhapps.listapp.common.ui.ErrorPage
 import com.azhapps.listapp.common.ui.LoadingPage
+import com.azhapps.listapp.common.ui.ThemedScaffold
 import com.azhapps.listapp.common.ui.TopBar
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
@@ -43,18 +43,13 @@ import com.azhapps.listapp.groups.GroupsViewModel
 import com.azhapps.listapp.groups.R
 import com.azhapps.listapp.groups.model.GroupItemState
 import com.azhapps.listapp.groups.model.GroupsAction
-import com.azhapps.listapp.navigation.Groups
-import dev.enro.annotations.ExperimentalComposableDestination
-import dev.enro.annotations.NavigationDestination
 
 @Composable
-@ExperimentalComposableDestination
-@NavigationDestination(Groups::class)
 fun GroupsScreen() {
     val viewModel = viewModel<GroupsViewModel>()
     val state = viewModel.collectAsState()
 
-    Scaffold(
+    ThemedScaffold(
         topBar = {
             TopBar(
                 title = stringResource(R.string.groups_title),
@@ -207,14 +202,14 @@ private fun GroupCard(
 
                 when (itemState.uiState) {
                     UiState.Content -> {
-                        //Do mothing
+                        //Do nothing
                     }
                     is UiState.Error -> ErrorMarker()
                     UiState.Loading -> CircularProgressIndicator()
                 }
             }
 
-            Text(text = itemState.group.users.joinToString { it.username })
+            Text(text = itemState.group.users?.joinToString { it.username } ?: "")
         }
     }
 }

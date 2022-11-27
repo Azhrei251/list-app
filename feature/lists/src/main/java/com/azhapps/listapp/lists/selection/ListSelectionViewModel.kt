@@ -15,7 +15,7 @@ import com.azhapps.listapp.lists.selection.model.ListSelectionState
 import com.azhapps.listapp.lists.selection.uc.CreateInformativeListUseCase
 import com.azhapps.listapp.lists.selection.uc.DeleteInformativeListUseCase
 import com.azhapps.listapp.lists.selection.uc.GetPersonalListsUseCase
-import com.azhapps.listapp.navigation.Lists
+import com.azhapps.listapp.navigation.Landing
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.enro.core.forward
 import dev.enro.core.result.registerForNavigationResult
@@ -31,7 +31,7 @@ class ListSelectionViewModel @Inject constructor(
     val deleteInformativeListUseCase: DeleteInformativeListUseCase,
 ) : BaseViewModel<ListSelectionState, ListSelectionAction>() {
 
-    private val navigationHandle by navigationHandle<Lists>()
+    private val navigationHandle by navigationHandle<Landing>()
 
     init {
         dispatch(ListSelectionAction.GetAllLists)
@@ -150,7 +150,7 @@ class ListSelectionViewModel @Inject constructor(
         viewModelScope.launch {
             val result = deleteInformativeListUseCase(listId)
             if (result.success) {
-               removeListFromState(listId)
+                removeListFromState(listId)
             } else {
                 updateItemUiState(listId, UiState.Error())
             }

@@ -1,7 +1,6 @@
 package com.azhapps.listapp.groups
 
 import androidx.lifecycle.viewModelScope
-import com.azhapps.listapp.common.model.Group
 import com.azhapps.listapp.common.model.User
 import com.azhapps.listapp.groups.model.GroupBottomSheetState
 import com.azhapps.listapp.groups.navigation.ModifyGroup
@@ -23,7 +22,7 @@ class ModifyGroupViewModel @Inject constructor(
 
     override fun initialState() = GroupBottomSheetState(
         currentName = navigationHandle.key.group.name,
-        currentMembers = navigationHandle.key.group.users,
+        currentMembers = navigationHandle.key.group.users ?: emptyList(),
     )
 
     override fun addMember(user: User) {

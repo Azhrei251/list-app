@@ -13,9 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.OpenInNew
@@ -24,9 +22,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.common.ui.ErrorMarker
+import com.azhapps.listapp.common.ui.ThemedScaffold
 import com.azhapps.listapp.common.ui.TopBar
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
@@ -34,20 +32,15 @@ import com.azhapps.listapp.more.About
 import com.azhapps.listapp.more.AboutViewModel
 import com.azhapps.listapp.more.BuildConfig
 import com.azhapps.listapp.more.R
-import dev.enro.annotations.ExperimentalComposableDestination
-import dev.enro.annotations.NavigationDestination
 import dev.enro.core.close
 import dev.enro.core.compose.navigationHandle
 
 @Composable
-@ExperimentalComposableDestination
-@NavigationDestination(About::class)
-fun AboutScreen() {
-    val viewModel = viewModel<AboutViewModel>()
+fun AboutScreen(viewModel: AboutViewModel) {
     val state = viewModel.collectAsState()
     val navigationHandle = navigationHandle<About>()
 
-    Scaffold(
+    ThemedScaffold(
         topBar = {
             TopBar(
                 title = stringResource(R.string.about_title),

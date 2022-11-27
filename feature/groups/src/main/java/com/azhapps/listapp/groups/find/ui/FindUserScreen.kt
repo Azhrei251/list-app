@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,6 +20,7 @@ import com.azhapps.listapp.common.model.User
 import com.azhapps.listapp.common.ui.ErrorPage
 import com.azhapps.listapp.common.ui.LoadingPage
 import com.azhapps.listapp.common.ui.SearchBar
+import com.azhapps.listapp.common.ui.ThemedScaffold
 import com.azhapps.listapp.common.ui.TopBar
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.groups.R
@@ -62,7 +62,7 @@ fun FindUserScaffold(
     searchFilter: String,
     actor: (FindUserAction) -> Unit,
 ) {
-    Scaffold(
+    ThemedScaffold(
         topBar = {
             TopBar(
                 title = stringResource(R.string.groups_find_user_title),

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
@@ -24,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.BuildConfig
 import com.azhapps.listapp.R
+import com.azhapps.listapp.common.ui.ThemedScaffold
 import com.azhapps.listapp.common.ui.TopBar
-import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.main.MainViewModel
 import com.azhapps.listapp.main.model.MainAction
 import com.azhapps.listapp.main.navigation.Welcome
@@ -43,37 +42,34 @@ fun MainScreen() {
     val navigationHandle = navigationHandle<Welcome>()
     val viewModel = viewModel<MainViewModel>()
 
-    //Shouldn't be required but it is?
-    ListAppTheme {
-        Scaffold(
-            topBar = {
-                TopBar(
-                    title = stringResource(R.string.main_title),
-                    backAction = {
-                        navigationHandle.close()
-                    },
-                    showBackArrow = true
-                )
-            }
+    ThemedScaffold(
+        topBar = {
+            TopBar(
+                title = stringResource(R.string.main_title),
+                backAction = {
+                    navigationHandle.close()
+                },
+                showBackArrow = true
+            )
+        }
+    ) {
+        Box(
+            Modifier
+                .padding(it)
+                .fillMaxSize()
+                .padding(top = 24.dp),
+            contentAlignment = Alignment.TopCenter,
         ) {
-            Box(
-                Modifier
-                    .padding(it)
-                    .fillMaxSize()
-                    .padding(top = 24.dp),
-                contentAlignment = Alignment.TopCenter,
-            ) {
-                MainContent(actor = viewModel::dispatch)
-            }
-            if (BuildConfig.DEBUG) {
-                IconButton(onClick = {
-                    navigationHandle.forward(DeveloperOptions)
-                }) {
-                    Icon(
-                        imageVector = Icons.Filled.Settings,
-                        contentDescription = stringResource(id = R.string.main_button_developer_options)
-                    )
-                }
+            MainContent(actor = viewModel::dispatch)
+        }
+        if (BuildConfig.DEBUG) {
+            IconButton(onClick = {
+                navigationHandle.forward(DeveloperOptions)
+            }) {
+                Icon(
+                    imageVector = Icons.Filled.Settings,
+                    contentDescription = stringResource(id = R.string.main_button_developer_options)
+                )
             }
         }
     }

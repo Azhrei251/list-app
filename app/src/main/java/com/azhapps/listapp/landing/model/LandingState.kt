@@ -4,11 +4,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.azhapps.listapp.R
 import com.azhapps.listapp.common.UiState
-import com.azhapps.listapp.navigation.Groups
-import com.azhapps.listapp.navigation.Lists
-import com.azhapps.listapp.navigation.More
-import dev.enro.annotations.NavigationDestination
-import dev.enro.core.NavigationKey
 
 data class LandingState(
     val uiState: UiState = UiState.Content,
@@ -17,10 +12,9 @@ data class LandingState(
     enum class Tab(
         @StringRes val buttonText: Int,
         @DrawableRes val icon: Int,
-        val key: NavigationKey
     ) {
-        LISTS(R.string.landing_button_lists, R.drawable.ic_nav_lists, Lists),
-        GROUPS(R.string.landing_button_groups, R.drawable.ic_nav_groups, Groups),
-        MORE(R.string.landing_button_more, R.drawable.ic_nav_more, More),
+        LISTS(R.string.landing_button_lists, R.drawable.ic_nav_lists),
+        GROUPS(R.string.landing_button_groups, R.drawable.ic_nav_groups),
+        MORE(R.string.landing_button_more, R.drawable.ic_nav_more),
     }
 }

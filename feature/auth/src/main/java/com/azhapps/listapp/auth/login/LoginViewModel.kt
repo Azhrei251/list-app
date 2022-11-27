@@ -10,7 +10,7 @@ import com.azhapps.listapp.auth.navigation.Register
 import com.azhapps.listapp.auth.uc.GetAuthTokenUseCase
 import com.azhapps.listapp.common.BaseViewModel
 import com.azhapps.listapp.common.UiState
-import com.azhapps.listapp.navigation.Main
+import com.azhapps.listapp.navigation.Landing
 import com.azhapps.listapp.network.auth.TokenManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.enro.core.forward
@@ -64,7 +64,7 @@ class LoginViewModel @Inject constructor(
                         uiState = UiState.Content,
                     )
                 }
-                navigationHandle.replace(Main)
+                navigationHandle.replace(Landing)
 
             } else {
                 updateState {

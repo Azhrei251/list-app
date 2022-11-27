@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,15 +19,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.azhapps.listapp.common.ui.TopBar
-import com.azhapps.listapp.common.ui.theme.Typography
 import com.azhapps.listapp.auth.login.LoginViewModel
-import com.azhapps.listapp.login.R
 import com.azhapps.listapp.auth.login.model.LoginAction
 import com.azhapps.listapp.auth.navigation.Login
 import com.azhapps.listapp.auth.ui.PasswordField
 import com.azhapps.listapp.auth.ui.UsernameField
 import com.azhapps.listapp.common.ui.ContentWithDialogs
+import com.azhapps.listapp.common.ui.ThemedScaffold
+import com.azhapps.listapp.common.ui.TopBar
+import com.azhapps.listapp.common.ui.theme.Typography
+import com.azhapps.listapp.login.R
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
 import dev.enro.core.close
@@ -42,7 +42,7 @@ fun LoginScreen() {
     val navigationHandle = navigationHandle<Login>()
     val state = viewModel.collectAsState()
 
-    Scaffold(
+    ThemedScaffold(
         topBar = {
             TopBar(
                 title = stringResource(R.string.auth_title_log_in),

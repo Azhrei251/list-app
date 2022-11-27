@@ -12,7 +12,7 @@ import com.azhapps.listapp.more.model.MoreAction
 import com.azhapps.listapp.more.model.MoreLineState
 import com.azhapps.listapp.more.model.MoreState
 import com.azhapps.listapp.navigation.DeveloperOptions
-import com.azhapps.listapp.navigation.More
+import com.azhapps.listapp.navigation.Landing
 import com.azhapps.listapp.network.auth.TokenManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.enro.core.forward
@@ -24,7 +24,7 @@ class MoreViewModel @Inject constructor(
     private val tokenManager: TokenManager,
 ) : BaseViewModel<MoreState, MoreAction>() {
 
-    private val navigationHandle by navigationHandle<More>()
+    private val navigationHandle by navigationHandle<Landing>()
 
     override fun initialState() = MoreState(
         items = mutableListOf(

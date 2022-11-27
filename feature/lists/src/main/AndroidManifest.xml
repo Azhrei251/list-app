@@ -3,6 +3,6 @@
     package="com.azhapps.listapp.lists">
 
     <application>
-        <activity android:name=".ListsActivity" />
+        <activity android:name=".view.ViewListActivity" />
     </application>
 </manifest>

@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,22 +16,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.azhapps.listapp.common.ui.TopBar
-import com.azhapps.listapp.common.ui.theme.Typography
-import com.azhapps.listapp.login.R
-import com.azhapps.listapp.auth.login.model.LoginAction
 import com.azhapps.listapp.auth.navigation.Register
 import com.azhapps.listapp.auth.registration.RegistrationViewModel
 import com.azhapps.listapp.auth.registration.model.RegistrationAction
 import com.azhapps.listapp.auth.ui.EmailField
 import com.azhapps.listapp.auth.ui.PasswordField
 import com.azhapps.listapp.auth.ui.UsernameField
-import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.common.ui.ContentWithDialogs
-import com.azhapps.listapp.common.ui.DialogButton
-import com.azhapps.listapp.common.ui.ErrorPage
+import com.azhapps.listapp.common.ui.ThemedScaffold
+import com.azhapps.listapp.common.ui.TopBar
+import com.azhapps.listapp.common.ui.theme.Typography
+import com.azhapps.listapp.login.R
 import dev.enro.annotations.ExperimentalComposableDestination
 import dev.enro.annotations.NavigationDestination
 import dev.enro.core.close
@@ -48,7 +41,7 @@ fun RegistrationScreen() {
     val navigationHandle = navigationHandle<Register>()
     val state = viewModel.collectAsState()
 
-    Scaffold(
+    ThemedScaffold(
         topBar = {
             TopBar(
                 title = stringResource(R.string.auth_title_register),

@@ -22,7 +22,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -37,32 +36,26 @@ import com.azhapps.listapp.account.toDisplayDate
 import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.common.ui.ErrorPage
 import com.azhapps.listapp.common.ui.LoadingPage
+import com.azhapps.listapp.common.ui.ThemedScaffold
 import com.azhapps.listapp.common.ui.TopBar
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
 import com.azhapps.listapp.lists.R
-import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.model.isOwnedBySelf
 import com.azhapps.listapp.lists.selection.ListSelectionViewModel
 import com.azhapps.listapp.lists.selection.model.ListSelectionAction
 import com.azhapps.listapp.lists.selection.model.ListSelectionItemState
 import com.azhapps.listapp.lists.ui.lazyHeader
-import com.azhapps.listapp.lists.view.model.ViewListAction
-import com.azhapps.listapp.navigation.Lists
-import dev.enro.annotations.ExperimentalComposableDestination
-import dev.enro.annotations.NavigationDestination
 import dev.enro.core.close
 import dev.enro.core.compose.navigationHandle
 
 @Composable
-@ExperimentalComposableDestination
-@NavigationDestination(Lists::class)
 fun ListSelectionScreen() {
     val navigationHandle = navigationHandle()
     val viewModel = viewModel<ListSelectionViewModel>()
     val state = viewModel.collectAsState()
 
-    Scaffold(
+    ThemedScaffold(
         topBar = {
             TopBar(
                 title = stringResource(R.string.lists_selection_title),

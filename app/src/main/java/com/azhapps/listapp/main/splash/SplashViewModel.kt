@@ -1,14 +1,11 @@
 package com.azhapps.listapp.main.splash
 
-import android.accounts.Account
-import android.accounts.AccountManager
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
-import com.azhapps.listapp.account.BuildConfig
 import com.azhapps.listapp.account.SelectedAccount
-import com.azhapps.listapp.main.navigation.Landing
 import com.azhapps.listapp.main.navigation.Splash
-import com.azhapps.listapp.main.navigation.Welcome
+import com.azhapps.listapp.navigation.Landing
+import com.azhapps.listapp.navigation.Main
 import com.azhapps.listapp.network.auth.TokenManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.enro.core.replace
@@ -34,12 +31,12 @@ class SplashViewModel @Inject constructor(
                 SelectedAccount.update(defaultAccountName, sharedPreferences)
                 if (tokenManager.getAuthToken() == null) {
                     tokenManager.clear(defaultAccountName)
-                    Welcome
+                    Main
                 } else {
                     Landing
                 }
             } else {
-                Welcome
+                Main
             }
         }
         navigationHandle.replace(navigationKey)

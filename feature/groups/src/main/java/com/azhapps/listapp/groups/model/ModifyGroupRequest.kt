@@ -10,5 +10,5 @@ data class ModifyGroupRequest(
 
 fun Group.toModifyGroupRequest() = ModifyGroupRequest(
     name = name,
-    users = users.map { it.id }
+    users = users?.map { it.id } ?: emptyList()
 )

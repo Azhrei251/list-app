@@ -4,9 +4,9 @@ import com.azhapps.listapp.common.BaseViewModel
 import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.main.model.MainAction
 import com.azhapps.listapp.main.model.MainState
-import com.azhapps.listapp.main.navigation.Landing
 import com.azhapps.listapp.main.navigation.Welcome
 import com.azhapps.listapp.navigation.Auth
+import com.azhapps.listapp.navigation.Landing
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.enro.core.replace
 import dev.enro.core.result.registerForNavigationResult

@@ -10,8 +10,8 @@ class CreateGroupUseCase @Inject constructor(
     private val groupsRemoteDataSource: GroupsRemoteDataSource
 ) {
     suspend operator fun invoke(group: Group) = callApi {
-        groupsRemoteDataSource.createGroup(ModifyGroupRequest(group.name, group.users.map {
+        groupsRemoteDataSource.createGroup(ModifyGroupRequest(group.name, group.users?.map {
             it.id
-        }))
+        } ?: emptyList()))
     }
 }

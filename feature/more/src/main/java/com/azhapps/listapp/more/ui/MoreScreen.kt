@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,24 +19,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.common.ui.DialogButton
+import com.azhapps.listapp.common.ui.ThemedScaffold
 import com.azhapps.listapp.common.ui.TopBar
 import com.azhapps.listapp.common.ui.theme.Typography
 import com.azhapps.listapp.more.MoreViewModel
 import com.azhapps.listapp.more.R
 import com.azhapps.listapp.more.model.MoreAction
 import com.azhapps.listapp.more.model.MoreLineState
-import com.azhapps.listapp.navigation.More
-import dev.enro.annotations.ExperimentalComposableDestination
-import dev.enro.annotations.NavigationDestination
 
 @Composable
-@ExperimentalComposableDestination
-@NavigationDestination(More::class)
 fun MoreScreen() {
     val viewModel = viewModel<MoreViewModel>()
     val state = viewModel.collectAsState()
 
-    Scaffold(
+    ThemedScaffold(
         topBar = {
             TopBar(
                 title = stringResource(R.string.more_title),

@@ -23,7 +23,6 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -34,9 +33,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.azhapps.listapp.common.UiState
 import com.azhapps.listapp.common.ui.ErrorMarker
+import com.azhapps.listapp.common.ui.ThemedScaffold
 import com.azhapps.listapp.common.ui.TopBar
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.common.ui.theme.Typography
@@ -47,20 +46,15 @@ import com.azhapps.listapp.lists.view.ViewListViewModel
 import com.azhapps.listapp.lists.view.model.ItemCategoryState
 import com.azhapps.listapp.lists.view.model.ListItemState
 import com.azhapps.listapp.lists.view.model.ViewListAction
-import dev.enro.annotations.ExperimentalComposableDestination
-import dev.enro.annotations.NavigationDestination
 import dev.enro.core.close
 import dev.enro.core.compose.navigationHandle
 
 @Composable
-@ExperimentalComposableDestination
-@NavigationDestination(ViewList::class)
-fun ViewListScreen() {
+fun ViewListScreen(viewModel: ViewListViewModel) {
     val navigationHandle = navigationHandle<ViewList>()
-    val viewModel = viewModel<ViewListViewModel>()
     val state = viewModel.collectAsState()
 
-    Scaffold(
+    ThemedScaffold(
         topBar = {
             TopBar(
                 title = stringResource(R.string.lists_view_title),

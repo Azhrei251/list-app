@@ -3,8 +3,15 @@ package com.azhapps.listapp.navigation
 import dev.enro.core.NavigationKey
 import kotlinx.parcelize.Parcelize
 
+
+@Parcelize
+object Initial: NavigationKey
+
 @Parcelize
 object Main: NavigationKey
+
+@Parcelize
+object Landing: NavigationKey
 
 @Parcelize
 data class Auth(
@@ -15,15 +22,6 @@ data class Auth(
         LOGIN, REGISTRATION
     }
 }
-
-@Parcelize
-object Lists: NavigationKey
-
-@Parcelize
-object Groups: NavigationKey
-
-@Parcelize
-object More: NavigationKey
 
 @Parcelize
 object DeveloperOptions: NavigationKey
