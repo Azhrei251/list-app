@@ -5,10 +5,10 @@ buildscript {
         rootProject.ext.storePassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
         rootProject.ext.keyAlias = System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
         rootProject.ext.keyPassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
-        rootProject.ext.testClientId = System.getenv("TEST_CLIENT_ID_ENV")
-        rootProject.ext.testClientSecret = System.getenv("TEST_CLIENT_SECRET_ENV")
-        rootProject.ext.prodClientId = System.getenv("PROD_CLIENT_ID_ENV")
-        rootProject.ext.prodClientSecret = System.getenv("PROD_CLIENT_SECRET_ENV")
+        rootProject.ext.testClientId = System.getenv("TEST_CLIENT_ID")
+        rootProject.ext.testClientSecret = System.getenv("TEST_CLIENT_SECRET")
+        rootProject.ext.prodClientId = System.getenv("PROD_CLIENT_ID")
+        rootProject.ext.prodClientSecret = System.getenv("PROD_CLIENT_SECRET")
 
     } else {
         def propertiesFile = rootProject.file('local.properties')
