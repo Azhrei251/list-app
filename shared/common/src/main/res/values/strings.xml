@@ -12,4 +12,6 @@
     <string name="label_name">Name</string>
     <string name="label_clear">Clear</string>
 
+    <string name="find_select_hint">Search</string>
+
 </resources>
