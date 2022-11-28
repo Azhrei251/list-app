@@ -8,6 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ModifyList(
     val informativeList: InformativeList,
+    val isCreate: Boolean,
     val canDelete: Boolean = true,
 ) : NavigationKey.WithResult<Pair<Boolean, InformativeList>>
 
@@ -19,5 +20,6 @@ data class ViewList(
 @Parcelize
 data class ModifyItem(
     val listItem: ListItem,
+    val isCreate: Boolean,
     val canDelete: Boolean = false,
 ) : NavigationKey.WithResult<Pair<Boolean, ListItem>>

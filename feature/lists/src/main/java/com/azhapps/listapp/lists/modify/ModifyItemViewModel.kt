@@ -27,6 +27,7 @@ class ModifyItemViewModel @Inject constructor(
             currentName = it.itemText,
             currentCategoryName = it.category?.name ?: "",
             canDelete = navigationHandle.key.canDelete,
+            isCreate = navigationHandle.key.isCreate,
         )
     }
 

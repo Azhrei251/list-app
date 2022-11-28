@@ -4,5 +4,7 @@
 
     <application>
         <activity android:name=".view.ViewListActivity" />
+        <activity android:name=".modify.ModifyListActivity" />
+        <activity android:name=".modify.ModifyItemActivity" />
     </application>
 </manifest>

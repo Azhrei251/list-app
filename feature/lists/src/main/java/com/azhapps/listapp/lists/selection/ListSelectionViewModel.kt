@@ -64,7 +64,7 @@ class ListSelectionViewModel @Inject constructor(
         when (action) {
             is ListSelectionAction.GetAllLists -> getAllLists(action.isRefresh)
 
-            is ListSelectionAction.EditList -> editListResult.open(ModifyList(action.informativeList))
+            is ListSelectionAction.EditList -> editListResult.open(ModifyList(action.informativeList, false))
 
             is ListSelectionAction.CreateList -> createListResult.open(
                 ModifyList(
@@ -75,6 +75,7 @@ class ListSelectionViewModel @Inject constructor(
                         owner = SelectedAccount.currentAccountName!!
                     ),
                     canDelete = false,
+                    isCreate = true,
                 )
             )
 

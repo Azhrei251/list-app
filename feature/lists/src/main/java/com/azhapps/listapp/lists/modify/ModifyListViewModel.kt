@@ -32,6 +32,7 @@ class ModifyListViewModel @Inject constructor(
             currentGroupName = it.group?.name ?: "",
             editable = it.isOwnedBySelf(),
             canDelete = navigationHandle.key.canDelete,
+            isCreate = navigationHandle.key.isCreate,
         )
     }
 

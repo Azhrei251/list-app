@@ -60,11 +60,12 @@ class ViewListViewModel @Inject constructor(
                     listItem = ListItem(
                         category = action.category
                     ),
-                    canDelete = false
+                    canDelete = false,
+                    isCreate = true,
                 )
             )
 
-            is ViewListAction.ModifyItem -> modifyItemResult.open(ModifyItem(action.item))
+            is ViewListAction.ModifyItem -> modifyItemResult.open(ModifyItem(action.item, false))
 
             is ViewListAction.ToggleComplete -> editItem(
                 action.item.copy(
