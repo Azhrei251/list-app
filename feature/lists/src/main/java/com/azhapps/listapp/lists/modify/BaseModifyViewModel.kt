@@ -8,17 +8,22 @@ import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.common.model.Group
 import com.azhapps.listapp.lists.modify.model.ModifyAction
 import com.azhapps.listapp.lists.modify.model.ModifyState
+import com.azhapps.listapp.lists.navigation.SelectCategory
 import com.azhapps.listapp.network.model.ApiResult
 import dev.enro.core.NavigationKey
 import dev.enro.core.TypedNavigationHandle
+import dev.enro.core.result.registerForNavigationResult
 import kotlinx.coroutines.launch
 
 abstract class BaseModifyViewModel<T : NavigationKey> : BaseViewModel<ModifyState, ModifyAction>() {
 
+    private val selectCategoryResult by registerForNavigationResult<Category> {
+        dispatch(ModifyAction.UpdateCategory(it))
+    }
+
     abstract val navigationHandle: TypedNavigationHandle<T>
 
     override fun initialState(): ModifyState {
-        updateCategories()
         updateGroups()
         return buildStateFromNavKey()
     }
@@ -27,11 +32,9 @@ abstract class BaseModifyViewModel<T : NavigationKey> : BaseViewModel<ModifyStat
         when (action) {
             is ModifyAction.UpdateCategory -> updateState {
                 copy(
-                    currentCategoryName = action.newCategoryName
+                    currentCategory = action.newCategory
                 )
             }
-
-            is ModifyAction.CreateCategory -> createAndUpdateCategory(action.name)
 
             is ModifyAction.UpdateListName -> updateState {
                 copy(
@@ -46,24 +49,8 @@ abstract class BaseModifyViewModel<T : NavigationKey> : BaseViewModel<ModifyStat
             }
 
             is ModifyAction.Finalize -> finalize(action.deleted)
-        }
-    }
 
-    private fun updateCategories() {
-        viewModelScope.launch {
-            val categoriesApiResult = getCategories()
-            val categories = if (categoriesApiResult.success) {
-                categoriesApiResult.data!!
-            } else {
-                Log.e(logTag, "Failed to get categories", categoriesApiResult.error)
-                emptyList()
-            }
-            updateState {
-                copy(
-                    categoryUiState = UiState.Content,
-                    availableCategories = categories
-                )
-            }
+            is ModifyAction.SelectCategory -> selectCategoryResult.open(SelectCategory(state.currentCategory))
         }
     }
 
@@ -90,37 +77,9 @@ abstract class BaseModifyViewModel<T : NavigationKey> : BaseViewModel<ModifyStat
         //Empty hook
     }
 
-    private fun createAndUpdateCategory(name: String) {
-        viewModelScope.launch {
-            val result = createCategory(name = name)
-            if (result.success) {
-                updateState {
-                    copy(
-                        categoryUiState = UiState.Content,
-                        availableCategories = mutableListOf<Category>().apply {
-                            addAll(availableCategories)
-                            add(result.data!!)
-                        }
-                    )
-                }
-            } else {
-                Log.e(logTag, "Failed to create category", result.error)
-                updateState {
-                    copy(
-                        categoryUiState = UiState.Content
-                    )
-                }
-            }
-        }
-    }
-
     abstract fun finalize(deleted: Boolean)
 
-    abstract suspend fun createCategory(name: String): ApiResult<Category>
-
     abstract fun buildStateFromNavKey(): ModifyState
-
-    abstract suspend fun getCategories(): ApiResult<List<Category>>
 
     abstract suspend fun getGroups(): ApiResult<List<Group>>
 }

@@ -6,8 +6,6 @@ import com.azhapps.listapp.account.DataModule.DEFAULT_GROUP_KEY
 import com.azhapps.listapp.common.uc.GetGroupsUseCase
 import com.azhapps.listapp.lists.model.isOwnedBySelf
 import com.azhapps.listapp.lists.modify.model.ModifyState
-import com.azhapps.listapp.lists.modify.uc.CreateListCategoryUseCase
-import com.azhapps.listapp.lists.modify.uc.GetListCategoriesUseCase
 import com.azhapps.listapp.lists.navigation.ModifyList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.enro.core.result.closeWithResult
@@ -17,9 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ModifyListViewModel @Inject constructor(
-    private val getListCategoriesUseCase: GetListCategoriesUseCase,
     private val getGroupsUseCase: GetGroupsUseCase,
-    private val createListCategoryUseCase: CreateListCategoryUseCase,
     private val sharedPreferences: SharedPreferences,
 ) : BaseModifyViewModel<ModifyList>() {
 
@@ -28,17 +24,13 @@ class ModifyListViewModel @Inject constructor(
     override fun buildStateFromNavKey(): ModifyState = navigationHandle.key.informativeList.let {
         ModifyState(
             currentName = it.name,
-            currentCategoryName = it.category?.name ?: "",
+            currentCategory = it.category,
             currentGroupName = it.group?.name ?: "",
             editable = it.isOwnedBySelf(),
             canDelete = navigationHandle.key.canDelete,
             isCreate = navigationHandle.key.isCreate,
         )
     }
-
-    override suspend fun createCategory(name: String) = createListCategoryUseCase(name)
-
-    override suspend fun getCategories() = getListCategoriesUseCase()
 
     override suspend fun getGroups() = getGroupsUseCase()
 
@@ -48,11 +40,7 @@ class ModifyListViewModel @Inject constructor(
         } else {
             viewModelScope.launch {
                 val currentList = navigationHandle.key.informativeList
-                val category = if (state.currentCategoryName.isNotBlank()) {
-                    state.availableCategories.firstOrNull {
-                        it.name == state.currentCategoryName
-                    } ?: createListCategoryUseCase(state.currentCategoryName).data
-                } else null
+                val category = state.currentCategory
                 val group = if (state.currentGroupName.isNotBlank()) state.availableGroups.firstOrNull {
                     it.name == state.currentGroupName
                 } else null

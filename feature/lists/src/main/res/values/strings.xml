@@ -8,6 +8,7 @@
     <string name="lists_create_list_sheet_title">Add list</string>
     <string name="lists_edit_list_sheet_title">Update list</string>
     <string name="lists_create_item_sheet_title">Add item</string>
+    <string name="lists_clear">Clear</string>
     <string name="lists_edit_item_sheet_title">Edit list</string>
     <string name="lists_label_category">Category</string>
     <string name="lists_label_group">Group</string>

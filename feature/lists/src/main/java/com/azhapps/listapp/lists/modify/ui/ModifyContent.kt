@@ -1,5 +1,6 @@
 package com.azhapps.listapp.lists.modify.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -7,16 +8,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import com.azhapps.listapp.common.model.Group
 import com.azhapps.listapp.common.ui.DropDownField
@@ -25,17 +31,15 @@ import com.azhapps.listapp.common.ui.ThemedScaffold
 import com.azhapps.listapp.common.ui.TopBar
 import com.azhapps.listapp.common.ui.theme.ListAppTheme
 import com.azhapps.listapp.lists.R
-import com.azhapps.listapp.lists.model.Category
 import com.azhapps.listapp.lists.modify.model.ModifyAction
 import dev.enro.core.close
 import dev.enro.core.compose.navigationHandle
 
+//TODO Think about how to add "Create" here
 @Composable
 fun ModifyScaffold(
     actor: (ModifyAction) -> Unit,
-    isCategoriesLoading: Boolean,
     isGroupsLoading: Boolean,
-    availableCategories: List<Category>,
     availableGroups: List<Group>,
     currentCategoryName: String,
     currentListName: String,
@@ -67,9 +71,7 @@ fun ModifyScaffold(
     ) {
         ModifyContent(
             actor = actor,
-            isCategoriesLoading = isCategoriesLoading,
             isGroupsLoading = isGroupsLoading,
-            availableCategories = availableCategories,
             availableGroups = availableGroups,
             currentCategoryName = currentCategoryName,
             currentListName = currentListName,
@@ -119,9 +121,7 @@ private fun ModifyTopBar(
 @Composable
 private fun ModifyContent(
     actor: (ModifyAction) -> Unit,
-    isCategoriesLoading: Boolean,
     isGroupsLoading: Boolean,
-    availableCategories: List<Category>,
     availableGroups: List<Group>,
     currentCategoryName: String,
     currentListName: String,
@@ -145,16 +145,36 @@ private fun ModifyContent(
                 },
                 enabled = editable
             )
-
-            DropDownField(
-                currentText = currentCategoryName,
-                availableOptions = availableCategories.map { it.name },
-                onTextChanged = {
-                    actor(ModifyAction.UpdateCategory(it))
+            TextField(
+                value = currentCategoryName,
+                onValueChange = {},
+                label = {
+                    Text(stringResource(id = R.string.lists_label_category))
                 },
-                isLoading = isCategoriesLoading,
-                label = stringResource(id = R.string.lists_label_category),
-                enabled = editable,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        if (editable) {
+                            actor(ModifyAction.SelectCategory)
+                        }
+                    },
+                trailingIcon = {
+                    if (currentCategoryName.isNotBlank()) {
+                        IconButton(
+                            onClick = {
+                                actor(ModifyAction.UpdateCategory(null))
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Clear,
+                                contentDescription = stringResource(id = R.string.lists_clear)
+                            )
+                        }
+                    }
+                },
+                singleLine = true,
+                enabled = false,
+                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
             )
 
             if (availableGroups.isNotEmpty()) {

@@ -28,11 +28,9 @@ class ModifyListActivity: BaseActivity() {
                     R.string.lists_edit_list_sheet_title
             ),
             actor = viewModel::dispatch,
-            isCategoriesLoading = state.categoryUiState == UiState.Loading,
             isGroupsLoading = state.groupUiState == UiState.Loading,
-            availableCategories = state.availableCategories,
             availableGroups = state.availableGroups,
-            currentCategoryName = state.currentCategoryName,
+            currentCategoryName = state.currentCategory?.name ?: "",
             currentListName = state.currentName,
             currentGroupName = state.currentGroupName,
             editable = state.editable,

@@ -9,7 +9,7 @@ data class ModifyState(
     val groupUiState: UiState = UiState.Loading,
     val availableCategories: List<Category> = emptyList(),
     val availableGroups: List<Group> = emptyList(),
-    val currentCategoryName: String = "",
+    val currentCategory: Category? = null,
     val currentName: String = "",
     val currentGroupName: String = "",
     val editable: Boolean = true,

@@ -1,23 +1,24 @@
 package com.azhapps.listapp.lists.modify.model
 
-sealed class ModifyAction {
-    data class CreateCategory(
-        val name: String,
-    ) : ModifyAction()
+import com.azhapps.listapp.lists.model.Category
+
+sealed interface ModifyAction {
+
+    object SelectCategory : ModifyAction
 
     data class UpdateCategory(
-        val newCategoryName: String,
-    ) : ModifyAction()
+        val newCategory: Category?,
+    ) : ModifyAction
 
     data class UpdateListName(
         val newListName: String,
-    ) : ModifyAction()
+    ) : ModifyAction
 
     data class UpdateGroup(
         val newGroupName: String,
-    ) : ModifyAction()
+    ) : ModifyAction
 
     data class Finalize(
         val deleted: Boolean = false
-    ): ModifyAction()
+    ) : ModifyAction
 }

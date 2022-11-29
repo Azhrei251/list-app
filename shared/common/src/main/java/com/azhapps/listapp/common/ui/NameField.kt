@@ -25,6 +25,6 @@ fun NameField(
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
         enabled = enabled,
-        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words)
+        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
     )
 }
